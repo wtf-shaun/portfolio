@@ -182,6 +182,35 @@
     }
     .hero-description { max-width: 430px; margin: 0; color: var(--secondary); }
     .meta-row { display: flex; flex-wrap: wrap; gap: 7px; margin: 17px 0; }
+    .achievement-preview {
+      margin-top: 17px;
+      padding-top: 12px;
+      border-top: 1px solid var(--border);
+    }
+    .achievement-preview-title {
+      margin: 0 0 8px;
+      color: var(--secondary);
+      font-size: 9px;
+      letter-spacing: .12em;
+    }
+    .achievement-preview-list {
+      display: grid;
+      gap: 5px;
+      margin: 0 0 11px;
+      padding: 0;
+      list-style: none;
+    }
+    .achievement-preview-list li {
+      display: flex;
+      align-items: baseline;
+      gap: 7px;
+      color: var(--text);
+      font-size: 10px;
+      line-height: 1.45;
+    }
+    .achievement-preview-list li::before { color: var(--green); content: "＋"; }
+    .achievement-preview-list span { color: var(--secondary); }
+    .action-link-button { font-size: 10px; }
     .meta-chip, .tag {
       padding: 3px 7px;
       border: 1px solid var(--border);
@@ -816,6 +845,15 @@
               <span class="meta-chip">CLASS 12</span><span class="meta-chip">DEVELOPER</span><span class="meta-chip">CREATIVE</span>
             </div>
             <a class="action-link" href="#projects">[ VIEW PROJECTS <span aria-hidden="true">→</span> ]</a>
+            <div class="achievement-preview" aria-labelledby="achievement-preview-title">
+              <h2 class="achievement-preview-title" id="achievement-preview-title">SELECTED ACHIEVEMENTS</h2>
+              <ul class="achievement-preview-list">
+                <li>First Prize <span>· Eco Enigma, Sanskriti School</span></li>
+                <li>First Prize <span>· Vision, Sanskriti School</span></li>
+                <li>Four-week internship <span>· Scholastic India</span></li>
+              </ul>
+              <button class="action-link action-link-button" type="button" data-open="milestones">[ VIEW ALL ACHIEVEMENTS <span aria-hidden="true">→</span> ]</button>
+            </div>
           </div>
           <div class="radar-wrap">
             <svg class="radar" viewBox="0 0 300 300" role="img" aria-labelledby="radar-title radar-desc">
@@ -1031,6 +1069,9 @@
           </div>
           <div class="timeline" id="timeline">
             <article class="timeline-item" data-category="CULTURE"><span class="timeline-date">2025</span><span class="timeline-category">CULTURE</span><p>Cultural Exchange Program with Russian students.</p></article>
+            <article class="timeline-item" data-category="THEATRE"><span class="timeline-date">2025</span><span class="timeline-category">THEATRE</span><p>Played the Grand Vazir in the biennial production Once Upon a Lamp.</p></article>
+            <article class="timeline-item" data-category="LEADERSHIP"><span class="timeline-date">2025</span><span class="timeline-category">LEADERSHIP</span><p>Served as Eco Club President.</p></article>
+            <article class="timeline-item" data-category="COMPETITIONS"><span class="timeline-date">2025</span><span class="timeline-category">COMPETITIONS</span><p>Participated in a mathematics competition at Manav Sthali.</p></article>
             <article class="timeline-item" data-category="ENVIRONMENT"><span class="timeline-date">2024</span><span class="timeline-category">ENVIRONMENT · 1ST PRIZE</span><p>First Prize in Eco Enigma at Sanskriti School.</p></article>
             <article class="timeline-item" data-category="COMPETITIONS"><span class="timeline-date">2024</span><span class="timeline-category">COMPETITIONS · 1ST PRIZE</span><p>First Prize in Vision at Sanskriti School.</p></article>
             <article class="timeline-item" data-category="EXPERIENCE"><span class="timeline-date">2024</span><span class="timeline-category">EXPERIENCE</span><p>Completed a four-week internship with Scholastic India.</p></article>
@@ -1042,9 +1083,6 @@
             <article class="timeline-item" data-category="THEATRE"><span class="timeline-date">2024</span><span class="timeline-category">THEATRE</span><p>Participated in Effervescence at St. Columba's School.</p></article>
             <article class="timeline-item" data-category="ENVIRONMENT"><span class="timeline-date">2023</span><span class="timeline-category">ENVIRONMENT · SECOND ROUND</span><p>Reached the second round of Pushpa Gujral Science City's Innovation for Sustainable Living.</p></article>
             <article class="timeline-item" data-category="THEATRE"><span class="timeline-date">2023</span><span class="timeline-category">THEATRE</span><p>Acted in the biennial production King of Hearts.</p></article>
-            <article class="timeline-item" data-category="THEATRE"><span class="timeline-date">2025</span><span class="timeline-category">THEATRE</span><p>Played the Grand Vazir in the biennial production Once Upon a Lamp.</p></article>
-            <article class="timeline-item" data-category="LEADERSHIP"><span class="timeline-date">2025</span><span class="timeline-category">LEADERSHIP</span><p>Served as Eco Club President.</p></article>
-            <article class="timeline-item" data-category="COMPETITIONS"><span class="timeline-date">2025</span><span class="timeline-category">COMPETITIONS</span><p>Participated in a mathematics competition at Manav Sthali.</p></article>
           </div>
           <p class="sr-only" id="filter-status" aria-live="polite"></p>
         </div>
@@ -1436,7 +1474,6 @@
   </script>
 </body>
 </html>
-
 
     })();
   </script>
