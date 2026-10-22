@@ -553,11 +553,11 @@
       place-items: center;
       padding: 24px;
       background:
-        radial-gradient(ellipse at center, rgb(0 52 18 / 28%), transparent 55%),
+        radial-gradient(ellipse at center, rgb(0 52 18 / 15%), transparent 55%),
         #020403;
       color: var(--green);
       opacity: 1;
-      transition: opacity .65s ease, visibility .65s ease;
+      transition: opacity .4s ease, visibility .4s ease;
     }
     .boot-screen[hidden] { display: none; }
     .boot-screen.is-exiting { visibility: hidden; opacity: 0; pointer-events: none; }
@@ -568,22 +568,22 @@
       content: "";
     }
     .boot-screen::before {
-      opacity: .18;
+      opacity: .09;
       background: repeating-linear-gradient(0deg, transparent 0 3px, #000 4px);
     }
     .boot-screen::after {
       background: linear-gradient(transparent 0%, rgb(0 255 65 / 8%) 50%, transparent 100%);
-      opacity: .25;
-      animation: boot-scan 3.2s linear infinite;
+      opacity: .12;
+      animation: boot-scan 4.8s linear infinite;
     }
     .boot-panel {
       position: relative;
       z-index: 1;
-      width: min(570px, 100%);
-      padding: clamp(22px, 6vw, 42px);
-      border: 1px solid rgb(0 255 65 / 42%);
-      background: rgb(3 8 5 / 80%);
-      box-shadow: 0 0 70px rgb(0 255 65 / 10%), inset 0 0 40px rgb(0 255 65 / 3%);
+      width: min(470px, 100%);
+      padding: clamp(18px, 5vw, 30px);
+      border: 1px solid rgb(0 255 65 / 26%);
+      background: rgb(3 8 5 / 92%);
+      box-shadow: 0 0 38px rgb(0 255 65 / 5%);
     }
     .boot-kicker, .boot-footer {
       display: flex;
@@ -598,37 +598,37 @@
     .boot-emblem {
       position: relative;
       display: grid;
-      width: 148px;
+      width: 104px;
       aspect-ratio: 1;
       place-items: center;
-      margin: 28px auto 22px;
+      margin: 17px auto 14px;
     }
     .boot-emblem::before, .boot-emblem::after {
       position: absolute;
-      border: 1px solid rgb(0 255 65 / 35%);
+      border: 1px solid rgb(0 255 65 / 24%);
       border-radius: 50%;
       content: "";
     }
     .boot-emblem::before { inset: 0; animation: boot-orbit 8s linear infinite; }
-    .boot-emblem::after { inset: 16px; border-style: dashed; animation: boot-orbit 16s linear infinite reverse; }
+    .boot-emblem::after { inset: 12px; border-style: dashed; animation: boot-orbit 20s linear infinite reverse; }
     .boot-radar {
-      width: 100px;
-      height: 100px;
+      width: 72px;
+      height: 72px;
       overflow: hidden;
       border: 1px solid var(--green-2);
       border-radius: 50%;
       background:
-        linear-gradient(transparent 49.5%, rgb(0 255 65 / 25%) 50%, transparent 50.5%),
-        linear-gradient(90deg, transparent 49.5%, rgb(0 255 65 / 25%) 50%, transparent 50.5%),
-        repeating-radial-gradient(circle, transparent 0 16px, rgb(0 255 65 / 27%) 17px 18px);
-      box-shadow: 0 0 28px rgb(0 255 65 / 15%), inset 0 0 18px rgb(0 255 65 / 8%);
+        linear-gradient(transparent 49.5%, rgb(0 255 65 / 18%) 50%, transparent 50.5%),
+        linear-gradient(90deg, transparent 49.5%, rgb(0 255 65 / 18%) 50%, transparent 50.5%),
+        repeating-radial-gradient(circle, transparent 0 12px, rgb(0 255 65 / 20%) 13px 14px);
+      box-shadow: 0 0 18px rgb(0 255 65 / 8%), inset 0 0 12px rgb(0 255 65 / 5%);
     }
     .boot-radar::before {
       display: block;
       width: 50%;
       height: 50%;
       transform-origin: bottom right;
-      background: linear-gradient(135deg, transparent 28%, rgb(0 255 65 / 55%));
+      background: linear-gradient(135deg, transparent 28%, rgb(0 255 65 / 36%));
       content: "";
       animation: boot-sweep 2.6s linear infinite;
     }
@@ -638,19 +638,19 @@
       height: 7px;
       border-radius: 50%;
       background: var(--green);
-      box-shadow: 0 0 18px var(--green);
+      box-shadow: 0 0 10px var(--green);
     }
     .boot-title {
       margin: 0;
       color: var(--green);
-      font-size: clamp(25px, 7vw, 40px);
-      letter-spacing: .14em;
+      font-size: clamp(22px, 6vw, 32px);
+      letter-spacing: .1em;
       line-height: 1.2;
       text-align: center;
-      text-shadow: 0 0 22px rgb(0 255 65 / 25%);
+      text-shadow: 0 0 14px rgb(0 255 65 / 12%);
     }
     .boot-subtitle {
-      margin: 9px 0 25px;
+      margin: 8px 0 15px;
       color: var(--secondary);
       font-size: 10px;
       letter-spacing: .16em;
@@ -658,10 +658,10 @@
     }
     .boot-log {
       display: grid;
-      min-height: 96px;
+      min-height: 64px;
       align-content: end;
       gap: 5px;
-      padding: 12px 0;
+      padding: 9px 0;
       border-top: 1px solid var(--border);
       color: var(--secondary);
       font-size: 10px;
@@ -1088,9 +1088,9 @@
             <article class="timeline-item" data-category="THEATRE"><span class="timeline-date">2024</span><span class="timeline-category">THEATRE</span><p>Participated in Effervescence at St. Columba's School.</p></article>
             <article class="timeline-item" data-category="ENVIRONMENT"><span class="timeline-date">2023</span><span class="timeline-category">ENVIRONMENT · SECOND ROUND</span><p>Reached the second round of Pushpa Gujral Science City's Innovation for Sustainable Living.</p></article>
             <article class="timeline-item" data-category="THEATRE"><span class="timeline-date">2023</span><span class="timeline-category">THEATRE</span><p>Acted in the biennial production King of Hearts.</p></article>
-            <article class="timeline-item" data-category="THEATRE"><span class="timeline-date">YEAR TO BE CONFIRMED</span><span class="timeline-category">THEATRE</span><p>Played the Grand Vazir in the biennial production Once Upon a Lamp.</p></article>
-            <article class="timeline-item" data-category="LEADERSHIP"><span class="timeline-date">YEAR TO BE CONFIRMED</span><span class="timeline-category">LEADERSHIP</span><p>Served as Eco Club President.</p></article>
-            <article class="timeline-item" data-category="COMPETITIONS"><span class="timeline-date">YEAR TO BE CONFIRMED</span><span class="timeline-category">COMPETITIONS</span><p>Participated in a mathematics competition at Manav Sthali.</p></article>
+            <article class="timeline-item" data-category="THEATRE"><span class="timeline-date">2025</span><span class="timeline-category">THEATRE</span><p>Played the Grand Vazir in the biennial production Once Upon a Lamp.</p></article>
+            <article class="timeline-item" data-category="LEADERSHIP"><span class="timeline-date">2025</span><span class="timeline-category">LEADERSHIP</span><p>Served as Eco Club President.</p></article>
+            <article class="timeline-item" data-category="COMPETITIONS"><span class="timeline-date">2025</span><span class="timeline-category">COMPETITIONS</span><p>Participated in a mathematics competition at Manav Sthali.</p></article>
           </div>
           <p class="sr-only" id="filter-status" aria-live="polite"></p>
         </div>
@@ -1198,6 +1198,10 @@
       let returnFocusTo = null;
       let bootTimers = [];
 
+      windows.forEach((section) => {
+        if (section.id !== "identity") section.hidden = true;
+      });
+
       function finishBoot() {
         if (bootScreen.hidden) return;
         bootTimers.forEach((timer) => window.clearTimeout(timer));
@@ -1236,12 +1240,12 @@
         };
         showMessage(0);
         bootTimers = [
-          window.setTimeout(() => showMessage(1), 900),
-          window.setTimeout(() => showMessage(2), 1800),
+          window.setTimeout(() => showMessage(1), 450),
+          window.setTimeout(() => showMessage(2), 900),
           window.setTimeout(() => {
-          bootSubtitle.textContent = "PERSONAL ARCHIVE · READY";
-          finishBoot();
-          }, 3000)
+            bootSubtitle.textContent = "PERSONAL ARCHIVE · READY";
+            finishBoot();
+          }, 1600)
         ];
       }
 
