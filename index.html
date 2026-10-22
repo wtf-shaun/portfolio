@@ -259,14 +259,6 @@
       border: 1px solid #23613a;
       background: #030805;
     }
-    .project-art img {
-      display: block;
-      width: 100%;
-      height: 100%;
-      min-height: 106px;
-      object-fit: cover;
-      object-position: center;
-    }
     .project-art::after {
       position: absolute;
       inset: 0;
@@ -274,17 +266,7 @@
       background: linear-gradient(135deg, transparent 45%, rgb(0 255 65 / 8%));
       content: "";
     }
-    .project-art svg { width: 100%; height: 100%; min-height: 106px; }
-    .project-art-label {
-      position: absolute;
-      z-index: 1;
-      right: 7px;
-      bottom: 5px;
-      color: #9cb6a1;
-      font-size: 7px;
-      letter-spacing: .08em;
-      text-transform: uppercase;
-    }
+    .project-art img { display: block; width: 100%; height: 100%; min-height: 106px; object-fit: cover; }
     .project-number { color: var(--green); font-size: 10px; letter-spacing: .11em; }
     .project h3 { margin: 3px 0 6px; color: var(--green); font-size: 14px; }
     .project p { margin: 0 0 8px; color: var(--secondary); font-size: 11px; line-height: 1.55; }
@@ -777,7 +759,6 @@
       .hero-copy h1 { max-width: 300px; }
       .project { grid-template-columns: 1fr; }
       .project-art { min-height: 130px; }
-      .project-art svg { min-height: 130px; }
       .project-art img { min-height: 130px; }
       .task-button.start-button { min-width: 52px; }
       .clock { display: none; }
@@ -916,7 +897,7 @@
           <div class="project-list">
             <article class="project">
               <div class="project-art">
-                <img src="assets/projects/preorder.png" alt="Screenshot of the cafeteria pre-order menu with drinks and food items" loading="lazy" decoding="async">
+                <img src="assets/projects/preorder.png" alt="Screenshot of the Cafeteria Pre-Order menu">
               </div>
               <div>
                 <span class="project-number">001 / PRE-ORDER</span>
@@ -929,7 +910,7 @@
             </article>
             <article class="project">
               <div class="project-art">
-                <img src="assets/projects/radar.png" alt="Screenshot of the VIDP tactical radar screensaver" loading="lazy" decoding="async">
+                <img src="assets/projects/radar.png" alt="Screenshot of the VIDP Tactical Radar visualization">
               </div>
               <div>
                 <span class="project-number">002 / RADAR</span>
@@ -942,7 +923,7 @@
             </article>
             <article class="project">
               <div class="project-art">
-                <img src="assets/projects/airwave.png" alt="Screenshot of the Airwave FM retro radio listening room" loading="lazy" decoding="async">
+                <img src="assets/projects/airwave.png" alt="Screenshot of the Airwave FM radio interface">
               </div>
               <div>
                 <span class="project-number">003 / AIRWAVE</span>
@@ -954,7 +935,7 @@
               </div>
             </article>
           </div>
-          <p class="project-note">Screenshots show the submitted project interfaces. Technology tags and source links are omitted until verified.</p>
+          <p class="project-note">Technology tags and source links are omitted until verified.</p>
         </div>
       </section>
 
@@ -1451,6 +1432,11 @@
           event.target.closest("[data-open]").setAttribute("aria-current", "location");
         }
       });
+    })();
+  </script>
+</body>
+</html>
+
     })();
   </script>
 </body>
