@@ -87,8 +87,8 @@
       letter-spacing: .12em;
       text-transform: uppercase;
     }
-    .status-live { color: var(--green); }
-    .status-live::before {
+    .status-indicator { color: var(--green); }
+    .status-indicator::before {
       display: inline-block;
       width: 7px;
       height: 7px;
@@ -249,12 +249,7 @@
     }
     .radar-ring { fill: none; stroke: #16562b; stroke-width: 1; }
     .radar-cross { stroke: #205d31; stroke-width: 1; }
-    .radar-sweep {
-      transform-origin: 150px 150px;
-      animation: sweep 8s linear infinite;
-    }
     .radar-target { fill: var(--green); filter: drop-shadow(0 0 4px var(--green)); }
-    @keyframes sweep { to { transform: rotate(360deg); } }
     .network-graphic { display: block; width: 100%; min-height: 160px; }
     .network-line { stroke: #174526; stroke-width: 1; }
     .network-line.hot { stroke: #167a36; }
@@ -638,159 +633,61 @@
     .boot-screen {
       position: fixed;
       z-index: 50;
-      inset: 0;
-      display: grid;
-      overflow: hidden;
-      place-items: center;
-      padding: 24px;
-      background:
-        radial-gradient(ellipse at center, rgb(0 52 18 / 15%), transparent 55%),
-        #020403;
+      top: 10px;
+      right: 10px;
+      left: 10px;
+      display: flex;
+      justify-content: center;
+      pointer-events: none;
       color: var(--green);
       opacity: 1;
-      transition: opacity .4s ease, visibility .4s ease;
+      transform: translateY(0);
+      transition: opacity .18s ease, transform .18s ease;
     }
     .boot-screen[hidden] { display: none; }
-    .boot-screen.is-exiting { visibility: hidden; opacity: 0; pointer-events: none; }
-    .boot-screen::before, .boot-screen::after {
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-      content: "";
-    }
-    .boot-screen::before {
-      opacity: .09;
-      background: repeating-linear-gradient(0deg, transparent 0 3px, #000 4px);
-    }
-    .boot-screen::after {
-      background: linear-gradient(transparent 0%, rgb(0 255 65 / 8%) 50%, transparent 100%);
-      opacity: .12;
-      animation: boot-scan 4.8s linear infinite;
-    }
+    .boot-screen.is-exiting { opacity: 0; transform: translateY(-4px); }
     .boot-panel {
-      position: relative;
-      z-index: 1;
-      width: min(470px, 100%);
-      padding: clamp(18px, 5vw, 30px);
-      border: 1px solid rgb(0 255 65 / 26%);
-      background: rgb(3 8 5 / 92%);
-      box-shadow: 0 0 38px rgb(0 255 65 / 5%);
-    }
-    .boot-kicker, .boot-footer {
       display: flex;
-      justify-content: space-between;
-      gap: 12px;
-      color: var(--secondary);
-      font-size: 9px;
-      letter-spacing: .12em;
-      text-transform: uppercase;
-    }
-    .boot-kicker strong { color: var(--green); font-weight: 500; }
-    .boot-emblem {
-      position: relative;
-      display: grid;
-      width: 104px;
-      aspect-ratio: 1;
-      place-items: center;
-      margin: 17px auto 14px;
-    }
-    .boot-emblem::before, .boot-emblem::after {
-      position: absolute;
-      border: 1px solid rgb(0 255 65 / 24%);
-      border-radius: 50%;
-      content: "";
-    }
-    .boot-emblem::before { inset: 0; animation: boot-orbit 8s linear infinite; }
-    .boot-emblem::after { inset: 12px; border-style: dashed; animation: boot-orbit 20s linear infinite reverse; }
-    .boot-radar {
-      width: 72px;
-      height: 72px;
-      overflow: hidden;
-      border: 1px solid var(--green-2);
-      border-radius: 50%;
-      background:
-        linear-gradient(transparent 49.5%, rgb(0 255 65 / 18%) 50%, transparent 50.5%),
-        linear-gradient(90deg, transparent 49.5%, rgb(0 255 65 / 18%) 50%, transparent 50.5%),
-        repeating-radial-gradient(circle, transparent 0 12px, rgb(0 255 65 / 20%) 13px 14px);
-      box-shadow: 0 0 18px rgb(0 255 65 / 8%), inset 0 0 12px rgb(0 255 65 / 5%);
-    }
-    .boot-radar::before {
-      display: block;
-      width: 50%;
-      height: 50%;
-      transform-origin: bottom right;
-      background: linear-gradient(135deg, transparent 28%, rgb(0 255 65 / 36%));
-      content: "";
-      animation: boot-sweep 2.6s linear infinite;
-    }
-    .boot-core {
-      position: absolute;
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: var(--green);
-      box-shadow: 0 0 10px var(--green);
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 6px 10px;
+      max-width: 100%;
+      padding: 7px 9px;
+      border: 1px solid rgb(0 255 65 / 22%);
+      background: rgb(3 8 5 / 94%);
     }
     .boot-title {
       margin: 0;
       color: var(--green);
-      font-size: clamp(22px, 6vw, 32px);
-      letter-spacing: .1em;
-      line-height: 1.2;
-      text-align: center;
-      text-shadow: 0 0 14px rgb(0 255 65 / 12%);
-    }
-    .boot-subtitle {
-      margin: 8px 0 15px;
-      color: var(--secondary);
       font-size: 10px;
-      letter-spacing: .16em;
-      text-align: center;
-    }
-    .boot-log {
-      display: grid;
-      min-height: 64px;
-      align-content: end;
-      gap: 5px;
-      padding: 9px 0;
-      border-top: 1px solid var(--border);
-      color: var(--secondary);
-      font-size: 10px;
-    }
-    .boot-log p { margin: 0; }
-    .boot-log p::before { margin-right: 8px; color: var(--green); content: "›"; }
-    .boot-log p:last-child { color: var(--green); }
-    .boot-progress {
-      height: 3px;
-      overflow: hidden;
-      margin: 8px 0 10px;
-      background: var(--border);
-    }
-    .boot-progress span {
-      display: block;
-      width: 0;
-      height: 100%;
-      background: var(--green);
-      box-shadow: 0 0 12px var(--green);
-      transition: width .3s ease;
-    }
-    .boot-skip {
-      position: absolute;
-      right: clamp(18px, 4vw, 34px);
-      bottom: clamp(16px, 4vw, 26px);
-      z-index: 2;
-      padding: 9px 12px;
-      border: 1px solid var(--border);
-      background: #030604;
-      color: var(--green);
-      cursor: pointer;
-      font-size: 10px;
+      font-weight: 600;
       letter-spacing: .08em;
     }
+    .boot-subtitle {
+      margin: 0;
+      color: var(--secondary);
+      font-size: 9px;
+      letter-spacing: .08em;
+    }
+    .boot-indicator {
+      width: 2px;
+      height: 13px;
+      background: var(--green);
+    }
+    .boot-skip {
+      min-height: 28px;
+      padding: 4px 7px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--green);
+      cursor: pointer;
+      font: inherit;
+      font-size: 9px;
+      letter-spacing: .05em;
+      pointer-events: auto;
+    }
     .boot-skip:hover { border-color: var(--green); background: rgb(0 255 65 / 8%); }
-    @keyframes boot-sweep { to { transform: rotate(360deg); } }
-    @keyframes boot-orbit { to { transform: rotate(360deg); } }
-    @keyframes boot-scan { from { transform: translateY(-100%); } to { transform: translateY(100%); } }
     .maximized {
       position: fixed;
       z-index: 15;
@@ -853,6 +750,9 @@
       .clock { font-size: 9px; }
       .task-spacer { display: none; }
       .window-control { width: 32px; height: 32px; }
+      .filter-button { min-height: 36px; padding: 5px 8px; font-size: 9px; }
+      .carousel-arrow { min-height: 44px; }
+      .carousel-dot { width: 24px; height: 24px; }
       .maximized { inset: 8px 8px calc(var(--bar-height) + 8px); }
     }
     @media (max-width: 430px) {
@@ -881,25 +781,19 @@
   </style>
 </head>
 <body>
-  <section class="boot-screen" id="boot-screen" role="dialog" aria-modal="true" aria-labelledby="boot-title" aria-describedby="boot-subtitle" hidden>
+  <div class="boot-screen" id="boot-screen" hidden>
     <div class="boot-panel">
-      <div class="boot-kicker"><strong>SHAUNAK / PERSONAL ARCHIVE</strong><span>INTRO 01</span></div>
-      <div class="boot-emblem" aria-hidden="true"><div class="boot-radar"></div><span class="boot-core"></span></div>
-      <h1 class="boot-title" id="boot-title">SHAUNAK.MOHOTRA</h1>
-      <p class="boot-subtitle" id="boot-subtitle">A PORTFOLIO, OPENING.</p>
-      <div class="boot-log" id="boot-log" aria-live="polite" aria-atomic="true">
-        <p>Projects, ideas, and a few different perspectives.</p>
-      </div>
-      <div class="boot-progress" aria-hidden="true"><span></span></div>
-      <div class="boot-footer"><span>BUILD. OBSERVE. QUESTION.</span><span>WELCOME</span></div>
+      <span class="boot-title">SHAUNAK.MOHOTRA</span>
+      <span class="boot-indicator" aria-hidden="true"></span>
+      <span class="boot-subtitle">PERSONAL ARCHIVE</span>
+      <button class="boot-skip" id="boot-skip" type="button">SKIP INTRO</button>
     </div>
-    <button class="boot-skip" id="boot-skip" type="button">SKIP INTRO ↗</button>
-  </section>
+  </div>
   <a class="skip-link" href="#identity">Skip to portfolio content</a>
   <main class="desktop" id="desktop">
-    <div class="system-status" aria-label="System status">
-      <span class="status-live">SYS.ONLINE / PERSONAL ARCHIVE</span>
-      <span>LOCAL ACCESS · <span id="date-display">-- --- ----</span></span>
+    <div class="system-status" aria-label="Portfolio status">
+      <span class="status-indicator">PERSONAL PORTFOLIO / ARCHIVE</span>
+      <span>ARCHIVE VIEW · <span id="date-display">-- --- ----</span></span>
     </div>
 
     <div class="desktop-layout" id="window-grid">
@@ -916,12 +810,11 @@
           <div class="hero-copy">
             <div class="eyebrow">IDENTITY FILE / 001</div>
             <h1>SHAUNAK<br>MOHOTRA</h1>
-            <p class="tagline">BUILD. OBSERVE. QUESTION.</p>
-            <p class="hero-description">Student and independent developer exploring the intersection of technology, creativity, and ideas.</p>
+            <p class="hero-description">Just a student trying to learn and create.</p>
             <div class="meta-row" aria-label="Profile details">
-              <span class="meta-chip">CLASS 12</span><span class="meta-chip">DEVELOPER</span><span class="meta-chip">CREATIVE</span>
+              <span class="meta-chip">Actor?</span><span class="meta-chip">Vibecoder</span><span class="meta-chip">Speaker</span>
             </div>
-            <a class="action-link" href="#projects">[ VIEW PROJECTS <span aria-hidden="true">→</span> ]</a>
+            <button class="action-link action-link-button" type="button" data-open="projects">[ VIEW PROJECTS <span aria-hidden="true">→</span> ]</button>
             <div class="achievement-preview" aria-labelledby="achievement-preview-title">
               <h2 class="achievement-preview-title" id="achievement-preview-title">SELECTED ACHIEVEMENTS</h2>
               <ul class="achievement-preview-list">
@@ -936,7 +829,7 @@
           <div class="radar-wrap">
             <svg class="radar" viewBox="0 0 300 300" role="img" aria-labelledby="radar-title radar-desc">
               <title id="radar-title">Radar display</title>
-              <desc id="radar-desc">A decorative radar with circular range rings, crosshairs, a rotating sweep, and three targets.</desc>
+              <desc id="radar-desc">A static decorative radar with circular range rings, crosshairs, a highlighted sector, and three targets.</desc>
               <g class="radar-ring">
                 <circle cx="150" cy="150" r="24"/><circle cx="150" cy="150" r="50"/>
                 <circle cx="150" cy="150" r="76"/><circle cx="150" cy="150" r="102"/>
@@ -945,7 +838,7 @@
               <g class="radar-cross">
                 <path d="M22 150h256M150 22v256M59.5 59.5l181 181m0-181-181 181"/>
               </g>
-              <g class="radar-sweep">
+              <g>
                 <path d="M150 150V22A128 128 0 0 1 240.5 59.5Z" fill="url(#sweep-fill)" opacity=".7"/>
                 <path d="M150 150 240.5 59.5" stroke="#00ff41" stroke-width="1.5"/>
               </g>
@@ -964,7 +857,7 @@
         </div>
       </section>
 
-      <section class="window window-network" id="network" data-window aria-labelledby="network-title">
+      <section class="window window-network" id="network" data-window aria-labelledby="network-title" hidden>
         <header class="titlebar">
           <span id="network-title">IDEA NETWORK / VISUAL</span>
           <span class="window-controls">
@@ -1000,7 +893,7 @@
         </div>
       </section>
 
-      <section class="window window-projects" id="projects" data-window aria-labelledby="projects-title">
+      <section class="window window-projects" id="projects" data-window aria-labelledby="projects-title" hidden>
         <header class="titlebar">
           <span id="projects-title">PROJECT ARCHIVE</span>
           <span class="window-controls">
@@ -1055,7 +948,7 @@
         </div>
       </section>
 
-      <section class="window window-field" id="field-notes" data-window aria-labelledby="field-title">
+      <section class="window window-field" id="field-notes" data-window aria-labelledby="field-title" hidden>
         <header class="titlebar">
           <span id="field-title">FIELD NOTES</span>
           <span class="window-controls">
@@ -1076,7 +969,7 @@
         </div>
       </section>
 
-      <section class="window window-contact" id="contact" data-window aria-labelledby="contact-title">
+      <section class="window window-contact" id="contact" data-window aria-labelledby="contact-title" hidden>
         <header class="titlebar">
           <span id="contact-title">SIGNAL / CONTACT</span>
           <span class="window-controls">
@@ -1106,7 +999,7 @@
         </div>
       </section>
 
-      <section class="window window-about" id="about" data-window aria-labelledby="about-title">
+      <section class="window window-about" id="about" data-window aria-labelledby="about-title" hidden>
         <header class="titlebar">
           <span id="about-title">IDENTITY.LOG</span>
           <span class="window-controls">
@@ -1125,7 +1018,7 @@
         </div>
       </section>
 
-      <section class="window window-milestones" id="milestones" data-window aria-labelledby="milestones-title">
+      <section class="window window-milestones" id="milestones" data-window aria-labelledby="milestones-title" hidden>
         <header class="titlebar">
           <span id="milestones-title">MILESTONES.LOG</span>
           <span class="window-controls">
@@ -1137,7 +1030,6 @@
         <div class="window-content">
           <div class="milestone-filters" role="group" aria-label="Filter milestones">
             <button class="filter-button" type="button" data-filter="ALL" aria-pressed="true">ALL</button>
-            <button class="filter-button" type="button" data-filter="TECHNOLOGY" aria-pressed="false">TECHNOLOGY</button>
             <button class="filter-button" type="button" data-filter="ENVIRONMENT" aria-pressed="false">ENVIRONMENT</button>
             <button class="filter-button" type="button" data-filter="THEATRE" aria-pressed="false">THEATRE</button>
             <button class="filter-button" type="button" data-filter="LEADERSHIP" aria-pressed="false">LEADERSHIP</button>
@@ -1147,9 +1039,6 @@
           </div>
           <div class="timeline" id="timeline">
             <article class="timeline-item" data-category="CULTURE"><span class="timeline-date">2025</span><span class="timeline-category">CULTURE</span><p>Cultural Exchange Program with Russian students.</p></article>
-            <article class="timeline-item" data-category="THEATRE"><span class="timeline-date">2025</span><span class="timeline-category">THEATRE</span><p>Played the Grand Vazir in the biennial production Once Upon a Lamp.</p></article>
-            <article class="timeline-item" data-category="LEADERSHIP"><span class="timeline-date">2025</span><span class="timeline-category">LEADERSHIP</span><p>Served as Eco Club President.</p></article>
-            <article class="timeline-item" data-category="COMPETITIONS"><span class="timeline-date">2025</span><span class="timeline-category">COMPETITIONS</span><p>Participated in a mathematics competition at Manav Sthali.</p></article>
             <article class="timeline-item" data-category="ENVIRONMENT"><span class="timeline-date">2024</span><span class="timeline-category">ENVIRONMENT · 1ST PRIZE</span><p>First Prize in Eco Enigma at Sanskriti School.</p></article>
             <article class="timeline-item" data-category="COMPETITIONS"><span class="timeline-date">2024</span><span class="timeline-category">COMPETITIONS · 1ST PRIZE</span><p>First Prize in Vision at Sanskriti School.</p></article>
             <article class="timeline-item" data-category="EXPERIENCE"><span class="timeline-date">2024</span><span class="timeline-category">EXPERIENCE</span><p>Completed a four-week internship with Scholastic India.</p></article>
@@ -1161,12 +1050,15 @@
             <article class="timeline-item" data-category="THEATRE"><span class="timeline-date">2024</span><span class="timeline-category">THEATRE</span><p>Participated in Effervescence at St. Columba's School.</p></article>
             <article class="timeline-item" data-category="ENVIRONMENT"><span class="timeline-date">2023</span><span class="timeline-category">ENVIRONMENT · SECOND ROUND</span><p>Reached the second round of Pushpa Gujral Science City's Innovation for Sustainable Living.</p></article>
             <article class="timeline-item" data-category="THEATRE"><span class="timeline-date">2023</span><span class="timeline-category">THEATRE</span><p>Acted in the biennial production King of Hearts.</p></article>
+            <article class="timeline-item" data-category="THEATRE"><span class="timeline-date">UNDATED</span><span class="timeline-category">THEATRE</span><p>Played the Grand Vazir in the biennial production Once Upon a Lamp.</p></article>
+            <article class="timeline-item" data-category="LEADERSHIP"><span class="timeline-date">UNDATED</span><span class="timeline-category">LEADERSHIP</span><p>Served as Eco Club President.</p></article>
+            <article class="timeline-item" data-category="COMPETITIONS"><span class="timeline-date">UNDATED</span><span class="timeline-category">COMPETITIONS</span><p>Participated in a mathematics competition at Manav Sthali.</p></article>
           </div>
           <p class="sr-only" id="filter-status" aria-live="polite"></p>
         </div>
       </section>
 
-      <section class="window window-gallery" id="gallery" data-window aria-labelledby="gallery-title">
+      <section class="window window-gallery" id="gallery" data-window aria-labelledby="gallery-title" hidden>
         <header class="titlebar">
           <span id="gallery-title">PHOTO ARCHIVE / MOMENTS</span>
           <span class="window-controls">
@@ -1196,7 +1088,7 @@
         </div>
       </section>
     </div>
-    <footer class="page-footer">DIFFERENT INTERESTS. BETTER PERSPECTIVES. &nbsp;·&nbsp; BUILD. OBSERVE. QUESTION.</footer>
+    <footer class="page-footer">An Aspirant for The Armed Forces. &nbsp;·&nbsp; All in good time.</footer>
   </main>
 
   <aside class="desktop-shortcuts" aria-label="Desktop shortcuts">
@@ -1223,11 +1115,12 @@
     <button type="button" data-command-toggle>⌕ &nbsp; Search archive <small>Ctrl / ⌘ K</small></button>
     <button type="button" data-open="identity">01 &nbsp; Identity file</button>
     <button type="button" data-open="projects">02 &nbsp; Project archive</button>
-    <button type="button" data-open="field-notes">03 &nbsp; Field notes</button>
-    <button type="button" data-open="about">04 &nbsp; Identity log</button>
-    <button type="button" data-open="milestones">05 &nbsp; Milestones</button>
-    <button type="button" data-open="contact">06 &nbsp; Contact</button>
-    <button type="button" data-open="gallery">07 &nbsp; Photo archive</button>
+    <button type="button" data-open="network">03 &nbsp; Idea network</button>
+    <button type="button" data-open="field-notes">04 &nbsp; Field notes</button>
+    <button type="button" data-open="about">05 &nbsp; Identity log</button>
+    <button type="button" data-open="milestones">06 &nbsp; Milestones</button>
+    <button type="button" data-open="contact">07 &nbsp; Contact</button>
+    <button type="button" data-open="gallery">08 &nbsp; Photo archive</button>
   </div>
   <section class="command-palette" id="command-palette" role="dialog" aria-modal="true" aria-labelledby="command-title" hidden>
     <div class="command-panel">
@@ -1243,6 +1136,9 @@
         </button>
         <button class="command-option" type="button" data-command-target="projects" data-search="projects project archive work portfolio">
           <span>Open project archive<small>Projects / portfolio</small></span><small>↵</small>
+        </button>
+        <button class="command-option" type="button" data-command-target="network" data-search="idea network visual visualization offline">
+          <span>Open idea network<small>Visualization / ideas</small></span><small>↵</small>
         </button>
         <a class="command-option" href="https://preorder-appweb.vercel.app/menu" target="_blank" rel="noopener noreferrer" data-search="pre-order preorder cafeteria menu live demo">
           <span>Open PRE-ORDER demo<small>Project 001 / live site</small></span><small>↗</small>
@@ -1292,8 +1188,6 @@
       const taskbar = document.querySelector(".taskbar");
       const bootScreen = document.getElementById("boot-screen");
       const bootSkip = document.getElementById("boot-skip");
-      const bootLog = document.getElementById("boot-log");
-      const bootSubtitle = document.getElementById("boot-subtitle");
       const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
       const commandPalette = document.getElementById("command-palette");
       const commandButton = document.getElementById("command-button");
@@ -1307,82 +1201,55 @@
       const galleryCount = document.getElementById("gallery-count");
       const galleryDots = document.getElementById("gallery-dots");
       const galleryPhotos = [
-        { src: "assets/achievements/portfolio-on-laptop.jpg", alt: "Portfolio website open on a laptop", caption: "Portfolio website open on a laptop" },
-        { src: "assets/achievements/music-on-screen.jpg", alt: "Music player displayed on a laptop screen", caption: "Music on screen" },
-        { src: "assets/achievements/stage-performance-1.jpg", alt: "A theatre performance on stage, with an actor in a purple costume", caption: "A moment from a stage performance" },
-        { src: "assets/achievements/stage-performance-2.jpg", alt: "A second moment from the theatre performance", caption: "Another moment from the production" },
-       ];
+        { src: "assets/achievements/portfolio-on-laptop.jpg", alt: "Portfolio website open on a laptop", caption: "Coding work on my projects." },
+        { src: "assets/achievements/music-on-screen.jpg", alt: "Music player displayed on a laptop screen", caption: "The companion keeping me sane." },
+        { src: "assets/achievements/stage-performance-1.jpg", alt: "A theatre performance on stage, with an actor in a purple costume", caption: "A moment from the stage performance "Once upon a lamp"" },
+        { src: "assets/achievements/stage-performance-2.jpg", alt: "A second moment from the theatre performance", caption: "Another moment from the production" }
+        ];
       let currentPhoto = 0;
       let returnFocusTo = null;
-      let bootTimers = [];
+      let bootTimer = 0;
 
       windows.forEach((section) => {
         if (section.id !== "identity") section.hidden = true;
       });
 
-      function finishBoot() {
-        if (bootScreen.hidden) return;
-        bootTimers.forEach((timer) => window.clearTimeout(timer));
-        bootTimers = [];
+      function finishBoot(event) {
+        if (bootScreen.hidden || bootScreen.classList.contains("is-exiting")) return;
+        window.clearTimeout(bootTimer);
+        if (bootScreen.contains(document.activeElement)) {
+          if (!event || event.detail === 0) document.querySelector(".skip-link").focus();
+          else bootSkip.blur();
+        }
         bootScreen.classList.add("is-exiting");
-        document.body.style.overflow = "";
-        document.getElementById("desktop").inert = false;
-        document.querySelector(".taskbar").inert = false;
-        document.querySelector(".desktop-shortcuts").inert = false;
-        window.setTimeout(() => { bootScreen.hidden = true; }, 700);
+        window.setTimeout(() => {
+          bootScreen.hidden = true;
+          bootScreen.classList.remove("is-exiting");
+        }, 200);
       }
 
       function startBoot() {
         if (reducedMotion.matches) return;
         bootScreen.hidden = false;
-        document.body.style.overflow = "hidden";
-        document.getElementById("desktop").inert = true;
-        document.querySelector(".taskbar").inert = true;
-        document.querySelector(".desktop-shortcuts").inert = true;
-        bootSkip.focus();
-        const messages = [
-          "A student. An independent developer.",
-          "Projects, performances, ideas, and interests.",
-          "Build. Observe. Question."
-        ];
-        let currentMessage = -1;
-        const bootProgressBar = document.querySelector(".boot-progress span");
-        const showMessage = (messageIndex) => {
-          if (messageIndex !== currentMessage) {
-            currentMessage = messageIndex;
-            const line = document.createElement("p");
-            line.textContent = messages[messageIndex];
-            bootLog.replaceChildren(line);
-            bootProgressBar.style.width = `${Math.round((messageIndex + 1) / messages.length * 100)}%`;
-          }
-        };
-        showMessage(0);
-        bootTimers = [
-          window.setTimeout(() => showMessage(1), 450),
-          window.setTimeout(() => showMessage(2), 900),
-          window.setTimeout(() => {
-            bootSubtitle.textContent = "PERSONAL ARCHIVE · READY";
-            finishBoot();
-          }, 1600)
-        ];
+        bootTimer = window.setTimeout(finishBoot, 350);
       }
 
       bootSkip.addEventListener("click", finishBoot);
-      bootScreen.addEventListener("keydown", (event) => {
-        if (event.key === "Escape") finishBoot();
-        if (event.key === "Tab") {
-          event.preventDefault();
-          bootSkip.focus();
-        }
-      });
       startBoot();
+
+      function scrollElementIntoView(element, block) {
+        element.scrollIntoView({ behavior: reducedMotion.matches ? "auto" : "smooth", block });
+      }
 
       function openWindow(id, shouldScroll = true, shouldFocus = false) {
         const section = document.getElementById(id);
         if (!section || !section.matches("[data-window]")) return;
         section.hidden = false;
         section.classList.remove("minimized");
-        if (shouldScroll) section.scrollIntoView({ behavior: "smooth", block: "start" });
+        windows.forEach((otherWindow) => {
+          if (otherWindow !== section) otherWindow.classList.remove("maximized");
+        });
+        if (shouldScroll) scrollElementIntoView(section, "start");
         if (shouldFocus) {
           section.tabIndex = -1;
           section.focus({ preventScroll: true });
@@ -1394,7 +1261,7 @@
       function showPhoto(index) {
         currentPhoto = (index + galleryPhotos.length) % galleryPhotos.length;
         const photo = galleryPhotos[currentPhoto];
-        galleryImage.src = photo.src;
+        if (galleryImage.getAttribute("src") !== photo.src) galleryImage.src = photo.src;
         galleryImage.alt = photo.alt;
         galleryCaption.textContent = photo.caption;
         galleryCount.textContent = `${String(currentPhoto + 1).padStart(2, "0")} / ${String(galleryPhotos.length).padStart(2, "0")}`;
@@ -1415,6 +1282,7 @@
         dot.addEventListener("click", () => showPhoto(index));
         galleryDots.append(dot);
       });
+      showPhoto(currentPhoto);
       document.getElementById("gallery-previous").addEventListener("click", () => showPhoto(currentPhoto - 1));
       document.getElementById("gallery-next").addEventListener("click", () => showPhoto(currentPhoto + 1));
       photoCarousel.addEventListener("keydown", (event) => {
@@ -1441,7 +1309,6 @@
       }
 
       function openCommandPalette() {
-        if (!bootScreen.hidden) return;
         if (!commandPalette.hidden) {
           commandInput.focus();
           return;
@@ -1522,6 +1389,10 @@
       });
       document.addEventListener("keydown", (event) => {
         if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "k") {
+          if (event.repeat || event.altKey || event.shiftKey) return;
+          if (event.target instanceof HTMLElement &&
+            (event.target.isContentEditable ||
+              (event.target !== commandInput && ["INPUT", "TEXTAREA", "SELECT"].includes(event.target.tagName)))) return;
           event.preventDefault();
           if (commandPalette.hidden) openCommandPalette();
           else closeCommandPalette();
@@ -1533,6 +1404,7 @@
           return;
         }
         if (event.key === "Escape") {
+          if (!bootScreen.hidden) finishBoot();
           menu.hidden = true;
           startButton.setAttribute("aria-expanded", "false");
           document.querySelectorAll(".maximized").forEach((section) => section.classList.remove("maximized"));
@@ -1551,10 +1423,12 @@
               section.hidden = true;
               section.classList.remove("maximized");
             } else if (action === "maximize") {
-              section.classList.toggle("maximized");
-              if (section.classList.contains("maximized")) {
+              const shouldMaximize = !section.classList.contains("maximized");
+              windows.forEach((otherWindow) => otherWindow.classList.remove("maximized"));
+              if (shouldMaximize) {
+                section.classList.add("maximized");
                 section.hidden = false;
-                section.scrollIntoView({ behavior: "smooth", block: "nearest" });
+                scrollElementIntoView(section, "nearest");
               }
             }
           });
@@ -1564,13 +1438,6 @@
       startButton.addEventListener("click", () => {
         menu.hidden = !menu.hidden;
         startButton.setAttribute("aria-expanded", String(!menu.hidden));
-      });
-      document.addEventListener("keydown", (event) => {
-        if (event.key === "Escape") {
-          menu.hidden = true;
-          startButton.setAttribute("aria-expanded", "false");
-          document.querySelectorAll(".maximized").forEach((section) => section.classList.remove("maximized"));
-        }
       });
       document.addEventListener("click", (event) => {
         if (!menu.hidden && !menu.contains(event.target) && !startButton.contains(event.target)) {
@@ -1607,7 +1474,7 @@
           if (previous) previous.remove();
           focusCopy.classList.add("field-focus");
           target.querySelector(".window-content").append(focusCopy);
-          window.setTimeout(() => focusCopy.scrollIntoView({ behavior: "smooth", block: "center" }), 120);
+          window.setTimeout(() => scrollElementIntoView(focusCopy, "center"), 120);
         });
       });
 
