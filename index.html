@@ -634,12 +634,10 @@
       position: fixed;
       z-index: 50;
       inset: 0;
-      display: grid;
-      place-items: center;
-      padding: 20px;
+      display: block;
       pointer-events: none;
       color: var(--green);
-      background: #030604;
+      background: #0c0c0c;
       opacity: 0;
       transition: opacity .2s ease;
     }
@@ -656,50 +654,66 @@
     .boot-screen.is-exiting { opacity: 0; }
     .boot-panel {
       position: relative;
-      width: min(100%, 620px);
-      padding: clamp(18px, 4vw, 30px);
-      border: 1px solid rgb(0 255 65 / 24%);
-      background: #030604;
-      box-shadow: 0 0 28px rgb(0 255 65 / 4%);
+      display: flex;
+      width: 100%;
+      height: 100%;
+      flex-direction: column;
+      background: #0c0c0c;
     }
     .boot-title {
       display: flex;
+      min-height: 42px;
       align-items: center;
-      gap: 9px;
-      margin: 0 0 20px;
-      color: var(--green);
-      font-size: clamp(11px, 2.5vw, 13px);
-      font-weight: 600;
-      letter-spacing: .04em;
+      gap: 10px;
+      margin: 0;
+      padding: 0 12px;
+      background: #202020;
+      color: #e8e8e8;
+      font-size: 13px;
+      font-weight: 400;
+      letter-spacing: 0;
       overflow-wrap: anywhere;
     }
     .boot-title::before {
-      width: 6px;
-      height: 6px;
+      display: grid;
+      width: 21px;
+      height: 19px;
       flex: 0 0 auto;
-      border-radius: 50%;
-      background: var(--green);
-      box-shadow: 0 0 6px rgb(0 255 65 / 22%);
-      content: "";
+      place-items: center;
+      border: 1px solid #858585;
+      border-radius: 2px;
+      color: #d0d0d0;
+      content: ">_";
+      font-size: 11px;
+      line-height: 1;
     }
     .boot-output {
       display: grid;
-      gap: 9px;
-      min-height: 82px;
-      color: #9ac5a3;
-      font-size: clamp(11px, 2.4vw, 12px);
+      align-content: start;
+      gap: 8px;
+      flex: 1;
+      min-height: 0;
+      padding: 12px 0;
+      color: #a8c7b0;
+      font-size: clamp(12px, 2.2vw, 15px);
     }
     .boot-line {
       margin: 0;
       opacity: 0;
-      transform: translateY(3px);
+      transform: translateY(2px);
+      overflow-wrap: anywhere;
+    }
+    .boot-line::before {
+      margin-right: 7px;
+      color: var(--green);
+      content: ">";
     }
     .boot-screen.is-active .boot-line {
-      animation: boot-line-in .16s ease-out forwards;
+      animation: boot-line-in .22s ease-out forwards;
     }
     .boot-screen.is-active .boot-line:nth-child(1) { animation-delay: .08s; }
-    .boot-screen.is-active .boot-line:nth-child(2) { animation-delay: .28s; }
-    .boot-screen.is-active .boot-line:nth-child(3) { animation-delay: .48s; }
+    .boot-screen.is-active .boot-line:nth-child(2) { animation-delay: 1.34s; }
+    .boot-screen.is-active .boot-line:nth-child(3) { animation-delay: 2.58s; }
     @keyframes boot-line-in {
       to { opacity: 1; transform: translateY(0); }
     }
@@ -708,9 +722,10 @@
       align-items: center;
       justify-content: space-between;
       gap: 16px;
-      margin-top: 22px;
-      padding-top: 12px;
-      border-top: 1px solid rgb(0 255 65 / 16%);
+      min-height: 42px;
+      padding: 0 12px;
+      border-top: 1px solid #202020;
+      background: #101010;
     }
     .boot-skip {
       min-height: 36px;
@@ -1294,7 +1309,7 @@
         bootScreen.classList.remove("is-active");
         bootScreen.classList.add("is-exiting");
         bootScreen.addEventListener("transitionend", finishBootTransition);
-        bootExitTimer = window.setTimeout(hideBoot, 10000);
+        bootExitTimer = window.setTimeout(hideBoot, 250);
       }
 
       function finishBootAnimation(event) {
@@ -1309,7 +1324,7 @@
         bootScreen.classList.add("is-active");
         bootSkip.addEventListener("click", finishBoot);
         bootScreen.addEventListener("animationend", finishBootAnimation);
-        bootTimer = window.setTimeout(finishBoot, 1400);
+        bootTimer = window.setTimeout(finishBoot, 2800);
       }
 
       startBoot();
@@ -1581,3 +1596,4 @@
   </script>
 </body>
 </html>
+
