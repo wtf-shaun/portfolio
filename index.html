@@ -9,278 +9,191 @@
   <meta property="og:description" content="Build. Observe. Question. A personal archive of projects, ideas, and interests.">
   <meta property="og:type" content="website">
   <title>Shaunak Mohotra — Personal Archive</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' fill='%23030604'/%3E%3Ccircle cx='20' cy='20' r='13' fill='none' stroke='%2300ff41'/%3E%3Ccircle cx='20' cy='20' r='3' fill='%2300ff41'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
       color-scheme: dark;
       --bg: #030604;
-      --panel: #050a06;
+      --window: #050a06;
       --green: #00ff41;
       --green-2: #00cc33;
       --muted-green: #397a4a;
       --text: #e3eae3;
       --secondary: #8b9b8e;
       --border: #174526;
-      --mono: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+      --mono: "IBM Plex Mono", "Cascadia Code", Consolas, monospace;
       --bar-height: 46px;
     }
 
     * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
+    html { scroll-behavior: smooth; scroll-padding-top: 22px; }
     body {
-      margin: 0;
       min-width: 320px;
+      margin: 0;
+      padding: 0 0 calc(var(--bar-height) + 18px);
       background:
-        radial-gradient(ellipse at 18% 15%, rgba(0, 54, 20, 0.18), transparent 35%),
-        radial-gradient(ellipse at 88% 63%, rgba(0, 40, 17, 0.14), transparent 32%),
-        linear-gradient(180deg, var(--bg), #030906 100%);
+        radial-gradient(ellipse at 18% 15%, rgb(0 54 20 / 18%), transparent 35%),
+        radial-gradient(ellipse at 88% 63%, rgb(0 40 17 / 14%), transparent 32%),
+        linear-gradient(0deg, transparent 49.8%, rgb(0 255 65 / 2%) 50%, transparent 50.2%),
+        var(--bg);
       color: var(--text);
       font-family: var(--mono);
       font-size: 13px;
       line-height: 1.6;
     }
-
     body::before {
-      content: "";
       position: fixed;
+      z-index: 10;
       inset: 0;
       pointer-events: none;
-      opacity: 0.12;
-      background: repeating-linear-gradient(
-        0deg,
-        transparent 0 3px,
-        rgba(0, 0, 0, 0.38) 4px
-      );
+      content: "";
+      opacity: .12;
+      background: repeating-linear-gradient(0deg, transparent 0 3px, rgb(0 0 0 / 38%) 4px);
     }
-
     a { color: inherit; }
-    button, input, textarea { font: inherit; }
-
-    .shell {
-      position: relative;
-      width: min(1200px, calc(100% - 32px));
-      margin: 0 auto;
-      padding: 26px 0 36px;
+    button { color: inherit; font: inherit; }
+    button:focus-visible, a:focus-visible {
+      outline: 2px solid var(--green);
+      outline-offset: 3px;
     }
-
-    .topbar {
+    ::selection { color: var(--bg); background: var(--green); }
+    .skip-link {
+      position: fixed;
+      z-index: 30;
+      top: 8px;
+      left: 8px;
+      padding: 9px 12px;
+      transform: translateY(-150%);
+      color: var(--bg);
+      background: var(--green);
+    }
+    .skip-link:focus { transform: none; }
+    .desktop {
+      width: min(1512px, 100%);
+      min-height: calc(100vh - var(--bar-height));
+      margin: 0 auto;
+      padding: 26px clamp(16px, 3.1vw, 48px) 36px;
+    }
+    .system-status {
       display: flex;
       justify-content: space-between;
-      align-items: center;
       gap: 16px;
       padding: 0 2px 12px;
       color: var(--secondary);
       font-size: 10px;
-      letter-spacing: 0.12em;
+      letter-spacing: .12em;
       text-transform: uppercase;
     }
-
-    .status-live,
-    .status-indicator {
-      color: var(--green);
-    }
-
-    .status-live::before,
+    .status-indicator { color: var(--green); }
     .status-indicator::before {
-      content: "";
       display: inline-block;
       width: 7px;
       height: 7px;
       margin-right: 8px;
       border-radius: 50%;
       background: var(--green);
-      box-shadow: 0 0 10px rgba(0, 255, 65, 0.5);
-      vertical-align: middle;
+      box-shadow: 0 0 10px rgb(0 255 65 / 50%);
+      content: "";
     }
-
-    .grid {
+    .desktop-layout {
       display: grid;
       grid-template-columns: repeat(12, minmax(0, 1fr));
       gap: 18px;
       align-items: start;
     }
-
-    .panel {
+    .window {
       min-width: 0;
       overflow: hidden;
       border: 1px solid var(--green-2);
-      background: rgba(5, 10, 6, 0.95);
-      box-shadow: 0 0 0 1px rgba(0, 255, 65, 0.05), 0 12px 38px rgba(0, 0, 0, 0.28);
+      background: rgb(5 10 6 / 95%);
+      box-shadow: 0 0 0 1px rgb(0 255 65 / 5%), 0 12px 38px rgb(0 0 0 / 28%);
+      scroll-margin-top: 18px;
     }
-
-    .panel-header {
+    .window[hidden] { display: none !important; }
+    .window-hero { grid-column: 1 / span 7; grid-row: 1; }
+    .window-network { grid-column: 8 / span 5; grid-row: 1; }
+    .window-projects { grid-column: 1 / span 6; grid-row: 2 / span 2; }
+    .window-field { grid-column: 7 / span 3; grid-row: 2; }
+    .window-contact { grid-column: 10 / span 3; grid-row: 2; }
+    .window-about { grid-column: 7 / span 3; grid-row: 3; }
+    .window-milestones { grid-column: 10 / span 3; grid-row: 3; }
+    .window-gallery { grid-column: 1 / span 12; grid-row: 4; }
+    .titlebar {
       display: flex;
+      min-height: 30px;
       align-items: center;
       justify-content: space-between;
       gap: 12px;
-      min-height: 30px;
       padding: 3px 8px 3px 12px;
-      background: var(--green);
       color: #031006;
+      background: var(--green);
       font-size: 11px;
       font-weight: 700;
-      letter-spacing: 0.055em;
+      letter-spacing: .055em;
       text-transform: uppercase;
     }
-
-    .window-controls {
-      display: flex;
-      gap: 3px;
-    }
-
+    .window-controls { display: flex; gap: 3px; }
     .window-control {
+      display: grid;
       width: 24px;
       height: 23px;
-      display: grid;
+      padding: 0;
       place-items: center;
       border: 0;
       background: transparent;
       color: #031006;
-      font-size: 15px;
       cursor: pointer;
+      font-size: 15px;
+      line-height: 1;
     }
-
-    .window-control:hover,
-    .window-control:focus-visible {
-      background: rgba(0, 0, 0, 0.13);
-      outline: none;
-    }
-
-    .panel-body { padding: clamp(16px, 2vw, 27px); }
-
-    .hero {
-      grid-column: 1 / span 7;
-      grid-row: 1;
-    }
-
-    .network {
-      grid-column: 8 / span 5;
-      grid-row: 1;
-    }
-
-    .projects {
-      grid-column: 1 / span 6;
-      grid-row: 2 / span 2;
-    }
-
-    .field {
-      grid-column: 7 / span 3;
-      grid-row: 2;
-    }
-
-    .contact {
-      grid-column: 10 / span 3;
-      grid-row: 2;
-    }
-
-    .about {
-      grid-column: 7 / span 3;
-      grid-row: 3;
-    }
-
-    .milestones {
-      grid-column: 10 / span 3;
-      grid-row: 3;
-    }
-
-    .gallery {
-      grid-column: 1 / span 12;
-      grid-row: 4;
-    }
-
-    .eyebrow {
+    .window-control:hover, .window-control:focus-visible { background: rgb(0 0 0 / 13%); }
+    .window-content { padding: clamp(16px, 2.2vw, 27px); }
+    .eyebrow, .micro-label {
       color: var(--green);
       font-size: 10px;
-      letter-spacing: 0.12em;
+      letter-spacing: .12em;
       text-transform: uppercase;
     }
-
-    .hero-grid {
+    .hero-content {
       display: grid;
-      grid-template-columns: minmax(0, 1.1fr) minmax(185px, 0.9fr);
+      grid-template-columns: minmax(0, 1.1fr) minmax(185px, .9fr);
       gap: 16px;
       align-items: center;
       min-height: 253px;
     }
-
     .hero-copy h1 {
+      max-width: 570px;
       margin: 12px 0 8px;
       color: var(--green);
       font-size: clamp(36px, 5.1vw, 67px);
       font-weight: 700;
-      letter-spacing: -0.08em;
-      line-height: 0.96;
-      text-shadow: 0 0 18px rgba(0, 255, 65, 0.12);
+      letter-spacing: -.08em;
+      line-height: .96;
+      text-shadow: 0 0 18px rgb(0 255 65 / 12%);
     }
-
     .tagline {
       margin: 15px 0 10px;
       color: var(--green-2);
       font-size: clamp(15px, 1.8vw, 22px);
       font-weight: 600;
-      letter-spacing: 0.04em;
+      letter-spacing: .04em;
     }
-
-    .hero-description {
-      max-width: 430px;
-      margin: 0;
-      color: var(--secondary);
-    }
-
-    .meta-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 7px;
-      margin: 17px 0;
-    }
-
-    .meta-chip,
-    .tag {
-      padding: 3px 7px;
-      border: 1px solid var(--border);
-      color: var(--secondary);
-      font-size: 9px;
-      letter-spacing: 0.08em;
-    }
-
-    .action-link,
-    .filter-button {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 9px;
-      min-height: 35px;
-      padding: 7px 11px;
-      border: 1px solid var(--green-2);
-      background: transparent;
-      color: var(--green);
-      text-decoration: none;
-      cursor: pointer;
-      transition: background 0.2s ease, color 0.2s ease;
-    }
-
-    .action-link:hover,
-    .action-link:focus-visible,
-    .filter-button:hover,
-    .filter-button:focus-visible,
-    .filter-button[aria-pressed="true"] {
-      background: var(--green);
-      color: var(--bg);
-      outline: none;
-    }
-
+    .hero-description { max-width: 430px; margin: 0; color: var(--secondary); }
+    .meta-row { display: flex; flex-wrap: wrap; gap: 7px; margin: 17px 0; }
     .achievement-preview {
       margin-top: 17px;
       padding-top: 12px;
       border-top: 1px solid var(--border);
     }
-
     .achievement-preview-title {
       margin: 0 0 8px;
       color: var(--secondary);
       font-size: 9px;
-      letter-spacing: 0.12em;
+      letter-spacing: .12em;
     }
-
     .achievement-preview-list {
       display: grid;
       gap: 5px;
@@ -288,7 +201,6 @@
       padding: 0;
       list-style: none;
     }
-
     .achievement-preview-list li {
       display: flex;
       align-items: baseline;
@@ -297,42 +209,52 @@
       font-size: 10px;
       line-height: 1.45;
     }
-
-    .achievement-preview-list li::before {
-      content: "＋";
-      color: var(--green);
-    }
-
-    .achievement-preview-list span {
+    .achievement-preview-list li::before { color: var(--green); content: "＋"; }
+    .achievement-preview-list span { color: var(--secondary); }
+    .action-link-button { font-size: 10px; }
+    .meta-chip, .tag {
+      padding: 3px 7px;
+      border: 1px solid var(--border);
       color: var(--secondary);
+      font-size: 9px;
+      letter-spacing: .08em;
     }
-
-    .radar-wrap {
-      width: min(100%, 255px);
-      margin: 0 auto;
+    .action-link, .filter-button {
+      display: inline-flex;
+      min-height: 35px;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      padding: 7px 11px;
+      border: 1px solid var(--green-2);
+      background: transparent;
+      color: var(--green);
+      text-decoration: none;
+      cursor: pointer;
     }
-
+    .action-link:hover, .filter-button:hover, .filter-button[aria-pressed="true"] {
+      color: var(--bg);
+      background: var(--green);
+    }
+    .radar-wrap { width: min(100%, 255px); margin: 0 auto; }
     .radar {
       display: block;
       width: 100%;
       overflow: visible;
-      border: 1px solid rgba(0, 255, 65, 0.11);
+      border: 1px solid rgb(0 255 65 / 11%);
       background:
-        linear-gradient(rgba(0, 255, 65, 0.05) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0, 255, 65, 0.05) 1px, transparent 1px);
+        linear-gradient(rgb(0 255 65 / 5%) 1px, transparent 1px),
+        linear-gradient(90deg, rgb(0 255 65 / 5%) 1px, transparent 1px);
       background-size: 20px 20px;
     }
-
     .radar-ring { fill: none; stroke: #16562b; stroke-width: 1; }
     .radar-cross { stroke: #205d31; stroke-width: 1; }
-    .radar-sweep {
-      transform-origin: 150px 150px;
-      animation: sweep 8s linear infinite;
-    }
     .radar-target { fill: var(--green); filter: drop-shadow(0 0 4px var(--green)); }
-
-    @keyframes sweep { to { transform: rotate(360deg); } }
-
+    .network-graphic { display: block; width: 100%; min-height: 160px; }
+    .network-line { stroke: #174526; stroke-width: 1; }
+    .network-line.hot { stroke: #167a36; }
+    .network-node { fill: var(--green-2); }
+    .network-node.core { fill: var(--green); filter: drop-shadow(0 0 4px var(--green)); }
     .network-stats {
       display: flex;
       flex-wrap: wrap;
@@ -342,39 +264,17 @@
       font-size: 9px;
       text-transform: uppercase;
     }
-
-    .network-stats strong {
-      color: var(--green);
-      font-weight: 500;
-    }
-
-    .network-graphic {
-      display: block;
-      width: 100%;
-      min-height: 160px;
-    }
-
-    .network-line { stroke: #174526; stroke-width: 1; }
-    .network-line.hot { stroke: #167a36; }
-    .network-node { fill: var(--green-2); }
-    .network-node.core { fill: var(--green); filter: drop-shadow(0 0 4px var(--green)); }
-
+    .network-stats strong { color: var(--green); font-weight: 500; }
     .project-list { display: grid; gap: 0; }
-
     .project {
       display: grid;
-      grid-template-columns: minmax(130px, 0.78fr) minmax(0, 1.35fr);
+      grid-template-columns: minmax(130px, .78fr) minmax(0, 1.35fr);
       gap: 16px;
       padding: 13px 0;
       border-bottom: 1px solid var(--border);
     }
-
     .project:first-child { padding-top: 0; }
-    .project:last-child {
-      padding-bottom: 0;
-      border-bottom: 0;
-    }
-
+    .project:last-child { padding-bottom: 0; border-bottom: 0; }
     .project-art {
       position: relative;
       display: grid;
@@ -384,81 +284,38 @@
       border: 1px solid #23613a;
       background: #030805;
     }
-
     .project-art::after {
-      content: "";
       position: absolute;
       inset: 0;
       pointer-events: none;
-      background: linear-gradient(135deg, transparent 45%, rgba(0, 255, 65, 0.08));
+      background: linear-gradient(135deg, transparent 45%, rgb(0 255 65 / 8%));
+      content: "";
     }
-
-    .project-art img {
-      display: block;
-      width: 100%;
-      height: 100%;
-      min-height: 106px;
-      object-fit: cover;
-    }
-
-    .project-number { color: var(--green); font-size: 10px; letter-spacing: 0.11em; }
-    .project h3 {
-      margin: 3px 0 6px;
-      color: var(--green);
-      font-size: 14px;
-    }
-    .project p {
-      margin: 0 0 8px;
-      color: var(--secondary);
-      font-size: 11px;
-      line-height: 1.55;
-    }
-    .project-links {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-    }
-    .text-link {
-      color: var(--green);
-      font-size: 10px;
-      text-decoration: none;
-    }
-    .text-link:hover { text-decoration: underline; }
-
+    .project-art img { display: block; width: 100%; height: 100%; min-height: 106px; object-fit: cover; }
+    .project-number { color: var(--green); font-size: 10px; letter-spacing: .11em; }
+    .project h3 { margin: 3px 0 6px; color: var(--green); font-size: 14px; }
+    .project p { margin: 0 0 8px; color: var(--secondary); font-size: 11px; line-height: 1.55; }
+    .project-links { display: flex; flex-wrap: wrap; gap: 12px; }
+    .text-link { color: var(--green); font-size: 10px; text-decoration: none; }
+    .text-link:hover { text-decoration: underline; text-underline-offset: 3px; }
+    .project-note { margin: 13px 0 0; color: var(--secondary); font-size: 9px; }
     .field-list { display: grid; gap: 7px; }
     .field-item {
       display: flex;
+      min-height: 55px;
       align-items: center;
       justify-content: space-between;
       gap: 10px;
-      min-height: 55px;
       padding: 9px 10px;
       border: 1px solid var(--border);
       color: var(--green);
       text-decoration: none;
     }
-    .field-item:hover {
-      border-color: var(--green-2);
-      background: rgba(0, 255, 65, 0.04);
-    }
-    .field-item strong {
-      display: block;
-      font-size: 10px;
-      letter-spacing: 0.04em;
-    }
-    .field-item span {
-      display: block;
-      color: var(--secondary);
-      font-size: 9px;
-    }
+    .field-item:hover { border-color: var(--green-2); background: rgb(0 255 65 / 4%); }
+    .field-item strong { display: block; font-size: 10px; letter-spacing: .04em; }
+    .field-item span { display: block; color: var(--secondary); font-size: 9px; }
     .field-item .arrow { color: var(--green); font-size: 14px; }
-
-    .contact-intro {
-      margin: 0 0 12px;
-      color: var(--secondary);
-      font-size: 11px;
-    }
-
+    .contact-intro { margin: 0 0 12px; color: var(--secondary); font-size: 11px; }
     .contact-links { display: grid; }
     .contact-link {
       display: grid;
@@ -470,69 +327,30 @@
       color: var(--green);
       text-decoration: none;
     }
-    .contact-link svg {
-      width: 19px;
-      height: 19px;
-      fill: none;
-      stroke: currentColor;
-      stroke-width: 1.7;
-    }
+    .contact-link svg { width: 19px; height: 19px; fill: none; stroke: currentColor; stroke-width: 1.7; }
     .contact-link:first-child svg.github-icon { fill: currentColor; stroke: none; }
-    .contact-link span {
-      overflow-wrap: anywhere;
-      font-size: 10px;
-    }
-    .contact-link small {
-      display: block;
-      color: var(--secondary);
-      font-size: 9px;
-    }
-    .contact-link:hover span { text-decoration: underline; }
-
-    .availability {
-      margin: 13px 0 0;
-      color: var(--green-2);
-      font-size: 9px;
-    }
-
+    .contact-link span { overflow-wrap: anywhere; font-size: 10px; }
+    .contact-link small { display: block; color: var(--secondary); font-size: 9px; }
+    .contact-link:hover span { text-decoration: underline; text-underline-offset: 3px; }
+    .availability { margin: 13px 0 0; color: var(--green-2); font-size: 9px; }
     .about-copy { margin: 0; color: var(--secondary); font-size: 11px; }
     .about-copy + .about-copy { margin-top: 10px; }
-
     .skills-group { margin-top: 14px; }
-    .skills-group h3 {
-      margin: 0 0 6px;
-      color: var(--green);
-      font-size: 10px;
-      font-weight: 500;
-    }
+    .skills-group h3 { margin: 0 0 6px; color: var(--green); font-size: 10px; font-weight: 500; }
     .tags { display: flex; flex-wrap: wrap; gap: 5px; }
     .tag { color: var(--text); font-size: 9px; }
-
-    .focus-line {
-      margin-top: 14px;
-      padding-top: 10px;
-      border-top: 1px solid var(--border);
-      color: var(--secondary);
-      font-size: 10px;
-    }
+    .focus-line { margin-top: 14px; padding-top: 10px; border-top: 1px solid var(--border); color: var(--secondary); font-size: 10px; }
     .focus-line strong { color: var(--green); font-weight: 500; }
-
-    .milestone-filters {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 5px;
-      margin-bottom: 13px;
-    }
+    .milestone-filters { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 13px; }
     .filter-button { min-height: 27px; padding: 3px 6px; font-size: 8px; }
-
     .timeline { display: grid; gap: 11px; }
     .timeline-item {
       position: relative;
       padding-left: 12px;
       border-left: 1px solid var(--border);
     }
+    .timeline-item[hidden] { display: none; }
     .timeline-item::before {
-      content: "";
       position: absolute;
       top: 6px;
       left: -4px;
@@ -540,24 +358,11 @@
       height: 7px;
       border-radius: 50%;
       background: var(--green-2);
+      content: "";
     }
-    .timeline-date {
-      color: var(--green);
-      font-size: 9px;
-      letter-spacing: 0.08em;
-    }
-    .timeline-category {
-      margin-left: 5px;
-      color: var(--muted-green);
-      font-size: 8px;
-    }
-    .timeline-item p {
-      margin: 3px 0 0;
-      color: var(--secondary);
-      font-size: 10px;
-      line-height: 1.45;
-    }
-
+    .timeline-date { color: var(--green); font-size: 9px; letter-spacing: .08em; }
+    .timeline-category { margin-left: 5px; color: var(--muted-green); font-size: 8px; }
+    .timeline-item p { margin: 3px 0 0; color: var(--secondary); font-size: 10px; line-height: 1.45; }
     .gallery-intro {
       display: flex;
       align-items: baseline;
@@ -567,18 +372,12 @@
       color: var(--secondary);
       font-size: 10px;
     }
-    .gallery-intro strong {
-      color: var(--green);
-      font-size: 10px;
-      font-weight: 500;
-      letter-spacing: 0.1em;
-    }
-
+    .gallery-intro strong { color: var(--green); font-size: 10px; font-weight: 500; letter-spacing: .1em; }
     .photo-carousel { min-width: 0; }
+    .photo-slide { margin: 0; }
     .photo-frame {
       display: grid;
-      min-height: 220px;
-      height: clamp(220px, 38vw, 460px);
+      min-height: 0;
       place-items: center;
       overflow: hidden;
       border: 1px solid var(--border);
@@ -587,95 +386,435 @@
     .photo-frame img {
       display: block;
       width: 100%;
-      height: 100%;
-      object-fit: cover;
+      height: auto;
+      max-height: min(65vh, 620px);
+      object-fit: contain;
     }
     .photo-caption {
       display: flex;
+      min-height: 42px;
       align-items: center;
       justify-content: space-between;
       gap: 14px;
-      min-height: 42px;
       padding: 8px 2px;
       color: var(--text);
       font-size: 10px;
     }
     .photo-caption p { margin: 0; color: var(--secondary); }
-    .photo-count {
-      flex: 0 0 auto;
+    .photo-count { flex: 0 0 auto; color: var(--green); font-size: 10px; letter-spacing: .1em; }
+    .carousel-controls {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding-top: 9px;
+      border-top: 1px solid var(--border);
+    }
+    .carousel-arrow {
+      min-width: 88px;
+      min-height: 36px;
+      padding: 6px 9px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--green);
+      cursor: pointer;
+      font: inherit;
+      font-size: 10px;
+    }
+    .carousel-arrow:hover { border-color: var(--green); background: rgb(0 255 65 / 6%); }
+    .carousel-dots { display: flex; flex-wrap: wrap; justify-content: center; gap: 7px; }
+    .carousel-dot {
+      width: 12px;
+      height: 12px;
+      padding: 0;
+      border: 1px solid var(--muted-green);
+      border-radius: 50%;
+      background: transparent;
+      cursor: pointer;
+    }
+    .carousel-dot[aria-current="true"] { border-color: var(--green); background: var(--green); }
+    .carousel-dot:focus-visible { outline-offset: 3px; }
+    .desktop-shortcuts {
+      position: fixed;
+      z-index: 2;
+      top: 68px;
+      right: max(12px, calc((100vw - 1512px) / 2 + 16px));
+      display: grid;
+      gap: 12px;
+    }
+    .desktop-shortcut {
+      display: grid;
+      width: 74px;
+      min-height: 66px;
+      justify-items: center;
+      align-content: center;
+      gap: 4px;
+      padding: 4px;
+      border: 1px solid transparent;
+      background: transparent;
+      color: var(--green);
+      cursor: pointer;
+      font-size: 9px;
+      text-align: center;
+    }
+    .desktop-shortcut:hover { border-color: var(--border); background: rgb(0 0 0 / 45%); }
+    .desktop-shortcut svg { width: 23px; height: 23px; fill: none; stroke: currentColor; stroke-width: 1.5; }
+    .taskbar {
+      position: fixed;
+      z-index: 20;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      display: flex;
+      min-height: var(--bar-height);
+      align-items: center;
+      gap: 6px;
+      padding: 5px max(10px, calc((100vw - 1512px) / 2 + 16px));
+      border-top: 1px solid var(--green-2);
+      background: rgb(3 6 4 / 96%);
+      backdrop-filter: blur(12px);
+    }
+    .task-button {
+      display: inline-flex;
+      min-height: 31px;
+      align-items: center;
+      gap: 7px;
+      padding: 4px 9px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--green);
+      cursor: pointer;
+      font-size: 9px;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+    .task-button:hover, .task-button[aria-current="location"] {
+      border-color: var(--green-2);
+      background: rgb(0 255 65 / 7%);
+    }
+    .task-button.start-button { border-color: var(--green); background: var(--green); color: var(--bg); font-weight: 700; }
+    .task-button svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 1.7; }
+    .task-button kbd { padding: 1px 3px; border: 1px solid currentColor; font: inherit; }
+    .task-spacer { flex: 1; }
+    .clock { color: var(--green); font-size: 10px; white-space: nowrap; }
+    .start-menu {
+      position: fixed;
+      z-index: 21;
+      bottom: calc(var(--bar-height) + 8px);
+      left: max(10px, calc((100vw - 1512px) / 2 + 16px));
+      width: min(290px, calc(100vw - 20px));
+      padding: 12px;
+      border: 1px solid var(--green-2);
+      background: #050a06;
+      box-shadow: 0 12px 40px #000a;
+    }
+    .start-menu[hidden] { display: none; }
+    .start-menu h2 { margin: 0 0 9px; color: var(--green); font-size: 12px; }
+    .start-menu button {
+      display: block;
+      width: 100%;
+      padding: 8px;
+      border: 0;
+      border-top: 1px solid var(--border);
+      background: transparent;
+      color: var(--text);
+      cursor: pointer;
+      text-align: left;
+    }
+    .start-menu button:hover { color: var(--green); background: rgb(0 255 65 / 5%); }
+    .command-palette {
+      position: fixed;
+      z-index: 60;
+      inset: 0;
+      display: grid;
+      align-items: start;
+      justify-items: center;
+      overflow-y: auto;
+      padding: min(12vh, 100px) 16px 16px;
+      background: rgb(0 0 0 / 78%);
+      backdrop-filter: blur(5px);
+    }
+    .command-palette[hidden] { display: none; }
+    .command-panel {
+      width: min(590px, 100%);
+      overflow: hidden;
+      border: 1px solid var(--green-2);
+      background: #050a06;
+      box-shadow: 0 18px 80px #000, 0 0 34px rgb(0 255 65 / 9%);
+    }
+    .command-heading {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 11px 14px;
+      border-bottom: 1px solid var(--border);
       color: var(--green);
       font-size: 10px;
-      letter-spacing: 0.1em;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+    }
+    .command-heading kbd, .command-hint kbd {
+      padding: 2px 5px;
+      border: 1px solid var(--border);
+      color: var(--secondary);
+      font: inherit;
+      letter-spacing: .04em;
+    }
+    .command-input-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 13px 15px;
+      border-bottom: 1px solid var(--border);
+      color: var(--green);
+      font-size: 17px;
+    }
+    .command-input {
+      width: 100%;
+      min-width: 0;
+      padding: 0;
+      border: 0;
+      outline: 0;
+      background: transparent;
+      color: var(--text);
+      font: 13px var(--mono);
+    }
+    .command-input::placeholder { color: var(--secondary); opacity: .8; }
+    .command-list {
+      display: grid;
+      max-height: min(54vh, 390px);
+      overflow: auto;
+      padding: 6px;
+    }
+    .command-option {
+      display: flex;
+      width: 100%;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 9px 10px;
+      border: 1px solid transparent;
+      background: transparent;
+      color: var(--text);
+      cursor: pointer;
+      font: inherit;
+      text-align: left;
+      text-decoration: none;
+    }
+    .command-option:hover, .command-option:focus-visible {
+      border-color: var(--border);
+      outline: 0;
+      background: rgb(0 255 65 / 6%);
+      color: var(--green);
+    }
+    .command-option[hidden] { display: none; }
+    .command-option small { color: var(--secondary); font-size: 9px; }
+    .command-option > span { display: block; }
+    .command-option > span > small { display: block; margin-top: 2px; }
+    .command-empty { margin: 0; padding: 20px 10px; color: var(--secondary); font-size: 11px; }
+    .command-empty[hidden] { display: none; }
+    .command-status {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
+    }
+    .command-hint {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 15px;
+      padding: 9px 14px;
+      border-top: 1px solid var(--border);
+      color: var(--secondary);
+      font-size: 9px;
+    }
+    .boot-screen {
+      position: fixed;
+      z-index: 50;
+      top: 10px;
+      right: 10px;
+      left: 10px;
+      display: flex;
+      justify-content: center;
+      pointer-events: none;
+      color: var(--green);
+      opacity: 1;
+      transform: translateY(0);
+      transition: opacity .18s ease, transform .18s ease;
+    }
+    .boot-screen[hidden] { display: none; }
+    .boot-screen.is-exiting { opacity: 0; transform: translateY(-4px); }
+    .boot-panel {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 6px 10px;
+      max-width: 100%;
+      padding: 7px 9px;
+      border: 1px solid rgb(0 255 65 / 22%);
+      background: rgb(3 8 5 / 94%);
+    }
+    .boot-title {
+      margin: 0;
+      color: var(--green);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: .08em;
+    }
+    .boot-subtitle {
+      margin: 0;
+      color: var(--secondary);
+      font-size: 9px;
+      letter-spacing: .08em;
+    }
+    .boot-indicator {
+      width: 2px;
+      height: 13px;
+      background: var(--green);
+    }
+    .boot-skip {
+      min-height: 28px;
+      padding: 4px 7px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--green);
+      cursor: pointer;
+      font: inherit;
+      font-size: 9px;
+      letter-spacing: .05em;
+      pointer-events: auto;
+    }
+    .boot-skip:hover { border-color: var(--green); background: rgb(0 255 65 / 8%); }
+    .maximized {
+      position: fixed;
+      z-index: 15;
+      inset: 16px 16px calc(var(--bar-height) + 12px);
+      overflow: auto;
+      box-shadow: 0 0 0 100vmax rgb(0 0 0 / 72%);
+    }
+    .maximized .window-content { max-width: 1100px; margin: 0 auto; }
+    .page-footer { padding: 2px 4px 0; color: var(--secondary); font-size: 9px; text-align: right; }
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
     }
 
+    @media (min-width: 1500px) {
+      .desktop-shortcuts { right: max(20px, calc((100vw - 1512px) / 2 + 8px)); }
+    }
+    @media (min-width: 1200px) {
+      .desktop { padding-right: 112px; }
+    }
     @media (max-width: 1190px) {
-      .grid { grid-template-columns: repeat(8, minmax(0, 1fr)); }
-      .hero { grid-column: 1 / span 5; }
-      .network { grid-column: 6 / span 3; }
-      .projects { grid-column: 1 / span 5; }
-      .field { grid-column: 6 / span 3; }
-      .contact { grid-column: 6 / span 3; }
-      .about { grid-column: 1 / span 4; }
-      .milestones { grid-column: 5 / span 4; }
-      .gallery { grid-column: 1 / span 8; }
+      .desktop { padding-right: 20px; padding-left: 20px; }
+      .desktop-layout { grid-template-columns: repeat(8, minmax(0, 1fr)); }
+      .window-hero { grid-column: 1 / span 5; grid-row: 1; }
+      .window-network { grid-column: 6 / span 3; grid-row: 1; }
+      .window-projects { grid-column: 1 / span 5; grid-row: 2 / span 2; }
+      .window-field { grid-column: 6 / span 3; grid-row: 2; }
+      .window-contact { grid-column: 6 / span 3; grid-row: 3; }
+      .window-about { grid-column: 1 / span 4; grid-row: 4; }
+      .window-milestones { grid-column: 5 / span 4; grid-row: 4; }
+      .window-gallery { grid-column: 1 / span 8; grid-row: 5; }
+      .desktop-shortcuts { display: none; }
     }
-
     @media (max-width: 760px) {
-      .shell { width: min(100%, calc(100% - 18px)); }
-      .grid { grid-template-columns: minmax(0, 1fr); gap: 12px; }
-      .hero, .network, .projects, .field, .contact, .about, .milestones, .gallery {
+      :root { --bar-height: 53px; }
+      body { padding-bottom: calc(var(--bar-height) + 12px); }
+      .desktop { min-height: auto; padding: 16px 12px 26px; }
+      .system-status { padding-bottom: 10px; font-size: 8px; }
+      .desktop-layout { grid-template-columns: minmax(0, 1fr); gap: 12px; }
+      .window-hero, .window-network, .window-projects, .window-field, .window-contact, .window-about, .window-milestones, .window-gallery {
         grid-column: 1;
         grid-row: auto;
       }
-      .panel-body { padding: 17px; }
-      .hero-grid { grid-template-columns: minmax(0, 1fr) minmax(120px, 0.65fr); min-height: 220px; gap: 8px; }
+      .window-content { padding: 17px; }
+      .hero-content { grid-template-columns: minmax(0, 1fr) minmax(120px, .65fr); min-height: 220px; gap: 8px; }
       .hero-copy h1 { font-size: clamp(36px, 10vw, 58px); }
       .tagline { font-size: clamp(14px, 3.9vw, 19px); }
       .radar-wrap { width: min(100%, 190px); }
-      .project { grid-template-columns: minmax(105px, 0.75fr) minmax(0, 1.25fr); gap: 11px; }
+      .project { grid-template-columns: minmax(105px, .75fr) minmax(0, 1.25fr); gap: 11px; }
+      .taskbar { justify-content: space-between; gap: 4px; padding: 5px 8px; }
+      .task-button { width: 38px; min-width: 38px; min-height: 39px; justify-content: center; padding: 5px; font-size: 0; }
+      .task-button svg { width: 17px; height: 17px; }
+      .task-button.start-button { width: 52px; min-width: 52px; font-size: 9px; }
+      .clock { font-size: 9px; }
+      .task-spacer { display: none; }
+      .window-control { width: 32px; height: 32px; }
+      .filter-button { min-height: 36px; padding: 5px 8px; font-size: 9px; }
+      .carousel-arrow { min-height: 44px; }
+      .carousel-dot { width: 24px; height: 24px; }
+      .maximized { inset: 8px 8px calc(var(--bar-height) + 8px); }
     }
-
     @media (max-width: 430px) {
-      .hero-grid { grid-template-columns: minmax(0, 1fr); }
+      .hero-content { grid-template-columns: minmax(0, 1fr); }
       .radar-wrap { width: 150px; margin: 4px auto 0; }
       .hero-copy h1 { max-width: 300px; }
       .project { grid-template-columns: 1fr; }
       .project-art { min-height: 130px; }
       .project-art img { min-height: 130px; }
+      .task-button.start-button { min-width: 52px; }
+      .clock { display: none; }
       .photo-caption { align-items: flex-start; }
+      .carousel-arrow { min-width: 74px; }
+      .carousel-controls { gap: 7px; }
+      .carousel-dots { gap: 5px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        scroll-behavior: auto !important;
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important;
+      }
+      .boot-screen { transition: none; }
     }
   </style>
 </head>
 <body>
-  <div class="shell">
-    <div class="topbar" aria-label="System status">
-      <span class="status-live">SYS.ONLINE / PERSONAL ARCHIVE</span>
-      <span>LOCAL ACCESS · <span id="date-display">-- --- ----</span></span>
+  <div class="boot-screen" id="boot-screen" hidden>
+    <div class="boot-panel">
+      <span class="boot-title">SHAUNAK.MOHOTRA</span>
+      <span class="boot-indicator" aria-hidden="true"></span>
+      <span class="boot-subtitle">PERSONAL ARCHIVE</span>
+      <button class="boot-skip" id="boot-skip" type="button">SKIP INTRO</button>
+    </div>
+  </div>
+  <a class="skip-link" href="#identity">Skip to portfolio content</a>
+  <main class="desktop" id="desktop">
+    <div class="system-status" aria-label="Portfolio status">
+      <span class="status-indicator">PERSONAL PORTFOLIO / ARCHIVE</span>
+      <span>ARCHIVE VIEW · <span id="date-display">-- --- ----</span></span>
     </div>
 
-    <div class="grid">
-      <section class="panel hero" aria-labelledby="identity-title">
-        <header class="panel-header">
+    <div class="desktop-layout" id="window-grid">
+      <section class="window window-hero" id="identity" data-window aria-labelledby="identity-title">
+        <header class="titlebar">
           <span id="identity-title">SHAUNAK.MOHOTRA — PERSONAL ARCHIVE</span>
-          <span class="window-controls" aria-hidden="true">
-            <button class="window-control" type="button" aria-label="Minimize">−</button>
-            <button class="window-control" type="button" aria-label="Maximize">□</button>
-            <button class="window-control" type="button" aria-label="Close">×</button>
+          <span class="window-controls">
+            <button class="window-control" type="button" data-window-action="minimize" aria-label="Minimize personal archive">−</button>
+            <button class="window-control" type="button" data-window-action="maximize" aria-label="Maximize personal archive">□</button>
+            <button class="window-control" type="button" data-window-action="close" aria-label="Close personal archive">×</button>
           </span>
         </header>
-        <div class="panel-body hero-grid">
+        <div class="window-content hero-content">
           <div class="hero-copy">
             <div class="eyebrow">IDENTITY FILE / 001</div>
             <h1>SHAUNAK<br>MOHOTRA</h1>
-            <p class="tagline">BUILD. OBSERVE. QUESTION.</p>
-            <p class="hero-description">Student and independent developer exploring the intersection of technology, creativity, and ideas.</p>
+            <p class="hero-description">Just a student trying to learn and create.</p>
             <div class="meta-row" aria-label="Profile details">
-              <span class="meta-chip">CLASS 12</span>
-              <span class="meta-chip">DEVELOPER</span>
-              <span class="meta-chip">CREATIVE</span>
+              <span class="meta-chip">Actor?</span><span class="meta-chip">Vibecoder</span><span class="meta-chip">Speaker</span>
             </div>
-            <a class="action-link" href="#projects">[ VIEW PROJECTS <span aria-hidden="true">→</span> ]</a>
-
+            <button class="action-link action-link-button" type="button" data-open="projects">[ VIEW PROJECTS <span aria-hidden="true">→</span> ]</button>
             <div class="achievement-preview" aria-labelledby="achievement-preview-title">
               <h2 class="achievement-preview-title" id="achievement-preview-title">SELECTED ACHIEVEMENTS</h2>
               <ul class="achievement-preview-list">
@@ -683,32 +822,29 @@
                 <li>First Prize <span>· Vision, Sanskriti School</span></li>
                 <li>Four-week internship <span>· Scholastic India</span></li>
               </ul>
-              <button class="action-link" type="button">[ VIEW ALL ACHIEVEMENTS <span aria-hidden="true">→</span> ]</button>
+              <button class="action-link action-link-button" type="button" data-open="milestones">[ VIEW ALL ACHIEVEMENTS <span aria-hidden="true">→</span> ]</button>
+              <button class="action-link action-link-button" type="button" data-open="gallery">[ OPEN PHOTO ARCHIVE <span aria-hidden="true">→</span> ]</button>
             </div>
           </div>
-
-          <div class="radar-wrap" aria-label="Decorative radar visual">
+          <div class="radar-wrap">
             <svg class="radar" viewBox="0 0 300 300" role="img" aria-labelledby="radar-title radar-desc">
               <title id="radar-title">Radar display</title>
-              <desc id="radar-desc">A decorative radar with circular range rings, crosshairs, and rotating sweep.</desc>
+              <desc id="radar-desc">A static decorative radar with circular range rings, crosshairs, a highlighted sector, and three targets.</desc>
               <g class="radar-ring">
-                <circle cx="150" cy="150" r="24"/>
-                <circle cx="150" cy="150" r="50"/>
-                <circle cx="150" cy="150" r="76"/>
-                <circle cx="150" cy="150" r="102"/>
+                <circle cx="150" cy="150" r="24"/><circle cx="150" cy="150" r="50"/>
+                <circle cx="150" cy="150" r="76"/><circle cx="150" cy="150" r="102"/>
                 <circle cx="150" cy="150" r="128"/>
               </g>
               <g class="radar-cross">
                 <path d="M22 150h256M150 22v256M59.5 59.5l181 181m0-181-181 181"/>
               </g>
-              <g class="radar-sweep">
+              <g>
                 <path d="M150 150V22A128 128 0 0 1 240.5 59.5Z" fill="url(#sweep-fill)" opacity=".7"/>
                 <path d="M150 150 240.5 59.5" stroke="#00ff41" stroke-width="1.5"/>
               </g>
               <defs>
                 <linearGradient id="sweep-fill" x1="150" y1="150" x2="240" y2="60" gradientUnits="userSpaceOnUse">
-                  <stop stop-color="#00ff41" stop-opacity=".02"/>
-                  <stop offset="1" stop-color="#00ff41" stop-opacity=".42"/>
+                  <stop stop-color="#00ff41" stop-opacity=".02"/><stop offset="1" stop-color="#00ff41" stop-opacity=".42"/>
                 </linearGradient>
               </defs>
               <circle class="radar-target" cx="194" cy="92" r="3"/>
@@ -721,44 +857,35 @@
         </div>
       </section>
 
-      <section class="panel network" aria-labelledby="network-title">
-        <header class="panel-header">
+      <section class="window window-network" id="network" data-window aria-labelledby="network-title" hidden>
+        <header class="titlebar">
           <span id="network-title">IDEA NETWORK / VISUAL</span>
-          <span class="window-controls" aria-hidden="true">
-            <button class="window-control" type="button" aria-label="Minimize">−</button>
-            <button class="window-control" type="button" aria-label="Maximize">□</button>
-            <button class="window-control" type="button" aria-label="Close">×</button>
+          <span class="window-controls">
+            <button class="window-control" type="button" data-window-action="minimize" aria-label="Minimize network tracing">−</button>
+            <button class="window-control" type="button" data-window-action="maximize" aria-label="Maximize network tracing">□</button>
+            <button class="window-control" type="button" data-window-action="close" aria-label="Close network tracing">×</button>
           </span>
         </header>
-        <div class="panel-body">
+        <div class="window-content">
           <svg class="network-graphic" viewBox="0 0 420 200" role="img" aria-labelledby="network-graphic-title network-graphic-desc">
             <title id="network-graphic-title">Ideas network visualization</title>
-            <desc id="network-graphic-desc">A decorative diagram connecting ideas, people, places, and opportunities.</desc>
+            <desc id="network-graphic-desc">A decorative diagram connecting ideas, people, places, and opportunities. It does not show live network activity.</desc>
             <g class="network-line">
-              <path d="m30 36 58 24 50-42 46 56 61-30 43 47 73-22 29 58-67 41-69-28-55 41-63-24-61 34-31-61 50-45-50-49Zm58 24 44 66 52-52 61 37 43-20 45 53m-155-14-22 63m89-77 13-72m-155 82 47-14 50 18m-57-17-15 44m-62 23 44-38"/>
+              <path d="m30 36 58 24 50-42 46 56 61-30 43 47 73-22 29 58-67 41-69-28-55 41-63-24-61 34-31-61 50-45-50-49Zm58 24 44 66 52-52 61 37 43-20 45 53m-155-14-22 63m89-77 13-72m-155 82 47-14 50 29 48-18m-143-46 50 46 52 52m-15-120 56 102m-73-132-18 78 76 52"/>
             </g>
             <g class="network-line hot">
               <path d="m88 60 96 14 61 37 86-42m-192 57 106-15 69 53m-175-14 106 18 67-4"/>
             </g>
             <g>
-              <circle class="network-node" cx="30" cy="36" r="2.4"/>
-              <circle class="network-node" cx="88" cy="60" r="3"/>
-              <circle class="network-node" cx="138" cy="18" r="2.5"/>
-              <circle class="network-node" cx="184" cy="74" r="3.4"/>
-              <circle class="network-node" cx="245" cy="44" r="2.7"/>
-              <circle class="network-node" cx="288" cy="91" r="3.6"/>
-              <circle class="network-node core" cx="361" cy="69" r="4.2"/>
-              <circle class="network-node" cx="390" cy="127" r="2.7"/>
-              <circle class="network-node" cx="323" cy="168" r="3.3"/>
-              <circle class="network-node" cx="254" cy="140" r="3.6"/>
-              <circle class="network-node" cx="199" cy="181" r="2.7"/>
-              <circle class="network-node" cx="136" cy="157" r="3.2"/>
-              <circle class="network-node" cx="75" cy="191" r="2.4"/>
-              <circle class="network-node" cx="44" cy="130" r="3"/>
-              <circle class="network-node" cx="94" cy="85" r="2"/>
-              <circle class="network-node" cx="155" cy="120" r="2.5"/>
-              <circle class="network-node" cx="219" cy="107" r="2.3"/>
-              <circle class="network-node" cx="334" cy="54" r="2.2"/>
+              <circle class="network-node" cx="30" cy="36" r="2.4"/><circle class="network-node" cx="88" cy="60" r="3"/>
+              <circle class="network-node" cx="138" cy="18" r="2.5"/><circle class="network-node" cx="184" cy="74" r="3.4"/>
+              <circle class="network-node" cx="245" cy="44" r="2.7"/><circle class="network-node" cx="288" cy="91" r="3.6"/>
+              <circle class="network-node core" cx="361" cy="69" r="4.2"/><circle class="network-node" cx="390" cy="127" r="2.7"/>
+              <circle class="network-node" cx="323" cy="168" r="3.3"/><circle class="network-node" cx="254" cy="140" r="3.6"/>
+              <circle class="network-node" cx="199" cy="181" r="2.7"/><circle class="network-node" cx="136" cy="157" r="3.2"/>
+              <circle class="network-node" cx="75" cy="191" r="2.4"/><circle class="network-node" cx="44" cy="130" r="3"/>
+              <circle class="network-node" cx="94" cy="85" r="2"/><circle class="network-node" cx="155" cy="120" r="2.5"/>
+              <circle class="network-node" cx="219" cy="107" r="2.3"/><circle class="network-node" cx="334" cy="54" r="2.2"/>
             </g>
             <circle cx="361" cy="69" r="11" fill="none" stroke="#00ff41" stroke-opacity=".55"/>
           </svg>
@@ -766,203 +893,610 @@
         </div>
       </section>
 
-      <section class="panel projects" id="projects" aria-labelledby="projects-title">
-        <header class="panel-header">
-          <span id="projects-title">PROJECT FILES / CURRENT</span>
-          <span class="window-controls" aria-hidden="true">
-            <button class="window-control" type="button" aria-label="Minimize">−</button>
-            <button class="window-control" type="button" aria-label="Maximize">□</button>
-            <button class="window-control" type="button" aria-label="Close">×</button>
+      <section class="window window-projects" id="projects" data-window aria-labelledby="projects-title" hidden>
+        <header class="titlebar">
+          <span id="projects-title">PROJECT ARCHIVE</span>
+          <span class="window-controls">
+            <button class="window-control" type="button" data-window-action="minimize" aria-label="Minimize project archive">−</button>
+            <button class="window-control" type="button" data-window-action="maximize" aria-label="Maximize project archive">□</button>
+            <button class="window-control" type="button" data-window-action="close" aria-label="Close project archive">×</button>
           </span>
         </header>
-        <div class="panel-body">
+        <div class="window-content">
           <div class="project-list">
             <article class="project">
               <div class="project-art">
-                <img src="assets/projects/airwave.png" alt="Airwave project preview" />
+                <img src="assets/projects/preorder.png" alt="Screenshot of the Cafeteria Pre-Order menu">
               </div>
               <div>
-                <div class="project-number">01 / SYSTEM</div>
-                <h3>Airwave</h3>
-                <p>Exploring signal, automation, and responsive interfaces around data-rich systems. Built to turn abstract signals into readable experience.</p>
+                <span class="project-number">001 / PRE-ORDER</span>
+                <h3>Menu, made simpler.</h3>
+                <p>A cafeteria pre-ordering application designed to make browsing a menu and placing orders more convenient.</p>
                 <div class="project-links">
-                  <a class="text-link" href="https://github.com/wtf-shaun">GitHub</a>
-                  <a class="text-link" href="#contact">Details</a>
+                  <a class="text-link" href="https://preorder-appweb.vercel.app/menu" target="_blank" rel="noopener noreferrer">[ LIVE DEMO ↗ ]</a>
                 </div>
               </div>
             </article>
-
             <article class="project">
               <div class="project-art">
-                <img src="assets/projects/preorder.png" alt="Preorder project preview" />
+                <img src="assets/projects/radar.png" alt="Screenshot of the VIDP Tactical Radar visualization">
               </div>
               <div>
-                <div class="project-number">02 / PRODUCT</div>
-                <h3>Preorder</h3>
-                <p>A practical prototype focused on user flow, conversion, and product perception—designed to feel deliberate and human.</p>
+                <span class="project-number">002 / RADAR</span>
+                <h3>A quiet scan of the screen.</h3>
+                <p>An interactive screensaver project with a radar-inspired visual direction.</p>
                 <div class="project-links">
-                  <a class="text-link" href="https://github.com/wtf-shaun">GitHub</a>
-                  <a class="text-link" href="#contact">Launch notes</a>
+                  <a class="text-link" href="https://radar-screensaverappshaun.vercel.app/" target="_blank" rel="noopener noreferrer">[ LIVE DEMO ↗ ]</a>
                 </div>
               </div>
             </article>
-
             <article class="project">
               <div class="project-art">
-                <img src="assets/projects/radar.png" alt="Radar project preview" />
+                <img src="assets/projects/airwave.png" alt="Screenshot of the Airwave FM radio interface">
               </div>
               <div>
-                <div class="project-number">03 / OBSERVATION</div>
-                <h3>Radar</h3>
-                <p>Interfaces built around pattern recognition and attention—mapping ideas as a way to understand opportunity and structure.</p>
+                <span class="project-number">003 / AIRWAVE</span>
+                <h3>A different frequency.</h3>
+                <p>A radio-themed web project with its own visual identity and an audio-inspired experience.</p>
                 <div class="project-links">
-                  <a class="text-link" href="https://github.com/wtf-shaun">GitHub</a>
-                  <a class="text-link" href="#about">Case study</a>
+                  <a class="text-link" href="https://airwave-fm-three.vercel.app/" target="_blank" rel="noopener noreferrer">[ LIVE DEMO ↗ ]</a>
                 </div>
               </div>
             </article>
           </div>
+          <p class="project-note">Technology tags and source links are omitted until verified.</p>
         </div>
       </section>
 
-      <aside class="panel field" aria-labelledby="field-title">
-        <header class="panel-header">
-          <span id="field-title">FIELD NOTES / QUICK ACCESS</span>
-          <span class="window-controls" aria-hidden="true">
-            <button class="window-control" type="button" aria-label="Minimize">−</button>
-            <button class="window-control" type="button" aria-label="Maximize">□</button>
-            <button class="window-control" type="button" aria-label="Close">×</button>
+      <section class="window window-field" id="field-notes" data-window aria-labelledby="field-title" hidden>
+        <header class="titlebar">
+          <span id="field-title">FIELD NOTES</span>
+          <span class="window-controls">
+            <button class="window-control" type="button" data-window-action="minimize" aria-label="Minimize field notes">−</button>
+            <button class="window-control" type="button" data-window-action="maximize" aria-label="Maximize field notes">□</button>
+            <button class="window-control" type="button" data-window-action="close" aria-label="Close field notes">×</button>
           </span>
         </header>
-        <div class="panel-body">
-          <div class="field-list">
-            <a class="field-item" href="#about"><strong>ABOUT</strong><span>Current focus</span><span class="arrow">→</span></a>
-            <a class="field-item" href="#projects"><strong>PROJECTS</strong><span>Archive</span><span class="arrow">→</span></a>
-            <a class="field-item" href="#milestones"><strong>ACHIEVEMENTS</strong><span>Selected record</span><span class="arrow">→</span></a>
-            <a class="field-item" href="#contact"><strong>CONTACT</strong><span>Reach out</span><span class="arrow">→</span></a>
-          </div>
+        <div class="window-content">
+          <p class="contact-intro">A few subjects I keep returning to.</p>
+          <nav class="field-list" aria-label="Interest topics">
+            <a class="field-item" href="#acting"><span><strong>[ 01 ] &nbsp; ACTING</strong><span>Stage, screen, stories.</span></span><span class="arrow" aria-hidden="true">→</span></a>
+            <a class="field-item" href="#coding"><span><strong>[ 02 ] &nbsp; CODING</strong><span>Build, break, improve.</span></span><span class="arrow" aria-hidden="true">→</span></a>
+            <a class="field-item" href="#geopolitics"><span><strong>[ 03 ] &nbsp; DEFENCE &amp; GEOPOLITICS</strong><span>Maps, strategy, global affairs.</span></span><span class="arrow" aria-hidden="true">→</span></a>
+            <a class="field-item" href="#debates"><span><strong>[ 04 ] &nbsp; DEBATES</strong><span>Ideas, perspectives, progress.</span></span><span class="arrow" aria-hidden="true">→</span></a>
+          </nav>
+          <p class="project-note">An index for future writing and reflections.</p>
         </div>
-      </aside>
+      </section>
 
-      <aside class="panel contact" id="contact" aria-labelledby="contact-title">
-        <header class="panel-header">
-          <span id="contact-title">CONTACT / SIGNAL</span>
-          <span class="window-controls" aria-hidden="true">
-            <button class="window-control" type="button" aria-label="Minimize">−</button>
-            <button class="window-control" type="button" aria-label="Maximize">□</button>
-            <button class="window-control" type="button" aria-label="Close">×</button>
+      <section class="window window-contact" id="contact" data-window aria-labelledby="contact-title" hidden>
+        <header class="titlebar">
+          <span id="contact-title">SIGNAL / CONTACT</span>
+          <span class="window-controls">
+            <button class="window-control" type="button" data-window-action="minimize" aria-label="Minimize contact window">−</button>
+            <button class="window-control" type="button" data-window-action="maximize" aria-label="Maximize contact window">□</button>
+            <button class="window-control" type="button" data-window-action="close" aria-label="Close contact window">×</button>
           </span>
         </header>
-        <div class="panel-body">
-          <p class="contact-intro">Open to projects, collaboration, and thoughtful conversations.</p>
+        <div class="window-content">
+          <div class="eyebrow">GET IN TOUCH</div>
+          <p class="contact-intro">Find me online or explore my work.</p>
           <div class="contact-links">
-            <a class="contact-link" href="https://github.com/wtf-shaun" target="_blank" rel="noreferrer">
-              <svg class="github-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .5a12 12 0 0 0-3.79 23.37c.6.11.82-.26.82-.58v-2.11c-3.34.73-4.04-1.6-4.04-1.6-.55-1.39-1.34-1.76-1.34-1.76-1.09-.75.08-.73.08-.73 1.21.09 1.85 1.24 1.85 1.24 1.07 1.84 2.8 1.31 3.48.99.11-.78.42-1.31.76-1.61-2.66-.3-5.47-1.33-5.47-5.92 0-1.31.47-2.38 1.24-3.22-.12-.3-.54-1.52.12-3.16 0 0 1-.32 3.3 1.23a11.44 11.44 0 0 1 6.02 0c2.29-1.55 3.29-1.23 3.29-1.23.66 1.64.24 2.86.12 3.16.77.84 1.23 1.91 1.23 3.22 0 4.6-2.82 5.61-5.5 5.9.43.37.82 1.11.82 2.24v3.32c0 .32.21.69.83.57A12 12 0 0 0 12 .5Z"/></svg>
-              <span>github.com/wtf-shaun<small>Code and experiments</small></span>
-              <span aria-hidden="true">↗</span>
+            <a class="contact-link" href="https://github.com/wtf-shaun" target="_blank" rel="noopener noreferrer" aria-label="GitHub profile, opens in a new tab">
+              <svg class="github-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .8a11.2 11.2 0 0 0-3.54 21.82c.56.1.77-.24.77-.54v-2.1c-3.13.68-3.79-1.33-3.79-1.33-.51-1.3-1.25-1.65-1.25-1.65-1.02-.7.08-.69.08-.69 1.13.08 1.73 1.16 1.73 1.16 1 .1.75 2.4 3.87 1.7.1-.73.4-1.22.72-1.5-2.5-.28-5.12-1.25-5.12-5.57 0-1.23.44-2.24 1.16-3.03-.12-.29-.5-1.43.1-2.98 0 0 .95-.3 3.08 1.16a10.7 10.7 0 0 1 5.6 0c2.14-1.46 3.08-1.16 3.08-1.16.61 1.55.23 2.7.11 2.98.72.79 1.15 1.8 1.15 3.03 0 4.33-2.62 5.29-5.13 5.57.41.36.77 1.03.77 2.08v3.08c0 .3.2.65.78.54A11.2 11.2 0 0 0 12 .8Z"/></svg>
+              <span>GitHub<small>wtf-shaun</small></span><span aria-hidden="true">→</span>
             </a>
-            <a class="contact-link" href="mailto:shaunakmohotra@gmail.com">
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7.5A2.5 2.5 0 0 1 5.5 5h13A2.5 2.5 0 0 1 21 7.5v9A2.5 2.5 0 0 1 18.5 19h-13A2.5 2.5 0 0 1 3 16.5v-9Zm2.2-.5 6.8 5.2 6.8-5.2"/></svg>
-              <span>shaunakmohotra@gmail.com<small>Email</small></span>
-              <span aria-hidden="true">↗</span>
+            <a class="contact-link" href="https://www.instagram.com/shaunak.mohotra/" target="_blank" rel="noopener noreferrer" aria-label="Instagram profile, opens in a new tab">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="18" cy="6.5" r=".7" fill="currentColor" stroke="none"/></svg>
+              <span>Instagram<small>@shaunak.mohotra</small></span><span aria-hidden="true">→</span>
+            </a>
+            <a class="contact-link" href="mailto:shaunakmohotra131214@gmail.com" aria-label="Email Shaunak Mohotra">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="4.5" width="19" height="15" rx="1"/><path d="m3 6 9 7 9-7"/></svg>
+              <span>Email<small>shaunakmohotra131214@gmail.com</small></span><span aria-hidden="true">→</span>
             </a>
           </div>
-          <p class="availability">CURRENT STATUS: AVAILABLE FOR SELECT PROJECTS</p>
-        </div>
-      </aside>
-
-      <section class="panel about" id="about" aria-labelledby="about-title">
-        <header class="panel-header">
-          <span id="about-title">ABOUT / ACTIVE FILE</span>
-          <span class="window-controls" aria-hidden="true">
-            <button class="window-control" type="button" aria-label="Minimize">−</button>
-            <button class="window-control" type="button" aria-label="Maximize">□</button>
-            <button class="window-control" type="button" aria-label="Close">×</button>
-          </span>
-        </header>
-        <div class="panel-body">
-          <p class="about-copy">I’m a student and independent developer building things that sit at the intersection of code, design, and curiosity.</p>
-          <p class="about-copy">My interests are broad: product thinking, interface design, systems, acting, geopolitics, and observing how people make meaning from the world around them.</p>
-
-          <div class="skills-group">
-            <h3>CORE AREAS</h3>
-            <div class="tags">
-              <span class="tag">HTML</span>
-              <span class="tag">CSS</span>
-              <span class="tag">JS</span>
-              <span class="tag">UI</span>
-              <span class="tag">PRODUCT</span>
-              <span class="tag">IDEAS</span>
-            </div>
-          </div>
-
-          <div class="focus-line"><strong>Focus:</strong> building useful things, thinking carefully, and learning in public.</div>
+          <p class="availability"><span aria-hidden="true">●</span> PERSONAL WORK, SHARED HERE.</p>
         </div>
       </section>
 
-      <section class="panel milestones" id="milestones" aria-labelledby="milestones-title">
-        <header class="panel-header">
-          <span id="milestones-title">MILESTONES / TIMELINE</span>
-          <span class="window-controls" aria-hidden="true">
-            <button class="window-control" type="button" aria-label="Minimize">−</button>
-            <button class="window-control" type="button" aria-label="Maximize">□</button>
-            <button class="window-control" type="button" aria-label="Close">×</button>
+      <section class="window window-about" id="about" data-window aria-labelledby="about-title" hidden>
+        <header class="titlebar">
+          <span id="about-title">IDENTITY.LOG</span>
+          <span class="window-controls">
+            <button class="window-control" type="button" data-window-action="minimize" aria-label="Minimize identity log">−</button>
+            <button class="window-control" type="button" data-window-action="maximize" aria-label="Maximize identity log">□</button>
+            <button class="window-control" type="button" data-window-action="close" aria-label="Close identity log">×</button>
           </span>
         </header>
-        <div class="panel-body">
-          <div class="milestone-filters">
-            <button class="filter-button" type="button" aria-pressed="true">ALL</button>
-            <button class="filter-button" type="button" aria-pressed="false">AWARDS</button>
-            <button class="filter-button" type="button" aria-pressed="false">WORK</button>
-          </div>
-          <div class="timeline">
-            <div class="timeline-item">
-              <div class="timeline-date">2024 <span class="timeline-category">AWARD</span></div>
-              <p>First Prize, Eco Enigma at Sanskriti School.</p>
-            </div>
-            <div class="timeline-item">
-              <div class="timeline-date">2024 <span class="timeline-category">AWARD</span></div>
-              <p>First Prize, Vision at Sanskriti School.</p>
-            </div>
-            <div class="timeline-item">
-              <div class="timeline-date">2023 <span class="timeline-category">WORK</span></div>
-              <p>Completed a four-week internship with Scholastic India.</p>
-            </div>
-          </div>
+        <div class="window-content">
+          <p class="about-copy">I'm a Class 12 student and independent developer interested in building digital experiences and exploring ideas beyond technology.</p>
+          <p class="about-copy">My work spans web development and interactive projects, while my interests extend to acting, debates, defence, and geopolitics.</p>
+          <div class="skills-group"><h3>PROGRAMMING</h3><div class="tags"><span class="tag">Python</span><span class="tag">JavaScript</span></div></div>
+          <div class="skills-group"><h3>WEB</h3><div class="tags"><span class="tag">HTML</span><span class="tag">CSS</span></div></div>
+          <div class="skills-group"><h3>FRAMEWORKS / TOOLS</h3><div class="tags"><span class="tag">Flask</span><span class="tag">Git</span></div></div>
+          <p class="focus-line"><strong>CURRENT FOCUS:</strong> Web development and interactive experiences.</p>
         </div>
       </section>
 
-      <section class="panel gallery" aria-labelledby="gallery-title">
-        <header class="panel-header">
-          <span id="gallery-title">PHOTO ARCHIVE / VISUAL MEMORY</span>
-          <span class="window-controls" aria-hidden="true">
-            <button class="window-control" type="button" aria-label="Minimize">−</button>
-            <button class="window-control" type="button" aria-label="Maximize">□</button>
-            <button class="window-control" type="button" aria-label="Close">×</button>
+      <section class="window window-milestones" id="milestones" data-window aria-labelledby="milestones-title" hidden>
+        <header class="titlebar">
+          <span id="milestones-title">MILESTONES.LOG</span>
+          <span class="window-controls">
+            <button class="window-control" type="button" data-window-action="minimize" aria-label="Minimize milestones log">−</button>
+            <button class="window-control" type="button" data-window-action="maximize" aria-label="Maximize milestones log">□</button>
+            <button class="window-control" type="button" data-window-action="close" aria-label="Close milestones log">×</button>
           </span>
         </header>
-        <div class="panel-body">
-          <div class="gallery-intro"><strong>ARCHIVE</strong><span>Selected moments</span></div>
-          <div class="photo-carousel">
-            <div class="photo-frame">
-              <img src="assets/achievements/portfolio-on-laptop.jpg" alt="Portfolio on laptop" />
-            </div>
-            <div class="photo-caption">
-              <p>Building, learning, and keeping notes in motion.</p>
-              <span class="photo-count">01 / 04</span>
+        <div class="window-content">
+          <div class="milestone-filters" role="group" aria-label="Filter milestones">
+            <button class="filter-button" type="button" data-filter="ALL" aria-pressed="true">ALL</button>
+            <button class="filter-button" type="button" data-filter="ENVIRONMENT" aria-pressed="false">ENVIRONMENT</button>
+            <button class="filter-button" type="button" data-filter="THEATRE" aria-pressed="false">THEATRE</button>
+            <button class="filter-button" type="button" data-filter="LEADERSHIP" aria-pressed="false">LEADERSHIP</button>
+            <button class="filter-button" type="button" data-filter="CULTURE" aria-pressed="false">CULTURE</button>
+            <button class="filter-button" type="button" data-filter="COMPETITIONS" aria-pressed="false">COMPETITIONS</button>
+            <button class="filter-button" type="button" data-filter="EXPERIENCE" aria-pressed="false">EXPERIENCE</button>
+          </div>
+          <div class="timeline" id="timeline">
+            <article class="timeline-item" data-category="CULTURE"><span class="timeline-date">2025</span><span class="timeline-category">CULTURE</span><p>Cultural Exchange Program with Russian students.</p></article>
+            <article class="timeline-item" data-category="ENVIRONMENT"><span class="timeline-date">2024</span><span class="timeline-category">ENVIRONMENT · 1ST PRIZE</span><p>First Prize in Eco Enigma at Sanskriti School.</p></article>
+            <article class="timeline-item" data-category="COMPETITIONS"><span class="timeline-date">2024</span><span class="timeline-category">COMPETITIONS · 1ST PRIZE</span><p>First Prize in Vision at Sanskriti School.</p></article>
+            <article class="timeline-item" data-category="EXPERIENCE"><span class="timeline-date">2024</span><span class="timeline-category">EXPERIENCE</span><p>Completed a four-week internship with Scholastic India.</p></article>
+            <article class="timeline-item" data-category="CULTURE"><span class="timeline-date">2024</span><span class="timeline-category">CULTURE</span><p>Participated in the Young Changemakers Dialogue at the American Centre.</p></article>
+            <article class="timeline-item" data-category="CULTURE"><span class="timeline-date">2024</span><span class="timeline-category">CULTURE</span><p>Attended an Army Summer Camp at Yol Cantonment.</p></article>
+            <article class="timeline-item" data-category="ENVIRONMENT"><span class="timeline-date">2024</span><span class="timeline-category">ENVIRONMENT</span><p>Participated in Scoprire La Natura at DPS RK Puram.</p></article>
+            <article class="timeline-item" data-category="CULTURE"><span class="timeline-date">2024</span><span class="timeline-category">CULTURE</span><p>Participated in HUSO.</p></article>
+            <article class="timeline-item" data-category="ENVIRONMENT"><span class="timeline-date">2024</span><span class="timeline-category">ENVIRONMENT</span><p>Participated in the Oxford Climate Change Challenge.</p></article>
+            <article class="timeline-item" data-category="THEATRE"><span class="timeline-date">2024</span><span class="timeline-category">THEATRE</span><p>Participated in Effervescence at St. Columba's School.</p></article>
+            <article class="timeline-item" data-category="ENVIRONMENT"><span class="timeline-date">2023</span><span class="timeline-category">ENVIRONMENT · SECOND ROUND</span><p>Reached the second round of Pushpa Gujral Science City's Innovation for Sustainable Living.</p></article>
+            <article class="timeline-item" data-category="THEATRE"><span class="timeline-date">2023</span><span class="timeline-category">THEATRE</span><p>Acted in the biennial production King of Hearts.</p></article>
+            <article class="timeline-item" data-category="THEATRE"><span class="timeline-date">UNDATED</span><span class="timeline-category">THEATRE</span><p>Played the Grand Vazir in the biennial production Once Upon a Lamp.</p></article>
+            <article class="timeline-item" data-category="LEADERSHIP"><span class="timeline-date">UNDATED</span><span class="timeline-category">LEADERSHIP</span><p>Served as Eco Club President.</p></article>
+            <article class="timeline-item" data-category="COMPETITIONS"><span class="timeline-date">UNDATED</span><span class="timeline-category">COMPETITIONS</span><p>Participated in a mathematics competition at Manav Sthali.</p></article>
+          </div>
+          <p class="sr-only" id="filter-status" aria-live="polite"></p>
+        </div>
+      </section>
+
+      <section class="window window-gallery" id="gallery" data-window aria-labelledby="gallery-title" hidden>
+        <header class="titlebar">
+          <span id="gallery-title">PHOTO ARCHIVE / MOMENTS</span>
+          <span class="window-controls">
+            <button class="window-control" type="button" data-window-action="minimize" aria-label="Minimize photo archive">−</button>
+            <button class="window-control" type="button" data-window-action="maximize" aria-label="Maximize photo archive">□</button>
+            <button class="window-control" type="button" data-window-action="close" aria-label="Close photo archive">×</button>
+          </span>
+        </header>
+        <div class="window-content">
+          <div class="gallery-intro"><strong>SELECTED MOMENTS</strong><span>Use the arrows or left/right keys to browse.</span></div>
+          <div class="photo-carousel" id="photo-carousel" role="region" aria-label="Photo archive carousel" tabindex="0">
+            <figure class="photo-slide" aria-live="polite" aria-atomic="true">
+              <div class="photo-frame">
+                <img id="gallery-image" src="assets/achievements/soldierathon-medal.png" alt="PNB Soldierathon 2026 medal">
+              </div>
+              <figcaption class="photo-caption">
+                <p id="gallery-caption">PNB Soldierathon 2026 medal</p>
+                <span class="photo-count" id="gallery-count">01 / 08</span>
+              </figcaption>
+            </figure>
+            <div class="carousel-controls">
+              <button class="carousel-arrow" id="gallery-previous" type="button" aria-label="Show previous photo">← PREVIOUS</button>
+              <div class="carousel-dots" id="gallery-dots" role="group" aria-label="Choose a photo"></div>
+              <button class="carousel-arrow" id="gallery-next" type="button" aria-label="Show next photo">NEXT →</button>
             </div>
           </div>
         </div>
       </section>
     </div>
+    <footer class="page-footer">An Aspirant for The Armed Forces. &nbsp;·&nbsp; All in good time.</footer>
+  </main>
+
+  <aside class="desktop-shortcuts" aria-label="Desktop shortcuts">
+    <button class="desktop-shortcut" type="button" data-open="about"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7h7l2 2h9v11H3z"/><path d="M3 7V5h7l2 2"/></svg>Portfolio</button>
+    <button class="desktop-shortcut" type="button" data-open="projects"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3h14v18H5zM8 7h8M8 11h8M8 15h5"/></svg>Projects</button>
+    <button class="desktop-shortcut" type="button" data-open="field-notes"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7h7l2 2h9v11H3z"/><path d="M3 7V5h7l2 2"/></svg>Field Notes</button>
+    <button class="desktop-shortcut" type="button" data-open="gallery"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="1"/><circle cx="8.5" cy="9" r="1.5"/><path d="m4 17 5-5 3 3 3-4 5 6"/></svg>Photo Archive</button>
+    <button class="desktop-shortcut" type="button" data-open="contact"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg>Contact</button>
+  </aside>
+
+  <nav class="taskbar" aria-label="Portfolio taskbar">
+    <button class="task-button start-button" id="start-button" type="button" aria-expanded="false" aria-controls="start-menu"><span aria-hidden="true">⊕</span> START</button>
+    <button class="task-button" id="command-button" type="button" aria-label="Search portfolio commands, Control or Command plus K" aria-haspopup="dialog" aria-controls="command-palette" aria-expanded="false"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 5 5"/></svg><span>SEARCH <kbd>CTRL/⌘ K</kbd></span></button>
+    <button class="task-button" type="button" data-open="identity" aria-label="Open personal archive"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h7l2 2h9v12H3z"/><path d="M3 6V4h7l2 2"/></svg><span>SHAUNAK.MOHOTRA</span></button>
+    <button class="task-button" type="button" data-open="projects" aria-label="Open projects"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 3v5m0 8v5M3 12h5m8 0h5m-3.6-6.4-3.5 3.5m-3.8 3.8-3.5 3.5m0-10.8 3.5 3.5m3.8 3.8 3.5 3.5"/></svg><span>PROJECTS</span></button>
+    <button class="task-button" type="button" data-open="field-notes" aria-label="Open field notes"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3h14v18H5zM8 7h8M8 11h8M8 15h5"/></svg><span>FIELD NOTES</span></button>
+    <button class="task-button" type="button" data-open="gallery" aria-label="Open photo archive"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="1"/><circle cx="8.5" cy="9" r="1.5"/><path d="m4 17 5-5 3 3 3-4 5 6"/></svg><span>PHOTOS</span></button>
+    <button class="task-button" type="button" data-open="contact" aria-label="Open contact"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg><span>CONTACT</span></button>
+    <span class="task-spacer"></span>
+    <time class="clock" id="clock" aria-label="Local time">--:--</time>
+  </nav>
+  <div class="start-menu" id="start-menu" hidden>
+    <h2>PERSONAL ARCHIVE / MENU</h2>
+    <button type="button" data-command-toggle>⌕ &nbsp; Search archive <small>Ctrl / ⌘ K</small></button>
+    <button type="button" data-open="identity">01 &nbsp; Identity file</button>
+    <button type="button" data-open="projects">02 &nbsp; Project archive</button>
+    <button type="button" data-open="network">03 &nbsp; Idea network</button>
+    <button type="button" data-open="field-notes">04 &nbsp; Field notes</button>
+    <button type="button" data-open="about">05 &nbsp; Identity log</button>
+    <button type="button" data-open="milestones">06 &nbsp; Milestones</button>
+    <button type="button" data-open="contact">07 &nbsp; Contact</button>
+    <button type="button" data-open="gallery">08 &nbsp; Photo archive</button>
   </div>
+  <section class="command-palette" id="command-palette" role="dialog" aria-modal="true" aria-labelledby="command-title" hidden>
+    <div class="command-panel">
+      <div class="command-heading"><span id="command-title">ARCHIVE / COMMAND PALETTE</span><kbd>ESC</kbd></div>
+      <label class="command-input-wrap">
+        <span aria-hidden="true">⌕</span>
+        <span class="sr-only">Search sections and actions</span>
+        <input class="command-input" id="command-input" type="search" placeholder="Search sections, projects, and links..." autocomplete="off" aria-controls="command-list">
+      </label>
+      <div class="command-list" id="command-list" role="group" aria-label="Search results">
+        <button class="command-option" type="button" data-command-target="identity" data-search="home identity archive shaunak profile">
+          <span>Open personal archive<small>Identity / home</small></span><small>↵</small>
+        </button>
+        <button class="command-option" type="button" data-command-target="projects" data-search="projects project archive work portfolio">
+          <span>Open project archive<small>Projects / portfolio</small></span><small>↵</small>
+        </button>
+        <button class="command-option" type="button" data-command-target="network" data-search="idea network visual visualization offline">
+          <span>Open idea network<small>Visualization / ideas</small></span><small>↵</small>
+        </button>
+        <a class="command-option" href="https://preorder-appweb.vercel.app/menu" target="_blank" rel="noopener noreferrer" data-search="pre-order preorder cafeteria menu live demo">
+          <span>Open PRE-ORDER demo<small>Project 001 / live site</small></span><small>↗</small>
+        </a>
+        <a class="command-option" href="https://radar-screensaverappshaun.vercel.app/" target="_blank" rel="noopener noreferrer" data-search="radar screensaver live demo">
+          <span>Open RADAR demo<small>Project 002 / live site</small></span><small>↗</small>
+        </a>
+        <a class="command-option" href="https://airwave-fm-three.vercel.app/" target="_blank" rel="noopener noreferrer" data-search="airwave radio fm live demo">
+          <span>Open AIRWAVE demo<small>Project 003 / live site</small></span><small>↗</small>
+        </a>
+        <button class="command-option" type="button" data-command-target="field-notes" data-search="field notes interests acting coding defence geopolitics debates">
+          <span>Open field notes<small>Interests / topics</small></span><small>↵</small>
+        </button>
+        <button class="command-option" type="button" data-command-target="about" data-search="about identity log skills python javascript html css flask git">
+          <span>Open identity log<small>About / skills</small></span><small>↵</small>
+        </button>
+        <button class="command-option" type="button" data-command-target="milestones" data-search="milestones achievements experience awards internship theatre culture environment competitions">
+          <span>Open milestones<small>Achievements / experience</small></span><small>↵</small>
+        </button>
+        <button class="command-option" type="button" data-command-target="gallery" data-search="photos photo gallery archive carousel soldierathon theatre coding moments">
+          <span>Open photo archive<small>Photos / selected moments</small></span><small>↵</small>
+        </button>
+        <button class="command-option" type="button" data-command-target="contact" data-search="contact email github instagram">
+          <span>Open contact links<small>Contact / social</small></span><small>↵</small>
+        </button>
+        <a class="command-option" href="mailto:shaunakmohotra131214@gmail.com" data-search="email mail message contact">
+          <span>Email Shaunak<small>shaunakmohotra131214@gmail.com</small></span><small>↗</small>
+        </a>
+        <a class="command-option" href="https://github.com/wtf-shaun" target="_blank" rel="noopener noreferrer" data-search="github code source profile">
+          <span>Open GitHub<small>wtf-shaun</small></span><small>↗</small>
+        </a>
+        <a class="command-option" href="https://www.instagram.com/shaunak.mohotra/" target="_blank" rel="noopener noreferrer" data-search="instagram social profile">
+          <span>Open Instagram<small>@shaunak.mohotra</small></span><small>↗</small>
+        </a>
+      </div>
+      <p class="command-empty" id="command-empty" hidden>No matching sections or actions.</p>
+      <p class="command-status" id="command-status" aria-live="polite"></p>
+      <div class="command-hint"><span><kbd>↑</kbd> <kbd>↓</kbd> navigate</span><span><kbd>ENTER</kbd> open</span><span><kbd>ESC</kbd> close</span><span>CTRL / ⌘ + K</span></div>
+    </div>
+  </section>
 
   <script>
-    const dateDisplay = document.getElementById('date-display');
-    if (dateDisplay) {
-      const now = new Date();
-      dateDisplay.textContent = now.toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' }).toUpperCase();
-    }
+    (() => {
+      const windows = [...document.querySelectorAll("[data-window]")];
+      const menu = document.getElementById("start-menu");
+      const startButton = document.getElementById("start-button");
+      const taskbar = document.querySelector(".taskbar");
+      const bootScreen = document.getElementById("boot-screen");
+      const bootSkip = document.getElementById("boot-skip");
+      const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+      const commandPalette = document.getElementById("command-palette");
+      const commandButton = document.getElementById("command-button");
+      const commandInput = document.getElementById("command-input");
+      const commandOptions = [...commandPalette.querySelectorAll(".command-option")];
+      const commandEmpty = document.getElementById("command-empty");
+      const commandStatus = document.getElementById("command-status");
+      const photoCarousel = document.getElementById("photo-carousel");
+      const galleryImage = document.getElementById("gallery-image");
+      const galleryCaption = document.getElementById("gallery-caption");
+      const galleryCount = document.getElementById("gallery-count");
+      const galleryDots = document.getElementById("gallery-dots");
+      const galleryPhotos = [
+        { src: "assets/achievements/portfolio-on-laptop.jpg", alt: "Portfolio website open on a laptop", caption: "Coding work on my projects." },
+        { src: "assets/achievements/music-on-screen.jpg", alt: "Music player displayed on a laptop screen", caption: "The companion keeping me sane." },
+        { src: "assets/achievements/stage-performance-1.jpg", alt: "A theatre performance on stage, with an actor in a purple costume", caption: "A moment from the stage performance "Once upon a lamp"" },
+        { src: "assets/achievements/stage-performance-2.jpg", alt: "A second moment from the theatre performance", caption: "Another moment from the production" }
+        ];
+      let currentPhoto = 0;
+      let returnFocusTo = null;
+      let bootTimer = 0;
+
+      windows.forEach((section) => {
+        if (section.id !== "identity") section.hidden = true;
+      });
+
+      function finishBoot(event) {
+        if (bootScreen.hidden || bootScreen.classList.contains("is-exiting")) return;
+        window.clearTimeout(bootTimer);
+        if (bootScreen.contains(document.activeElement)) {
+          if (!event || event.detail === 0) document.querySelector(".skip-link").focus();
+          else bootSkip.blur();
+        }
+        bootScreen.classList.add("is-exiting");
+        window.setTimeout(() => {
+          bootScreen.hidden = true;
+          bootScreen.classList.remove("is-exiting");
+        }, 200);
+      }
+
+      function startBoot() {
+        if (reducedMotion.matches) return;
+        bootScreen.hidden = false;
+        bootTimer = window.setTimeout(finishBoot, 350);
+      }
+
+      bootSkip.addEventListener("click", finishBoot);
+      startBoot();
+
+      function scrollElementIntoView(element, block) {
+        element.scrollIntoView({ behavior: reducedMotion.matches ? "auto" : "smooth", block });
+      }
+
+      function openWindow(id, shouldScroll = true, shouldFocus = false) {
+        const section = document.getElementById(id);
+        if (!section || !section.matches("[data-window]")) return;
+        section.hidden = false;
+        section.classList.remove("minimized");
+        windows.forEach((otherWindow) => {
+          if (otherWindow !== section) otherWindow.classList.remove("maximized");
+        });
+        if (shouldScroll) scrollElementIntoView(section, "start");
+        if (shouldFocus) {
+          section.tabIndex = -1;
+          section.focus({ preventScroll: true });
+        }
+        menu.hidden = true;
+        startButton.setAttribute("aria-expanded", "false");
+      }
+
+      function showPhoto(index) {
+        currentPhoto = (index + galleryPhotos.length) % galleryPhotos.length;
+        const photo = galleryPhotos[currentPhoto];
+        if (galleryImage.getAttribute("src") !== photo.src) galleryImage.src = photo.src;
+        galleryImage.alt = photo.alt;
+        galleryCaption.textContent = photo.caption;
+        galleryCount.textContent = `${String(currentPhoto + 1).padStart(2, "0")} / ${String(galleryPhotos.length).padStart(2, "0")}`;
+        galleryDots.querySelectorAll("button").forEach((dot, dotIndex) => {
+          const selected = dotIndex === currentPhoto;
+          dot.setAttribute("aria-current", String(selected));
+          dot.tabIndex = selected ? 0 : -1;
+        });
+      }
+
+      galleryPhotos.forEach((photo, index) => {
+        const dot = document.createElement("button");
+        dot.className = "carousel-dot";
+        dot.type = "button";
+        dot.setAttribute("aria-label", `Show photo ${index + 1}: ${photo.caption}`);
+        dot.setAttribute("aria-current", String(index === currentPhoto));
+        dot.tabIndex = index === currentPhoto ? 0 : -1;
+        dot.addEventListener("click", () => showPhoto(index));
+        galleryDots.append(dot);
+      });
+      showPhoto(currentPhoto);
+      document.getElementById("gallery-previous").addEventListener("click", () => showPhoto(currentPhoto - 1));
+      document.getElementById("gallery-next").addEventListener("click", () => showPhoto(currentPhoto + 1));
+      photoCarousel.addEventListener("keydown", (event) => {
+        if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
+          event.preventDefault();
+          showPhoto(currentPhoto + (event.key === "ArrowRight" ? 1 : -1));
+        }
+      });
+
+      function visibleCommandOptions() {
+        return commandOptions.filter((option) => !option.hidden);
+      }
+
+      function closeCommandPalette(restoreFocus = true) {
+        if (commandPalette.hidden) return;
+        commandPalette.hidden = true;
+        commandButton.setAttribute("aria-expanded", "false");
+        document.body.style.overflow = "";
+        document.getElementById("desktop").inert = false;
+        document.querySelector(".taskbar").inert = false;
+        document.querySelector(".desktop-shortcuts").inert = false;
+        menu.inert = false;
+        if (restoreFocus && returnFocusTo?.isConnected) returnFocusTo.focus();
+      }
+
+      function openCommandPalette() {
+        if (!commandPalette.hidden) {
+          commandInput.focus();
+          return;
+        }
+        returnFocusTo = document.activeElement;
+        menu.hidden = true;
+        startButton.setAttribute("aria-expanded", "false");
+        commandPalette.hidden = false;
+        commandButton.setAttribute("aria-expanded", "true");
+        document.body.style.overflow = "hidden";
+        document.getElementById("desktop").inert = true;
+        document.querySelector(".taskbar").inert = true;
+        document.querySelector(".desktop-shortcuts").inert = true;
+        menu.inert = true;
+        commandInput.value = "";
+        filterCommandOptions("");
+        commandInput.focus();
+      }
+
+      function filterCommandOptions(query) {
+        const normalizedQuery = query.trim().toLowerCase();
+        let visibleCount = 0;
+        commandOptions.forEach((option) => {
+          const searchableText = `${option.dataset.search || ""} ${option.textContent}`.toLowerCase();
+          option.hidden = normalizedQuery !== "" && !searchableText.includes(normalizedQuery);
+          if (!option.hidden) visibleCount += 1;
+        });
+        commandEmpty.hidden = visibleCount > 0;
+        commandStatus.textContent = `${visibleCount} result${visibleCount === 1 ? "" : "s"}.`;
+      }
+
+      commandButton.addEventListener("click", openCommandPalette);
+      document.querySelector("[data-command-toggle]").addEventListener("click", openCommandPalette);
+      commandInput.addEventListener("input", () => filterCommandOptions(commandInput.value));
+      commandPalette.addEventListener("click", (event) => {
+        if (event.target === commandPalette) closeCommandPalette();
+        const command = event.target.closest("[data-command-target]");
+        if (command) {
+          const targetId = command.dataset.commandTarget;
+          closeCommandPalette(false);
+          openWindow(targetId, true, true);
+        } else if (event.target.closest("a.command-option")) {
+          closeCommandPalette(false);
+        }
+      });
+      commandPalette.addEventListener("keydown", (event) => {
+        if (event.key === "Escape") {
+          event.preventDefault();
+          event.stopPropagation();
+          closeCommandPalette();
+          return;
+        }
+
+        const visibleOptions = visibleCommandOptions();
+        if (event.key === "Enter" && event.target === commandInput) {
+          event.preventDefault();
+          visibleOptions[0]?.click();
+          return;
+        }
+        const activeIndex = visibleOptions.indexOf(document.activeElement);
+        if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+          event.preventDefault();
+          if (visibleOptions.length === 0) return;
+          const direction = event.key === "ArrowDown" ? 1 : -1;
+          const nextIndex = activeIndex < 0
+            ? (direction > 0 ? 0 : visibleOptions.length - 1)
+            : (activeIndex + direction + visibleOptions.length) % visibleOptions.length;
+          visibleOptions[nextIndex].focus();
+        } else if (event.key === "Tab") {
+          const focusable = [commandInput, ...visibleOptions];
+          const currentIndex = focusable.indexOf(document.activeElement);
+          const nextIndex = event.shiftKey
+            ? (currentIndex <= 0 ? focusable.length - 1 : currentIndex - 1)
+            : (currentIndex < 0 || currentIndex === focusable.length - 1 ? 0 : currentIndex + 1);
+          event.preventDefault();
+          focusable[nextIndex].focus();
+        }
+      });
+      document.addEventListener("keydown", (event) => {
+        if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "k") {
+          if (event.repeat || event.altKey || event.shiftKey) return;
+          if (event.target instanceof HTMLElement &&
+            (event.target.isContentEditable ||
+              (event.target !== commandInput && ["INPUT", "TEXTAREA", "SELECT"].includes(event.target.tagName)))) return;
+          event.preventDefault();
+          if (commandPalette.hidden) openCommandPalette();
+          else closeCommandPalette();
+          return;
+        }
+        if (event.key === "Escape" && !commandPalette.hidden) {
+          event.preventDefault();
+          closeCommandPalette();
+          return;
+        }
+        if (event.key === "Escape") {
+          if (!bootScreen.hidden) finishBoot();
+          menu.hidden = true;
+          startButton.setAttribute("aria-expanded", "false");
+          document.querySelectorAll(".maximized").forEach((section) => section.classList.remove("maximized"));
+        }
+      });
+
+      document.querySelectorAll("[data-open]").forEach((button) => {
+        button.addEventListener("click", () => openWindow(button.dataset.open));
+      });
+
+      windows.forEach((section) => {
+        section.querySelectorAll("[data-window-action]").forEach((button) => {
+          button.addEventListener("click", () => {
+            const action = button.dataset.windowAction;
+            if (action === "minimize" || action === "close") {
+              section.hidden = true;
+              section.classList.remove("maximized");
+            } else if (action === "maximize") {
+              const shouldMaximize = !section.classList.contains("maximized");
+              windows.forEach((otherWindow) => otherWindow.classList.remove("maximized"));
+              if (shouldMaximize) {
+                section.classList.add("maximized");
+                section.hidden = false;
+                scrollElementIntoView(section, "nearest");
+              }
+            }
+          });
+        });
+      });
+
+      startButton.addEventListener("click", () => {
+        menu.hidden = !menu.hidden;
+        startButton.setAttribute("aria-expanded", String(!menu.hidden));
+      });
+      document.addEventListener("click", (event) => {
+        if (!menu.hidden && !menu.contains(event.target) && !startButton.contains(event.target)) {
+          menu.hidden = true;
+          startButton.setAttribute("aria-expanded", "false");
+        }
+      });
+
+      document.querySelectorAll("[data-filter]").forEach((button) => {
+        button.addEventListener("click", () => {
+          const selected = button.dataset.filter;
+          const items = [...document.querySelectorAll(".timeline-item")];
+          items.forEach((item) => {
+            item.hidden = selected !== "ALL" && item.dataset.category !== selected;
+          });
+          document.querySelectorAll("[data-filter]").forEach((filter) => {
+            filter.setAttribute("aria-pressed", String(filter === button));
+          });
+          const count = items.filter((item) => !item.hidden).length;
+          document.getElementById("filter-status").textContent = `${count} milestone${count === 1 ? "" : "s"} shown for ${selected.toLowerCase()}.`;
+        });
+      });
+
+      document.querySelectorAll(".field-item").forEach((link) => {
+        link.addEventListener("click", (event) => {
+          event.preventDefault();
+          const topic = link.getAttribute("href").slice(1);
+          const target = document.getElementById("about");
+          openWindow("about");
+          const focusCopy = document.createElement("p");
+          focusCopy.className = "focus-line";
+          focusCopy.textContent = `FIELD NOTE / ${topic.toUpperCase().replace("-", " ")} — A subject of ongoing interest.`;
+          const previous = target.querySelector(".field-focus");
+          if (previous) previous.remove();
+          focusCopy.classList.add("field-focus");
+          target.querySelector(".window-content").append(focusCopy);
+          window.setTimeout(() => scrollElementIntoView(focusCopy, "center"), 120);
+        });
+      });
+
+      function updateClock() {
+        const now = new Date();
+        document.getElementById("clock").textContent = new Intl.DateTimeFormat(undefined, {
+          hour: "2-digit", minute: "2-digit", hour12: false
+        }).format(now);
+        document.getElementById("date-display").textContent = new Intl.DateTimeFormat(undefined, {
+          day: "2-digit", month: "short", year: "numeric"
+        }).format(now).toUpperCase();
+      }
+      updateClock();
+      window.setInterval(updateClock, 30_000);
+
+      taskbar.addEventListener("click", (event) => {
+        if (event.target.closest("[data-open]")) {
+          taskbar.querySelectorAll("[data-open]").forEach((button) => button.removeAttribute("aria-current"));
+          event.target.closest("[data-open]").setAttribute("aria-current", "location");
+        }
+      });
+    })();
   </script>
 </body>
 </html>
