@@ -1235,7 +1235,7 @@
       function startBoot() {
         if (reducedMotion.matches) return;
         bootScreen.hidden = false;
-        bootTimer = window.setTimeout(finishBoot, 350);
+        bootTimer = window.setTimeout(finishBoot, 1200);
       }
 
       bootSkip.addEventListener("click", finishBoot);
