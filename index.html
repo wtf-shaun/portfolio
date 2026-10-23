@@ -1294,7 +1294,7 @@
         bootScreen.classList.remove("is-active");
         bootScreen.classList.add("is-exiting");
         bootScreen.addEventListener("transitionend", finishBootTransition);
-        bootExitTimer = window.setTimeout(hideBoot, 3000);
+        bootExitTimer = window.setTimeout(hideBoot, 6000);
       }
 
       function finishBootAnimation(event) {
