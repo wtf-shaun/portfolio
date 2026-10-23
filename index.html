@@ -633,61 +633,105 @@
     .boot-screen {
       position: fixed;
       z-index: 50;
-      top: 10px;
-      right: 10px;
-      left: 10px;
-      display: flex;
-      justify-content: center;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      padding: 20px;
       pointer-events: none;
       color: var(--green);
-      opacity: 1;
-      transform: translateY(0);
-      transition: opacity .18s ease, transform .18s ease;
+      background: #030604;
+      opacity: 0;
+      transition: opacity .2s ease;
+    }
+    .boot-screen::before {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: repeating-linear-gradient(0deg, transparent 0 3px, rgb(0 0 0 / 28%) 4px);
+      content: "";
+      opacity: .24;
     }
     .boot-screen[hidden] { display: none; }
-    .boot-screen.is-exiting { opacity: 0; transform: translateY(-4px); }
+    .boot-screen.is-active { opacity: 1; }
+    .boot-screen.is-exiting { opacity: 0; }
     .boot-panel {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: center;
-      gap: 6px 10px;
-      max-width: 100%;
-      padding: 7px 9px;
-      border: 1px solid rgb(0 255 65 / 22%);
-      background: rgb(3 8 5 / 94%);
+      position: relative;
+      width: min(100%, 620px);
+      padding: clamp(18px, 4vw, 30px);
+      border: 1px solid rgb(0 255 65 / 24%);
+      background: #030604;
+      box-shadow: 0 0 28px rgb(0 255 65 / 4%);
     }
     .boot-title {
-      margin: 0;
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      margin: 0 0 20px;
       color: var(--green);
-      font-size: 10px;
+      font-size: clamp(11px, 2.5vw, 13px);
       font-weight: 600;
-      letter-spacing: .08em;
+      letter-spacing: .04em;
+      overflow-wrap: anywhere;
     }
-    .boot-subtitle {
-      margin: 0;
-      color: var(--secondary);
-      font-size: 9px;
-      letter-spacing: .08em;
-    }
-    .boot-indicator {
-      width: 2px;
-      height: 13px;
+    .boot-title::before {
+      width: 6px;
+      height: 6px;
+      flex: 0 0 auto;
+      border-radius: 50%;
       background: var(--green);
+      box-shadow: 0 0 6px rgb(0 255 65 / 22%);
+      content: "";
+    }
+    .boot-output {
+      display: grid;
+      gap: 9px;
+      min-height: 82px;
+      color: #9ac5a3;
+      font-size: clamp(11px, 2.4vw, 12px);
+    }
+    .boot-line {
+      margin: 0;
+      opacity: 0;
+      transform: translateY(3px);
+    }
+    .boot-screen.is-active .boot-line {
+      animation: boot-line-in .16s ease-out forwards;
+    }
+    .boot-screen.is-active .boot-line:nth-child(1) { animation-delay: .08s; }
+    .boot-screen.is-active .boot-line:nth-child(2) { animation-delay: .28s; }
+    .boot-screen.is-active .boot-line:nth-child(3) { animation-delay: .48s; }
+    @keyframes boot-line-in {
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .boot-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-top: 22px;
+      padding-top: 12px;
+      border-top: 1px solid rgb(0 255 65 / 16%);
     }
     .boot-skip {
-      min-height: 28px;
-      padding: 4px 7px;
-      border: 1px solid var(--border);
+      min-height: 36px;
+      padding: 6px 9px;
+      border: 1px solid rgb(0 255 65 / 24%);
       background: transparent;
-      color: var(--green);
+      color: #9ac5a3;
       cursor: pointer;
       font: inherit;
-      font-size: 9px;
-      letter-spacing: .05em;
+      font-size: 10px;
+      letter-spacing: .04em;
       pointer-events: auto;
     }
     .boot-skip:hover { border-color: var(--green); background: rgb(0 255 65 / 8%); }
+    .boot-skip:focus-visible { outline: 2px solid var(--green); outline-offset: 3px; }
+    .boot-cursor {
+      width: 7px;
+      height: 14px;
+      background: var(--green);
+      box-shadow: 0 0 6px rgb(0 255 65 / 24%);
+    }
     .maximized {
       position: fixed;
       z-index: 15;
@@ -777,16 +821,23 @@
         transition-duration: .01ms !important;
       }
       .boot-screen { transition: none; }
+      .boot-screen.is-active .boot-line { animation: none; opacity: 1; transform: none; }
     }
   </style>
 </head>
 <body>
   <div class="boot-screen" id="boot-screen" hidden>
-    <div class="boot-panel">
-      <span class="boot-title">SHAUNAK.MOHOTRA</span>
-      <span class="boot-indicator" aria-hidden="true"></span>
-      <span class="boot-subtitle">PERSONAL ARCHIVE</span>
-      <button class="boot-skip" id="boot-skip" type="button">SKIP INTRO</button>
+    <div class="boot-panel" role="status" aria-live="polite">
+      <p class="boot-title">SHAUNAK.MOHOTRA — PERSONAL ARCHIVE</p>
+      <div class="boot-output" id="boot-output">
+        <p class="boot-line">IDENTITY FILE / 001</p>
+        <p class="boot-line">PROJECT ARCHIVE</p>
+        <p class="boot-line">FIELD NOTES</p>
+      </div>
+      <div class="boot-footer">
+        <span class="boot-cursor" aria-hidden="true"></span>
+        <button class="boot-skip" id="boot-skip" type="button">SKIP INTRO</button>
+      </div>
     </div>
   </div>
   <a class="skip-link" href="#identity">Skip to portfolio content</a>
@@ -1188,6 +1239,7 @@
       const taskbar = document.querySelector(".taskbar");
       const bootScreen = document.getElementById("boot-screen");
       const bootSkip = document.getElementById("boot-skip");
+      const bootOutput = document.getElementById("boot-output");
       const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
       const commandPalette = document.getElementById("command-palette");
       const commandButton = document.getElementById("command-button");
@@ -1213,32 +1265,53 @@
       let currentPhoto = 0;
       let returnFocusTo = null;
       let bootTimer = 0;
+      let bootExitTimer = 0;
 
       windows.forEach((section) => {
         if (section.id !== "identity") section.hidden = true;
       });
 
+      function hideBoot() {
+        window.clearTimeout(bootExitTimer);
+        bootScreen.removeEventListener("transitionend", finishBootTransition);
+        bootScreen.hidden = true;
+        bootScreen.classList.remove("is-active", "is-exiting");
+      }
+
+      function finishBootTransition(event) {
+        if (event.target === bootScreen && event.propertyName === "opacity") hideBoot();
+      }
+
       function finishBoot(event) {
         if (bootScreen.hidden || bootScreen.classList.contains("is-exiting")) return;
         window.clearTimeout(bootTimer);
+        bootScreen.removeEventListener("animationend", finishBootAnimation);
+        bootSkip.removeEventListener("click", finishBoot);
         if (bootScreen.contains(document.activeElement)) {
-          if (!event || event.detail === 0) document.querySelector(".skip-link").focus();
+          if (!event || event.type !== "click" || event.detail === 0) document.querySelector(".skip-link").focus();
           else bootSkip.blur();
         }
+        bootScreen.classList.remove("is-active");
         bootScreen.classList.add("is-exiting");
-        window.setTimeout(() => {
-          bootScreen.hidden = true;
-          bootScreen.classList.remove("is-exiting");
-        }, 200);
+        bootScreen.addEventListener("transitionend", finishBootTransition);
+        bootExitTimer = window.setTimeout(hideBoot, 3000);
+      }
+
+      function finishBootAnimation(event) {
+        if (event.target === bootOutput.lastElementChild && event.animationName === "boot-line-in") {
+          finishBoot(event);
+        }
       }
 
       function startBoot() {
         if (reducedMotion.matches) return;
         bootScreen.hidden = false;
-        bootTimer = window.setTimeout(finishBoot, 3600);
+        bootScreen.classList.add("is-active");
+        bootSkip.addEventListener("click", finishBoot);
+        bootScreen.addEventListener("animationend", finishBootAnimation);
+        bootTimer = window.setTimeout(finishBoot, 1400);
       }
 
-      bootSkip.addEventListener("click", finishBoot);
       startBoot();
 
       function scrollElementIntoView(element, block) {
@@ -1407,8 +1480,12 @@
           closeCommandPalette();
           return;
         }
+        if (event.key === "Escape" && !bootScreen.hidden) {
+          event.preventDefault();
+          finishBoot(event);
+          return;
+        }
         if (event.key === "Escape") {
-          if (!bootScreen.hidden) finishBoot();
           menu.hidden = true;
           startButton.setAttribute("aria-expanded", "false");
           document.querySelectorAll(".maximized").forEach((section) => section.classList.remove("maximized"));
