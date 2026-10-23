@@ -52,26 +52,17 @@ body {
   background-color: #020604;
 }
 
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
+    body::before {
+      position: fixed;
+      z-index: 10;
+      inset: 0;
+      pointer-events: none;
+      content: "";
+      opacity: .12;
+      background: repeating-linear-gradient(0deg, transparent 0 3px, rgb(0 0 0 / 38%) 4px);
+    }
 
-  background-image:
-    linear-gradient(
-      rgba(2, 6, 4, 0.88),
-      rgba(2, 6, 4, 0.88)
-    ),
-    url("assets/images/interest-collage.png");
-
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-
-  opacity: 100;
-  }
+/* Subtle interests colla
 
     a { color: inherit; }
     button { color: inherit; font: inherit; }
