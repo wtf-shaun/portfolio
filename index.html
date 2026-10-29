@@ -44,35 +44,15 @@
       font-size: 13px;
       line-height: 1.6;
     }
-
-/* Subtle interests collage background */
-body {
-  position: relative;
-  isolation: isolate;
-  background-color: #020604;
-}
-
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-
-  background-image:
-    linear-gradient(
-      rgba(2, 6, 4, 0.88),
-      rgba(2, 6, 4, 0.88)
-    ),
-    url("assets/images/interest-collage.png");
-
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-
-  opacity: 100;
-  }
-
+    body::before {
+      position: fixed;
+      z-index: 10;
+      inset: 0;
+      pointer-events: none;
+      content: "";
+      opacity: .12;
+      background: repeating-linear-gradient(0deg, transparent 0 3px, rgb(0 0 0 / 38%) 4px);
+    }
     a { color: inherit; }
     button { color: inherit; font: inherit; }
     button:focus-visible, a:focus-visible {
@@ -657,15 +637,16 @@ body::before {
       display: block;
       pointer-events: none;
       color: var(--green);
-      background: #0c0c0c;
+      background: #030704;
       opacity: 0;
-      transition: opacity .2s ease;
+      transition: opacity .25s ease;
+      box-shadow: inset 0 0 0 1px rgb(0 255 65 / 12%);
     }
     .boot-screen::before {
       position: absolute;
       inset: 0;
       pointer-events: none;
-      background: repeating-linear-gradient(0deg, transparent 0 3px, rgb(0 0 0 / 28%) 4px);
+      background: repeating-linear-gradient(0deg, transparent 0 3px, rgb(0 0 0 / 34%) 4px);
       content: "";
       opacity: .24;
     }
@@ -678,7 +659,7 @@ body::before {
       width: 100%;
       height: 100%;
       flex-direction: column;
-      background: #0c0c0c;
+      background: #040a07;
     }
     .boot-title {
       display: flex;
@@ -687,22 +668,23 @@ body::before {
       gap: 10px;
       margin: 0;
       padding: 0 12px;
-      background: #202020;
-      color: #e8e8e8;
+      background: var(--green);
+      color: #021108;
       font-size: 13px;
-      font-weight: 400;
-      letter-spacing: 0;
+      font-weight: 700;
+      letter-spacing: .09em;
+      text-transform: uppercase;
       overflow-wrap: anywhere;
     }
     .boot-title::before {
       display: grid;
-      width: 21px;
+      width: 19px;
       height: 19px;
       flex: 0 0 auto;
       place-items: center;
-      border: 1px solid #858585;
+      border: 1px solid rgba(2, 16, 8, .8);
       border-radius: 2px;
-      color: #d0d0d0;
+      color: #021108;
       content: ">_";
       font-size: 11px;
       line-height: 1;
@@ -710,32 +692,36 @@ body::before {
     .boot-output {
       display: grid;
       align-content: start;
-      gap: 8px;
+      gap: 10px;
       flex: 1;
       min-height: 0;
-      padding: 12px 0;
-      color: #a8c7b0;
-      font-size: clamp(12px, 2.2vw, 15px);
+      padding: 22px 18px 12px;
+      color: #b9d6bd;
+      font-size: clamp(12px, 2vw, 18px);
+      letter-spacing: .08em;
+      text-transform: uppercase;
     }
     .boot-line {
       margin: 0;
       opacity: 0;
-      transform: translateY(2px);
+      transform: translateY(6px);
       overflow-wrap: anywhere;
+      color: rgba(187, 255, 208, .92);
     }
     .boot-line::before {
-      margin-right: 7px;
+      margin-right: 9px;
       color: var(--green);
       content: ">";
     }
     .boot-screen.is-active .boot-line {
-      animation: boot-line-in .22s ease-out forwards;
+      animation: boot-line-in .28s ease-out forwards;
     }
-    .boot-screen.is-active .boot-line:nth-child(1) { animation-delay: .08s; }
-    .boot-screen.is-active .boot-line:nth-child(2) { animation-delay: 1.34s; }
-    .boot-screen.is-active .boot-line:nth-child(3) { animation-delay: 2.58s; }
+    .boot-screen.is-active .boot-line:nth-child(1) { animation-delay: .12s; }
+    .boot-screen.is-active .boot-line:nth-child(2) { animation-delay: 1.22s; }
+    .boot-screen.is-active .boot-line:nth-child(3) { animation-delay: 2.32s; }
     @keyframes boot-line-in {
-      to { opacity: 1; transform: translateY(0); }
+      0% { opacity: 0; transform: translateY(6px); }
+      100% { opacity: 1; transform: translateY(0); }
     }
     .boot-footer {
       display: flex;
@@ -744,28 +730,34 @@ body::before {
       gap: 16px;
       min-height: 42px;
       padding: 0 12px;
-      border-top: 1px solid #202020;
-      background: #101010;
+      border-top: 1px solid rgba(0, 255, 65, .2);
+      background: rgba(12, 12, 12, .9);
     }
     .boot-skip {
       min-height: 36px;
-      padding: 6px 9px;
+      padding: 6px 10px;
       border: 1px solid rgb(0 255 65 / 24%);
       background: transparent;
-      color: #9ac5a3;
+      color: #a7d6b0;
       cursor: pointer;
       font: inherit;
       font-size: 10px;
-      letter-spacing: .04em;
+      letter-spacing: .1em;
       pointer-events: auto;
+      text-transform: uppercase;
     }
     .boot-skip:hover { border-color: var(--green); background: rgb(0 255 65 / 8%); }
     .boot-skip:focus-visible { outline: 2px solid var(--green); outline-offset: 3px; }
     .boot-cursor {
-      width: 7px;
-      height: 14px;
+      display: inline-block;
+      width: 8px;
+      height: 16px;
       background: var(--green);
-      box-shadow: 0 0 6px rgb(0 255 65 / 24%);
+      box-shadow: 0 0 8px rgb(0 255 65 / 30%);
+      animation: boot-cursor-blink 1s steps(1) infinite;
+    }
+    @keyframes boot-cursor-blink {
+      50% { opacity: 0; }
     }
     .maximized {
       position: fixed;
@@ -1128,17 +1120,17 @@ body::before {
             <article class="timeline-item" data-category="ENVIRONMENT"><span class="timeline-date">2024</span><span class="timeline-category">ENVIRONMENT · 1ST PRIZE</span><p>First Prize in Eco Enigma at Sanskriti School.</p></article>
             <article class="timeline-item" data-category="COMPETITIONS"><span class="timeline-date">2024</span><span class="timeline-category">COMPETITIONS · 1ST PRIZE</span><p>First Prize in Vision at Sanskriti School.</p></article>
             <article class="timeline-item" data-category="EXPERIENCE"><span class="timeline-date">2024</span><span class="timeline-category">EXPERIENCE</span><p>Completed a four-week internship with Scholastic India.</p></article>
-            <article class="timeline-item" data-category="EXPERIENCE"><span class="timeline-date">2024</span><span class="timeline-category">EXPERIENCE</span><p>Participated in the Young Changemakers Dialogue at the American Centre.</p></article>
+            <article class="timeline-item" data-category="CULTURE"><span class="timeline-date">2024</span><span class="timeline-category">CULTURE</span><p>Participated in the Young Changemakers Dialogue at the American Centre.</p></article>
             <article class="timeline-item" data-category="CULTURE"><span class="timeline-date">2024</span><span class="timeline-category">CULTURE</span><p>Attended an Army Summer Camp at Yol Cantonment.</p></article>
             <article class="timeline-item" data-category="ENVIRONMENT"><span class="timeline-date">2024</span><span class="timeline-category">ENVIRONMENT</span><p>Participated in Scoprire La Natura at DPS RK Puram.</p></article>
-            <article class="timeline-item" data-category="COMPETITIONS"><span class="timeline-date">2024</span><span class="timeline-category">COMPETITIONS</span><p>Participated in HUSO.</p></article>
+            <article class="timeline-item" data-category="CULTURE"><span class="timeline-date">2024</span><span class="timeline-category">CULTURE</span><p>Participated in HUSO.</p></article>
             <article class="timeline-item" data-category="ENVIRONMENT"><span class="timeline-date">2024</span><span class="timeline-category">ENVIRONMENT</span><p>Participated in the Oxford Climate Change Challenge.</p></article>
-            <article class="timeline-item" data-category="COMPETITIONS"><span class="timeline-date">2024</span><span class="timeline-category">COMPETITIONS</span><p>Participated in Effervescence at St. Columba's School.</p></article>
+            <article class="timeline-item" data-category="THEATRE"><span class="timeline-date">2024</span><span class="timeline-category">THEATRE</span><p>Participated in Effervescence at St. Columba's School.</p></article>
             <article class="timeline-item" data-category="ENVIRONMENT"><span class="timeline-date">2023</span><span class="timeline-category">ENVIRONMENT · SECOND ROUND</span><p>Reached the second round of Pushpa Gujral Science City's Innovation for Sustainable Living.</p></article>
             <article class="timeline-item" data-category="THEATRE"><span class="timeline-date">2023</span><span class="timeline-category">THEATRE</span><p>Acted in the biennial production King of Hearts.</p></article>
-            <article class="timeline-item" data-category="THEATRE"><span class="timeline-date">2025</span><span class="timeline-category">THEATRE</span><p>Played the Grand Vazir in the biennial production Once Upon a Lamp.</p></article>
-            <article class="timeline-item" data-category="LEADERSHIP"><span class="timeline-date">2025</span><span class="timeline-category">LEADERSHIP</span><p>Served as Eco Club President.</p></article>
-            <article class="timeline-item" data-category="COMPETITIONS"><span class="timeline-date">2025</span><span class="timeline-category">COMPETITIONS</span><p>Participated in a mathematics competition at Manav Sthali.</p></article>
+            <article class="timeline-item" data-category="THEATRE"><span class="timeline-date">UNDATED</span><span class="timeline-category">THEATRE</span><p>Played the Grand Vazir in the biennial production Once Upon a Lamp.</p></article>
+            <article class="timeline-item" data-category="LEADERSHIP"><span class="timeline-date">UNDATED</span><span class="timeline-category">LEADERSHIP</span><p>Served as Eco Club President.</p></article>
+            <article class="timeline-item" data-category="COMPETITIONS"><span class="timeline-date">UNDATED</span><span class="timeline-category">COMPETITIONS</span><p>Participated in a mathematics competition at Manav Sthali.</p></article>
           </div>
           <p class="sr-only" id="filter-status" aria-live="polite"></p>
         </div>
@@ -1288,15 +1280,21 @@ body::before {
       const galleryCount = document.getElementById("gallery-count");
       const galleryDots = document.getElementById("gallery-dots");
       const galleryPhotos = [
+        { src: "assets/achievements/soldierathon-medal.png", alt: "PNB Soldierathon 2026 medal", caption: "PNB Soldierathon 2026 medal" },
         { src: "assets/achievements/portfolio-on-laptop.jpg", alt: "Portfolio website open on a laptop", caption: "Coding work on my projects." },
         { src: "assets/achievements/music-on-screen.jpg", alt: "Music player displayed on a laptop screen", caption: "The companion keeping me sane." },
+        { src: "assets/achievements/python-notes.jpg", alt: "Handwritten Python notes about saving data with pickle", caption: "Handwritten Python practice notes" },
         { src: "assets/achievements/stage-performance-1.jpg", alt: "A theatre performance on stage, with an actor in a purple costume", caption: "A moment from the stage performance \"Once upon a lamp\"" },
         { src: "assets/achievements/stage-performance-2.jpg", alt: "A second moment from the theatre performance", caption: "Another moment from the production" },
+        { src: "assets/achievements/soldierathon-medal-detail.jpg", alt: "PNB Soldierathon 2026 medal and 5 km ribbon", caption: "Soldierathon medal and 5 km ribbon" },
+        { src: "assets/achievements/soldierathon-race-bib.jpg", alt: "PNB Soldierathon 2026 5 km race bib", caption: "Soldierathon 2026 · 5 km race bib" }
       ];
       let currentPhoto = 0;
       let returnFocusTo = null;
       let bootTimer = 0;
       let bootExitTimer = 0;
+      const bootMessages = [...bootOutput.querySelectorAll(".boot-line")];
+      const bootSequenceMs = Math.max(4200, bootMessages.length * 1200 + 1800);
 
       windows.forEach((section) => {
         if (section.id !== "identity") section.hidden = true;
@@ -1340,7 +1338,7 @@ body::before {
         bootScreen.classList.add("is-active");
         bootSkip.addEventListener("click", finishBoot);
         bootScreen.addEventListener("animationend", finishBootAnimation);
-        bootTimer = window.setTimeout(finishBoot, 2800);
+        bootTimer = window.setTimeout(finishBoot, bootSequenceMs);
       }
 
       startBoot();
