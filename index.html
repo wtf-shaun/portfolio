@@ -594,6 +594,26 @@
       transform: translateY(-1px);
     }
     .task-button.start-button { border-color: var(--green); background: var(--green); color: var(--bg); font-weight: 700; }
+    .task-button.task-button-listening {
+      min-width: 168px;
+      justify-content: flex-start;
+      padding-right: 10px;
+    }
+    .task-button-listening .task-cover {
+      position: relative;
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      flex: 0 0 auto;
+      border: 1px solid rgba(0,255,65,.7);
+      background-color: #03130b;
+      background-image: linear-gradient(135deg, rgba(0,255,65,.25), rgba(0,255,65,.06));
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      box-shadow: inset 0 0 0 1px rgba(0,0,0,.3);
+      overflow: hidden;
+    }
     .task-button svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 1.7; }
     .task-button kbd { padding: 1px 3px; border: 1px solid currentColor; font: inherit; }
     .task-spacer { flex: 1; }
@@ -1010,44 +1030,21 @@
 
       <section class="window window-network" id="network" data-window aria-labelledby="network-title" hidden>
         <header class="titlebar">
-          <span id="network-title">IDEA NETWORK / VISUAL</span>
+          <span id="network-title">LISTENING TO</span>
           <span class="window-controls">
-            <button class="window-control" type="button" data-window-action="minimize" aria-label="Minimize network tracing">−</button>
-            <button class="window-control" type="button" data-window-action="maximize" aria-label="Maximize network tracing">□</button>
-            <button class="window-control" type="button" data-window-action="close" aria-label="Close network tracing">×</button>
+            <button class="window-control" type="button" data-window-action="minimize" aria-label="Minimize listening card">−</button>
+            <button class="window-control" type="button" data-window-action="maximize" aria-label="Maximize listening card">□</button>
+            <button class="window-control" type="button" data-window-action="close" aria-label="Close listening card">×</button>
           </span>
         </header>
         <div class="window-content">
-          <svg class="network-graphic" viewBox="0 0 420 200" role="img" aria-labelledby="network-graphic-title network-graphic-desc">
-            <title id="network-graphic-title">Ideas network visualization</title>
-            <desc id="network-graphic-desc">A decorative diagram connecting ideas, people, places, and opportunities. It does not show live network activity.</desc>
-            <g class="network-line">
-              <path d="m30 36 58 24 50-42 46 56 61-30 43 47 73-22 29 58-67 41-69-28-55 41-63-24-61 34-31-61 50-45-50-49Zm58 24 44 66 52-52 61 37 43-20 45 53m-155-14-22 63m89-77 13-72m-155 82 47-14 50 29 48-18m-143-46 50 46 52 52m-15-120 56 102m-73-132-18 78 76 52"/>
-            </g>
-            <g class="network-line hot">
-              <path d="m88 60 96 14 61 37 86-42m-192 57 106-15 69 53m-175-14 106 18 67-4"/>
-            </g>
-            <g>
-              <circle class="network-node" cx="30" cy="36" r="2.4"/><circle class="network-node" cx="88" cy="60" r="3"/>
-              <circle class="network-node" cx="138" cy="18" r="2.5"/><circle class="network-node" cx="184" cy="74" r="3.4"/>
-              <circle class="network-node" cx="245" cy="44" r="2.7"/><circle class="network-node" cx="288" cy="91" r="3.6"/>
-              <circle class="network-node core" cx="361" cy="69" r="4.2"/><circle class="network-node" cx="390" cy="127" r="2.7"/>
-              <circle class="network-node" cx="323" cy="168" r="3.3"/><circle class="network-node" cx="254" cy="140" r="3.6"/>
-              <circle class="network-node" cx="199" cy="181" r="2.7"/><circle class="network-node" cx="136" cy="157" r="3.2"/>
-              <circle class="network-node" cx="75" cy="191" r="2.4"/><circle class="network-node" cx="44" cy="130" r="3"/>
-              <circle class="network-node" cx="94" cy="85" r="2"/><circle class="network-node" cx="155" cy="120" r="2.5"/>
-              <circle class="network-node" cx="219" cy="107" r="2.3"/><circle class="network-node" cx="334" cy="54" r="2.2"/>
-            </g>
-            <circle cx="361" cy="69" r="11" fill="none" stroke="#00ff41" stroke-opacity=".55"/>
-          </svg>
-          <div class="network-stats"><span><strong>IDEAS</strong> / PEOPLE / PLACES / POSSIBILITIES</span><span>VISUAL MODEL · OFFLINE</span></div>
           <div class="spotify-card" id="spotify-card" aria-live="polite">
             <div class="spotify-header">
-              <span class="micro-label">SPOTIFY</span>
+              <span class="micro-label">Spotify</span>
               <button class="spotify-refresh" id="spotify-refresh" type="button">Refresh</button>
             </div>
             <div class="spotify-row">
-              <img class="spotify-art" id="spotify-art" alt="Album art for the current Spotify track" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%2303080b'/%3E%3Cpath d='M64 32c0 17.7-14.3 32-32 32S0 49.7 0 32 14.3 0 32 0s32 14.3 32 32Zm-35.5-10.8c-1.3 0-2.2 1-2.2 2.2v15.1c0 1.2 1 2.2 2.2 2.2h6.3c1.3 0 2.2-1 2.2-2.2V23.4c0-1.2-1-2.2-2.2-2.2h-6.3Zm16.5 9.1c-1.3 0-2.2 1-2.2 2.2v5.9c0 1.2 1 2.2 2.2 2.2h6.3c1.3 0 2.2-1 2.2-2.2v-5.9c0-1.2-1-2.2-2.2-2.2h-6.3Z' fill='%2300ff41'/%3E%3C/svg%3E" />
+              <img class="spotify-art" id="spotify-art" alt="Album art for the current Spotify track" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 80'%3E%3Crect width='80' height='80' fill='%2300ff41'/%3E%3Crect x='18' y='18' width='44' height='44' rx='8' fill='%2303080b'/%3E%3Crect x='29' y='29' width='22' height='22' rx='2' fill='%2300ff41'/%3E%3Cpath d='M24 22h16l-7 15-12-3 3-12Zm13 42 8-17 14 5-7 14-15-2Z' fill='%2300ff41' opacity='.18'/%3E%3C/svg%3E" />
               <div class="spotify-copy">
                 <p class="spotify-state" id="spotify-state">Now rotating</p>
                 <h3 class="spotify-track" id="spotify-track">Head Over Heels</h3>
@@ -1267,6 +1264,7 @@
   <nav class="taskbar" aria-label="Portfolio taskbar">
     <button class="task-button start-button" id="start-button" type="button" aria-expanded="false" aria-controls="start-menu"><span aria-hidden="true">⊕</span> START</button>
     <button class="task-button" id="command-button" type="button" aria-label="Search portfolio commands, Control or Command plus K" aria-haspopup="dialog" aria-controls="command-palette" aria-expanded="false"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 5 5"/></svg><span>SEARCH <kbd>CTRL/⌘ K</kbd></span></button>
+    <button class="task-button task-button-listening" type="button" data-open="network" aria-label="Open listening to window"><span class="task-cover" id="listening-task-cover" aria-hidden="true"></span><span>LISTENING TO</span></button>
     <button class="task-button" type="button" data-open="identity" aria-label="Open personal archive"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h7l2 2h9v12H3z"/><path d="M3 6V4h7l2 2"/></svg><span>SHAUNAK.MOHOTRA</span></button>
     <button class="task-button" type="button" data-open="projects" aria-label="Open projects"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 3v5m0 8v5M3 12h5m8 0h5m-3.6-6.4-3.5 3.5m-3.8 3.8-3.5 3.5m0-10.8 3.5 3.5m3.8 3.8 3.5 3.5"/></svg><span>PROJECTS</span></button>
     <button class="task-button" type="button" data-open="field-notes" aria-label="Open field notes"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3h14v18H5zM8 7h8M8 11h8M8 15h5"/></svg><span>FIELD NOTES</span></button>
@@ -1365,6 +1363,7 @@
       const spotifyTrack = document.getElementById("spotify-track");
       const spotifyArtist = document.getElementById("spotify-artist");
       const spotifyArt = document.getElementById("spotify-art");
+      const listeningTaskCover = document.getElementById("listening-task-cover");
       const spotifyLink = document.getElementById("spotify-link");
       const spotifyRefresh = document.getElementById("spotify-refresh");
       const photoCarousel = document.getElementById("photo-carousel");
@@ -1386,19 +1385,19 @@
       const bootSequenceMs = Math.max(4200, bootMessages.length * 1200 + 1800);
 
       windows.forEach((section) => {
-        if (section.id !== "identity") section.hidden = true;
+        if (section.id !== "identity" && section.id !== "network") section.hidden = true;
       });
 
       const rotatingPlaylist = [
-        { title: "Head Over Heels", artist: "Tears For Fears", durationMs: 302000 },
-        { title: "Easy Lover", artist: "Philip Bailey, Phil Collins", durationMs: 305000 },
-        { title: "Poh Di Raat", artist: "Diljit Dosanjh", durationMs: 225000 },
-        { title: "Back to the Old House", artist: "The Smiths", durationMs: 187000 },
-        { title: "Golden Brown", artist: "The Stranglers", durationMs: 207000 },
-        { title: "Far from Any Road", artist: "The Handsome Family", durationMs: 168000 },
-        { title: "La Cheyenne", artist: "El De Las R's", durationMs: 154000 },
-        { title: "Trance", artist: "HEROES & VILLAINS", durationMs: 195000 },
-        { title: "Rotweiler", artist: "EsDeekid", durationMs: 96000 },
+        { title: "Head Over Heels", artist: "Tears For Fears", durationMs: 302000, art: "https://i.scdn.co/image/ab67616d00004851c4744a5d9f9f3478f958f4ed" },
+        { title: "Easy Lover", artist: "Philip Bailey, Phil Collins", durationMs: 305000, art: "https://i.scdn.co/image/ab67616d00004851aa2ee7e5c80a9d2b8275f4ae" },
+        { title: "Poh Di Raat", artist: "Diljit Dosanjh", durationMs: 225000, art: "https://i.scdn.co/image/ab67616d00004851d9ab9ec3f5f6f7d3f948f1f0" },
+        { title: "Back to the Old House", artist: "The Smiths", durationMs: 187000, art: "https://i.scdn.co/image/ab67616d0000485103f97fdda8a73e9c2efbbd39" },
+        { title: "Golden Brown", artist: "The Stranglers", durationMs: 207000, art: "https://i.scdn.co/image/ab67616d00004851e4319f2b4cf8f2f2a9d1d8c7" },
+        { title: "Far from Any Road", artist: "The Handsome Family", durationMs: 168000, art: "https://i.scdn.co/image/ab67616d00004851d3c57a364a932dc18d1a7408" },
+        { title: "La Cheyenne", artist: "El De Las R's", durationMs: 154000, art: "https://i.scdn.co/image/ab67616d00004851f8c2f7dbee0e97ea4cf4e69e" },
+        { title: "Trance", artist: "HEROES & VILLAINS", durationMs: 195000, art: "https://i.scdn.co/image/ab6775700000ee85ec146cca603f4876b0ff2a4f" },
+        { title: "Rotweiler", artist: "EsDeekid", durationMs: 96000, art: "https://i.scdn.co/image/ab67616d0000485143058ea096fa35ac33c43587" },
       ];
       let playlistIndex = 0;
       let playlistTimer = null;
@@ -1407,7 +1406,11 @@
         spotifyState.textContent = "Now rotating";
         spotifyTrack.textContent = data.title || "Playlist rotation";
         spotifyArtist.textContent = data.artist ? `${data.artist} · ${new Date(data.durationMs).toISOString().slice(14, 19)}` : "Playlist rotation";
+        spotifyArt.src = data.art || "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 80'%3E%3Crect width='80' height='80' fill='%2300ff41'/%3E%3Crect x='18' y='18' width='44' height='44' rx='8' fill='%2303080b'/%3E%3Crect x='29' y='29' width='22' height='22' rx='2' fill='%2300ff41'/%3E%3C/svg%3E";
         spotifyArt.alt = `Album art for ${data.title}`;
+        if (listeningTaskCover) {
+          listeningTaskCover.style.backgroundImage = data.art ? `url("${data.art}")` : "linear-gradient(135deg, rgba(0,255,65,.25), rgba(0,255,65,.06))";
+        }
         spotifyLink.textContent = "Open playlist";
         spotifyLink.href = "https://open.spotify.com/playlist/3JI917qJjuKYbghg5Y2q23?si=483f41af865f4658";
         spotifyLink.target = "_blank";
@@ -1525,6 +1528,12 @@
         section.classList.remove("minimized");
         windows.forEach((otherWindow) => {
           if (otherWindow !== section) otherWindow.classList.remove("maximized");
+        });
+        taskbar.querySelectorAll("[data-open]").forEach((button) => {
+          const active = button.dataset.open === id;
+          button.toggleAttribute("aria-current", active);
+          if (active) button.setAttribute("aria-current", "location");
+          else button.removeAttribute("aria-current");
         });
         if (shouldScroll) scrollElementIntoView(section, "start");
         if (shouldFocus) {
@@ -1693,6 +1702,7 @@
       });
 
       document.querySelectorAll("[data-open]").forEach((button) => {
+        if (button.closest(".taskbar")) return;
         button.addEventListener("click", () => openWindow(button.dataset.open));
       });
 
@@ -1772,9 +1782,20 @@
       window.setInterval(updateClock, 30_000);
 
       taskbar.addEventListener("click", (event) => {
-        if (event.target.closest("[data-open]")) {
-          taskbar.querySelectorAll("[data-open]").forEach((button) => button.removeAttribute("aria-current"));
-          event.target.closest("[data-open]").setAttribute("aria-current", "location");
+        const taskButton = event.target.closest("[data-open]");
+        if (!taskButton) return;
+        event.stopPropagation();
+        const targetId = taskButton.dataset.open;
+        const targetWindow = targetId ? document.getElementById(targetId) : null;
+        if (targetWindow && !targetWindow.hidden) {
+          targetWindow.hidden = true;
+          taskButton.removeAttribute("aria-current");
+          return;
+        }
+        taskbar.querySelectorAll("[data-open]").forEach((button) => button.removeAttribute("aria-current"));
+        taskButton.setAttribute("aria-current", "location");
+        if (targetWindow) {
+          openWindow(targetId, true, true);
         }
       });
     })();
