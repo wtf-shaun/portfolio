@@ -354,6 +354,44 @@
       text-transform: uppercase;
     }
     .spotify-link:hover { background: rgb(0 255 65 / 8%); }
+    .spotify-visualizer {
+      display: flex;
+      width: 100%;
+      min-height: 46px;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 8px 10px;
+      border: 1px solid var(--border);
+      background: rgb(0 255 65 / 3%);
+      color: var(--green);
+      cursor: pointer;
+      font: inherit;
+      font-size: 9px;
+      letter-spacing: .08em;
+      text-align: left;
+      text-transform: uppercase;
+    }
+    .spotify-visualizer:hover,
+    .spotify-visualizer:focus-visible { border-color: var(--green-2); background: rgb(0 255 65 / 7%); }
+    .visualizer-bars { display: flex; height: 24px; align-items: center; gap: 3px; }
+    .visualizer-bar {
+      width: 3px;
+      height: 7px;
+      background: var(--green);
+      animation: visualizer-pulse .7s ease-in-out infinite alternate;
+    }
+    .visualizer-bar:nth-child(3n + 1) { animation-duration: .48s; }
+    .visualizer-bar:nth-child(3n + 2) { animation-duration: .82s; }
+    .visualizer-bar:nth-child(4n) { animation-delay: -.35s; }
+    .spotify-visualizer[aria-pressed="true"] .visualizer-bar { animation-play-state: paused; }
+    @keyframes visualizer-pulse {
+      from { transform: scaleY(.35); }
+      to { transform: scaleY(1.7); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .visualizer-bar { animation: none; }
+    }
     .project-list { display: grid; gap: 0; }
     .project {
       display: grid;
@@ -1044,13 +1082,18 @@
               <button class="spotify-refresh" id="spotify-refresh" type="button">Refresh</button>
             </div>
             <div class="spotify-row">
-              <img class="spotify-art" id="spotify-art" alt="Album art for the current Spotify track" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 80'%3E%3Crect width='80' height='80' fill='%2300ff41'/%3E%3Crect x='18' y='18' width='44' height='44' rx='8' fill='%2303080b'/%3E%3Crect x='29' y='29' width='22' height='22' rx='2' fill='%2300ff41'/%3E%3Cpath d='M24 22h16l-7 15-12-3 3-12Zm13 42 8-17 14 5-7 14-15-2Z' fill='%2300ff41' opacity='.18'/%3E%3C/svg%3E" />
+              <img class="spotify-art" id="spotify-art" alt="Album art for the current Spotify track" src="https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/38/97/cb/3897cb85-279f-6698-0158-ad3f73937050/14UMGIM37917.rgb.jpg/600x600bb.jpg" />
               <div class="spotify-copy">
                 <p class="spotify-state" id="spotify-state">Now rotating</p>
                 <h3 class="spotify-track" id="spotify-track">Head Over Heels</h3>
                 <p class="spotify-artist" id="spotify-artist">Tears For Fears · 05:02</p>
               </div>
             </div>
+            <button class="spotify-visualizer" id="spotify-visualizer" type="button" aria-label="Pause audio visualizer" aria-pressed="false">
+              <span class="visualizer-bars" aria-hidden="true"><i class="visualizer-bar"></i><i class="visualizer-bar"></i><i class="visualizer-bar"></i><i class="visualizer-bar"></i><i class="visualizer-bar"></i><i class="visualizer-bar"></i><i class="visualizer-bar"></i><i class="visualizer-bar"></i><i class="visualizer-bar"></i><i class="visualizer-bar"></i><i class="visualizer-bar"></i><i class="visualizer-bar"></i></span>
+              <span id="visualizer-state">Visualizer / active</span>
+              <span id="visualizer-action">Click to pause</span>
+            </button>
             <a class="spotify-link" id="spotify-link" href="https://open.spotify.com/playlist/3JI917qJjuKYbghg5Y2q23?si=483f41af865f4658" target="_blank" rel="noopener noreferrer">Open playlist</a>
           </div>
         </div>
@@ -1264,7 +1307,7 @@
   <nav class="taskbar" aria-label="Portfolio taskbar">
     <button class="task-button start-button" id="start-button" type="button" aria-expanded="false" aria-controls="start-menu"><span aria-hidden="true">⊕</span> START</button>
     <button class="task-button" id="command-button" type="button" aria-label="Search portfolio commands, Control or Command plus K" aria-haspopup="dialog" aria-controls="command-palette" aria-expanded="false"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 5 5"/></svg><span>SEARCH <kbd>CTRL/⌘ K</kbd></span></button>
-    <button class="task-button task-button-listening" type="button" data-open="network" aria-label="Open listening to window"><span class="task-cover" id="listening-task-cover" aria-hidden="true"></span><span>LISTENING TO</span></button>
+    <button class="task-button task-button-listening" type="button" data-open="network" aria-label="Open listening to window (Alt+Shift+L)" title="Open Listening To (Alt+Shift+L)"><span class="task-cover" id="listening-task-cover" aria-hidden="true"></span><span>LISTENING TO</span><kbd>ALT+SHIFT+L</kbd></button>
     <button class="task-button" type="button" data-open="identity" aria-label="Open personal archive"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h7l2 2h9v12H3z"/><path d="M3 6V4h7l2 2"/></svg><span>SHAUNAK.MOHOTRA</span></button>
     <button class="task-button" type="button" data-open="projects" aria-label="Open projects"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 3v5m0 8v5M3 12h5m8 0h5m-3.6-6.4-3.5 3.5m-3.8 3.8-3.5 3.5m0-10.8 3.5 3.5m3.8 3.8 3.5 3.5"/></svg><span>PROJECTS</span></button>
     <button class="task-button" type="button" data-open="field-notes" aria-label="Open field notes"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3h14v18H5zM8 7h8M8 11h8M8 15h5"/></svg><span>FIELD NOTES</span></button>
@@ -1366,6 +1409,9 @@
       const listeningTaskCover = document.getElementById("listening-task-cover");
       const spotifyLink = document.getElementById("spotify-link");
       const spotifyRefresh = document.getElementById("spotify-refresh");
+      const spotifyVisualizer = document.getElementById("spotify-visualizer");
+      const visualizerState = document.getElementById("visualizer-state");
+      const visualizerAction = document.getElementById("visualizer-action");
       const photoCarousel = document.getElementById("photo-carousel");
       const galleryImage = document.getElementById("gallery-image");
       const galleryCaption = document.getElementById("gallery-caption");
@@ -1389,15 +1435,15 @@
       });
 
       const rotatingPlaylist = [
-        { title: "Head Over Heels", artist: "Tears For Fears", durationMs: 302000, art: "https://i.scdn.co/image/ab67616d00004851c4744a5d9f9f3478f958f4ed" },
-        { title: "Easy Lover", artist: "Philip Bailey, Phil Collins", durationMs: 305000, art: "https://i.scdn.co/image/ab67616d00004851aa2ee7e5c80a9d2b8275f4ae" },
-        { title: "Poh Di Raat", artist: "Diljit Dosanjh", durationMs: 225000, art: "https://i.scdn.co/image/ab67616d00004851d9ab9ec3f5f6f7d3f948f1f0" },
-        { title: "Back to the Old House", artist: "The Smiths", durationMs: 187000, art: "https://i.scdn.co/image/ab67616d0000485103f97fdda8a73e9c2efbbd39" },
-        { title: "Golden Brown", artist: "The Stranglers", durationMs: 207000, art: "https://i.scdn.co/image/ab67616d00004851e4319f2b4cf8f2f2a9d1d8c7" },
-        { title: "Far from Any Road", artist: "The Handsome Family", durationMs: 168000, art: "https://i.scdn.co/image/ab67616d00004851d3c57a364a932dc18d1a7408" },
-        { title: "La Cheyenne", artist: "El De Las R's", durationMs: 154000, art: "https://i.scdn.co/image/ab67616d00004851f8c2f7dbee0e97ea4cf4e69e" },
-        { title: "Trance", artist: "HEROES & VILLAINS", durationMs: 195000, art: "https://i.scdn.co/image/ab6775700000ee85ec146cca603f4876b0ff2a4f" },
-        { title: "Rotweiler", artist: "EsDeekid", durationMs: 96000, art: "https://i.scdn.co/image/ab67616d0000485143058ea096fa35ac33c43587" },
+        { title: "Head Over Heels", artist: "Tears For Fears", durationMs: 302000, art: "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/38/97/cb/3897cb85-279f-6698-0158-ad3f73937050/14UMGIM37917.rgb.jpg/600x600bb.jpg" },
+        { title: "Easy Lover", artist: "Philip Bailey, Phil Collins", durationMs: 305000, art: "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/00/15/38/001538cd-ca00-1bf1-5d74-c95c7677767b/886445195347.jpg/600x600bb.jpg" },
+        { title: "Poh Di Raat", artist: "Diljit Dosanjh", durationMs: 225000, art: "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/00/ff/8e/00ff8ec2-887e-eccb-0d2e-67cb705c94b7/887396640146.png/600x600bb.jpg" },
+        { title: "Back to the Old House", artist: "The Smiths", durationMs: 187000, art: "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/02/3a/62/023a629e-1541-c493-0b45-536cbe9b59dd/825646642847.jpg/600x600bb.jpg" },
+        { title: "Golden Brown", artist: "The Stranglers", durationMs: 207000, art: "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/49/b1/36/49b136c1-10e1-89c8-aa3a-1aa00abcacc2/dj.nzpozdjn.jpg/600x600bb.jpg" },
+        { title: "Far from Any Road", artist: "The Handsome Family", durationMs: 168000, art: "https://is1-ssl.mzstatic.com/image/thumb/Music/39/9b/b8/mzi.ynsulyxr.jpg/600x600bb.jpg" },
+        { title: "La Cheyenne", artist: "El De Las R's", durationMs: 154000, art: "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/ea/8e/07/ea8e0793-b920-0bda-2739-01c9aab8a242/859775291515_cover.jpg/600x600bb.jpg" },
+        { title: "Trance", artist: "HEROES & VILLAINS", durationMs: 195000, art: "https://is1-ssl.mzstatic.com/image/thumb/Music112/v4/82/f7/2b/82f72ba4-524c-fc9d-cb8c-5a96d2ddf536/22UM1IM35267.rgb.jpg/600x600bb.jpg" },
+        { title: "Rottweiler", artist: "EsDeeKid", durationMs: 96000, art: "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/48/3f/42/483f423c-56c3-597f-90ab-f1c875af89de/5034644741581.jpg/600x600bb.jpg" },
       ];
       let playlistIndex = 0;
       let playlistTimer = null;
@@ -1406,10 +1452,11 @@
         spotifyState.textContent = "Now rotating";
         spotifyTrack.textContent = data.title || "Playlist rotation";
         spotifyArtist.textContent = data.artist ? `${data.artist} · ${new Date(data.durationMs).toISOString().slice(14, 19)}` : "Playlist rotation";
-        spotifyArt.src = data.art || "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 80'%3E%3Crect width='80' height='80' fill='%2300ff41'/%3E%3Crect x='18' y='18' width='44' height='44' rx='8' fill='%2303080b'/%3E%3Crect x='29' y='29' width='22' height='22' rx='2' fill='%2300ff41'/%3E%3C/svg%3E";
+        const albumArt = data.art || rotatingPlaylist[0].art;
+        spotifyArt.src = albumArt;
         spotifyArt.alt = `Album art for ${data.title}`;
         if (listeningTaskCover) {
-          listeningTaskCover.style.backgroundImage = data.art ? `url("${data.art}")` : "linear-gradient(135deg, rgba(0,255,65,.25), rgba(0,255,65,.06))";
+          listeningTaskCover.style.backgroundImage = `url("${albumArt}")`;
         }
         spotifyLink.textContent = "Open playlist";
         spotifyLink.href = "https://open.spotify.com/playlist/3JI917qJjuKYbghg5Y2q23?si=483f41af865f4658";
@@ -1472,6 +1519,15 @@
       rotatePlaylist();
       if (spotifyRefresh) {
         spotifyRefresh.addEventListener("click", rotatePlaylist);
+      }
+      if (spotifyVisualizer) {
+        spotifyVisualizer.addEventListener("click", () => {
+          const paused = spotifyVisualizer.getAttribute("aria-pressed") !== "true";
+          spotifyVisualizer.setAttribute("aria-pressed", String(paused));
+          spotifyVisualizer.setAttribute("aria-label", `${paused ? "Resume" : "Pause"} audio visualizer`);
+          visualizerState.textContent = `Visualizer / ${paused ? "paused" : "active"}`;
+          visualizerAction.textContent = paused ? "Click to resume" : "Click to pause";
+        });
       }
 
       function hideBoot() {
@@ -1674,6 +1730,13 @@
         }
       });
       document.addEventListener("keydown", (event) => {
+        if (event.altKey && event.shiftKey && !event.ctrlKey && !event.metaKey && event.key.toLowerCase() === "l") {
+          if (event.repeat || (event.target instanceof HTMLElement &&
+            (event.target.isContentEditable || ["INPUT", "TEXTAREA", "SELECT"].includes(event.target.tagName)))) return;
+          event.preventDefault();
+          openWindow("network");
+          return;
+        }
         if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "k") {
           if (event.repeat || event.altKey || event.shiftKey) return;
           if (event.target instanceof HTMLElement &&
