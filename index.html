@@ -795,31 +795,64 @@
       max-height: 420px;
       overflow: auto;
       padding: 12px;
-      border: 1px solid var(--border);
+      border: 1px solid var(--terminal-border, var(--border));
       background:
-        repeating-linear-gradient(0deg, rgb(0 255 65 / 2%) 0 1px, transparent 1px 4px),
-        #020603;
+        linear-gradient(rgba(0,0,0,.12) 50%, transparent 50%),
+        linear-gradient(90deg, var(--terminal-glow, rgba(0,255,65,.025)) 1px, transparent 1px),
+        linear-gradient(0deg, var(--terminal-glow, rgba(0,255,65,.025)) 1px, transparent 1px),
+        var(--terminal-background, #020603);
+      background-size: 100% 4px, 24px 24px, 24px 24px, auto;
       color: var(--text);
       cursor: text;
       font: 11px/1.65 var(--mono);
-      scrollbar-color: var(--green-2) #050a07;
+      scrollbar-color: var(--terminal-soft, var(--green-2)) #050a07;
     }
+    .terminal-boot { margin-bottom: 12px; padding-bottom: 10px; border-bottom: 1px solid var(--terminal-border, var(--border)); }
+    .terminal-telemetry { display: grid; gap: 2px; color: var(--secondary); }
+    .terminal-telemetry strong { color: var(--terminal-accent, var(--green)); font-weight: 600; }
+    .terminal-quick-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 9px; }
+    .terminal-chip {
+      padding: 2px 7px;
+      border: 1px solid var(--terminal-border, var(--border));
+      background: rgba(0,0,0,.16);
+      color: var(--terminal-accent, var(--green));
+      cursor: pointer;
+      font: inherit;
+      transition: background .15s ease, border-color .15s ease, transform .15s ease;
+    }
+    .terminal-chip:hover { border-color: var(--terminal-accent, var(--green)); background: var(--terminal-glow, rgba(0,255,65,.08)); transform: translateY(-1px); }
     .terminal-output {
       white-space: pre-wrap;
       overflow-wrap: anywhere;
     }
     .terminal-output:empty { display: none; }
-    .terminal-entry { margin: 0 0 4px; }
-    .terminal-command { color: var(--green); }
+    .terminal-entry { margin: 0 0 4px; transition: opacity .16s ease, transform .16s ease; }
+    .terminal-output:not(.skip-reveal) .terminal-entry:not(.is-visible) { opacity: 0; transform: translateY(3px); }
+    .terminal-output.skip-reveal .terminal-entry { opacity: 1; transform: none; transition-delay: 0s !important; }
+    .terminal-command { color: var(--terminal-accent, var(--green)); }
     .terminal-error { color: #ff8b8b; }
     .terminal-muted { color: var(--secondary); }
+    .terminal-badge { color: var(--terminal-accent, var(--green)); font-weight: 600; }
+    .terminal-index, .terminal-project-row { display: grid; grid-template-columns: minmax(112px, .7fr) minmax(0, 1.8fr); gap: 8px; align-items: start; }
+    .terminal-index-name, .terminal-project-name { color: var(--terminal-accent, var(--green)); }
+    .terminal-project-row { grid-template-columns: minmax(125px, .7fr) minmax(0, 2fr) minmax(84px, .55fr) auto; gap: 10px; padding: 6px 0; border-top: 1px solid var(--terminal-border, rgba(43,151,77,.24)); }
+    .terminal-project-meta { color: var(--secondary); }
+    .terminal-tag { display: inline-block; margin: 0 3px 3px 0; padding: 0 4px; border: 1px solid var(--terminal-border, var(--border)); color: var(--secondary); font-size: 9px; white-space: nowrap; }
+    .terminal-project-row > :last-child { white-space: nowrap; }
+    .terminal-dossier-title { color: var(--terminal-accent, var(--green)); }
+    .terminal-dossier-notes { margin: 3px 0 8px; padding-left: 18px; color: var(--secondary); }
+    .terminal-dossier-notes li { padding-left: 2px; }
+    .terminal-scan { display: grid; grid-template-columns: 102px 1fr; gap: 12px; align-items: center; margin: 5px 0 9px; }
+    .terminal-scan svg { width: 100%; max-width: 102px; color: var(--terminal-accent, var(--green)); }
+    .terminal-scan-list { display: grid; gap: 3px; color: var(--secondary); }
+    .terminal-scan-list strong { color: var(--text); font-weight: 500; }
     .terminal-link {
-      color: var(--green);
+      color: var(--terminal-accent, var(--green));
       text-decoration: underline;
       text-decoration-style: dotted;
       text-underline-offset: 3px;
     }
-    .terminal-link:hover, .terminal-link:focus-visible { background: rgb(0 255 65 / 10%); }
+    .terminal-link:hover, .terminal-link:focus-visible { background: var(--terminal-glow, rgba(0,255,65,.1)); }
     .terminal-prompt-row {
       display: flex;
       align-items: baseline;
@@ -827,7 +860,7 @@
     }
     .terminal-prompt {
       flex: 0 0 auto;
-      color: var(--green);
+      color: var(--terminal-accent, var(--green));
       white-space: nowrap;
     }
     .terminal-input {
@@ -838,7 +871,7 @@
       outline: 0;
       background: transparent;
       color: var(--text);
-      caret-color: var(--green);
+      caret-color: var(--terminal-accent, var(--green));
       font: inherit;
     }
     .terminal-cursor {
@@ -847,7 +880,7 @@
       height: 1.15em;
       margin-left: 3px;
       vertical-align: -2px;
-      background: var(--green);
+      background: var(--terminal-accent, var(--green));
       animation: terminal-blink 1s steps(1) infinite;
     }
     .terminal-prompt-row:focus-within .terminal-cursor { opacity: 1; }
@@ -1050,6 +1083,10 @@
       .carousel-arrow { min-height: 44px; }
       .carousel-dot { width: 24px; height: 24px; }
       .maximized { inset: 8px 8px calc(var(--bar-height) + 8px); }
+      .terminal-project-row { grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); gap: 5px 8px; }
+      .terminal-project-heading { display: none; }
+      .terminal-scan { grid-template-columns: 76px 1fr; }
+      .terminal-scan svg { max-width: 76px; }
     }
     @media (max-width: 430px) {
       .hero-content { grid-template-columns: minmax(0, 1fr); }
@@ -1143,9 +1180,17 @@
         </header>
         <div class="window-content">
           <div class="terminal-screen" id="terminal-screen" role="region" aria-label="Archive terminal" tabindex="-1">
+            <div class="terminal-boot">
+              <div class="terminal-telemetry" aria-label="Terminal telemetry">
+                <div><span class="terminal-badge">[OK]</span> <strong id="terminal-banner">ARCHIVE_OS v1.0</strong> · <span id="terminal-location">DEL/IND</span></div>
+                <div><span class="terminal-badge">[LIVE]</span> IST <time id="terminal-clock">--:--:--</time></div>
+                <div><span class="terminal-badge">[LOG]</span> LISTENING TO · <span id="terminal-track">Reading archive…</span></div>
+              </div>
+              <div class="terminal-quick-chips" id="terminal-quick-chips" aria-label="Quick commands"></div>
+            </div>
             <div class="terminal-output" id="terminal-output" aria-live="polite"></div>
             <div class="terminal-prompt-row">
-              <label for="terminal-input" class="terminal-prompt">shaunak@archive:~$&nbsp;</label>
+              <label for="terminal-input" class="terminal-prompt" id="terminal-prompt">shaunak@archive:~$&nbsp;</label>
               <input class="terminal-input" id="terminal-input" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Terminal command" />
               <span class="terminal-cursor" aria-hidden="true"></span>
             </div>
@@ -1478,6 +1523,7 @@
     </div>
   </section>
 
+  <script src="terminal.config.js"></script>
   <script>
     (() => {
       const windows = [...document.querySelectorAll("[data-window]")];
@@ -1696,7 +1742,16 @@
       }
 
       if (terminalScreen && terminalOutput && terminalInput) {
-        const terminalCommands = ["help", "whoami", "stack", "projects", "milestones", "open", "clear"];
+        const terminalConfig = window.TERMINAL_CONFIG;
+        if (!terminalConfig) throw new Error("TERMINAL_CONFIG failed to load.");
+        const terminalWindow = document.getElementById("terminal");
+        const terminalBanner = document.getElementById("terminal-banner");
+        const terminalLocation = document.getElementById("terminal-location");
+        const terminalClock = document.getElementById("terminal-clock");
+        const terminalTrack = document.getElementById("terminal-track");
+        const terminalPrompt = document.getElementById("terminal-prompt");
+        const terminalQuickChips = document.getElementById("terminal-quick-chips");
+        const terminalBuiltIns = terminalConfig.commands;
         const terminalSections = {
           identity: "identity",
           projects: "projects",
@@ -1705,57 +1760,235 @@
           photos: "gallery",
           contact: "contact",
         };
+        const terminalSectionNames = Object.keys(terminalSections);
+        const customCommands = terminalConfig.customCommands || {};
+        const terminalCommands = [...Object.keys(terminalBuiltIns), ...Object.keys(customCommands)];
         let terminalHistory = [];
         let terminalHistoryIndex = 0;
+        let terminalRevealTimer = 0;
+        let terminalRevealIndex = 0;
 
-        const appendTerminalLine = (text, className = "") => {
-          const line = document.createElement("div");
-          line.className = `terminal-entry ${className}`.trim();
-          line.textContent = text;
-          terminalOutput.append(line);
+        const appendTerminalNode = (node, className = "") => {
+          node.classList.add("terminal-entry");
+          if (className) node.classList.add(...className.split(/\s+/));
+          if (!reducedMotion.matches) node.style.transitionDelay = `${Math.min(terminalRevealIndex * 18, 180)}ms`;
+          terminalRevealIndex += 1;
+          terminalOutput.append(node);
+          if (reducedMotion.matches || terminalOutput.classList.contains("skip-reveal")) {
+            node.classList.add("is-visible");
+          } else {
+            window.requestAnimationFrame(() => node.classList.add("is-visible"));
+          }
           terminalScreen.scrollTop = terminalScreen.scrollHeight;
-          return line;
+          return node;
         };
 
-        const appendTerminalText = (text, className = "") => appendTerminalLine(text, className);
+        const appendTerminalText = (text, className = "") => {
+          const line = document.createElement("div");
+          line.textContent = text;
+          return appendTerminalNode(line, className);
+        };
 
-        const appendProjectLinks = () => {
-          const projects = [
-            ["PRE-ORDER", "A cafeteria pre-ordering application.", "https://preorder-appweb.vercel.app/menu"],
-            ["RADAR", "An interactive radar-inspired screensaver.", "https://radar-screensaverappshaun.vercel.app/"],
-            ["AIRWAVE", "A radio-themed web project.", "https://airwave-fm-three.vercel.app/"],
-          ];
-          projects.forEach(([name, description, url]) => {
-            const line = document.createElement("div");
-            line.className = "terminal-entry";
-            const label = document.createElement("strong");
-            label.textContent = `${name} `;
-            const link = document.createElement("a");
-            link.className = "terminal-link";
-            link.href = url;
-            link.target = "_blank";
-            link.rel = "noopener noreferrer";
-            link.textContent = "[LIVE DEMO]";
-            line.append(label, document.createTextNode(`${description} `), link);
-            terminalOutput.append(line);
+        const skipTerminalReveal = () => {
+          terminalOutput.classList.add("skip-reveal");
+          terminalOutput.querySelectorAll(".terminal-entry").forEach((line) => line.classList.add("is-visible"));
+          window.clearTimeout(terminalRevealTimer);
+          terminalRevealTimer = window.setTimeout(() => terminalOutput.classList.remove("skip-reveal"), 250);
+        };
+
+        const beginTerminalReveal = () => {
+          window.clearTimeout(terminalRevealTimer);
+          terminalOutput.classList.remove("skip-reveal");
+          terminalRevealIndex = 0;
+        };
+
+        const appendProjectRows = () => {
+          const projects = [...document.querySelectorAll("#projects .project")];
+          const heading = document.createElement("div");
+          heading.className = "terminal-project-row terminal-project-heading terminal-muted";
+          heading.innerHTML = "<span>INDEX / PROJECT</span><span>DESCRIPTION</span><span>STACK</span><span>LINK</span>";
+          appendTerminalNode(heading);
+          projects.forEach((project, index) => {
+            const number = project.querySelector(".project-number")?.textContent.trim() || `${String(index + 1).padStart(3, "0")}`;
+            const title = number.split("/").pop().trim();
+            const description = project.querySelector("p")?.textContent.trim() || "";
+            const url = project.querySelector(".project-links a")?.href;
+            const stackKey = title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+            const stack = terminalConfig.projectStacks?.[stackKey] || [];
+            const row = document.createElement("div");
+            row.className = "terminal-project-row";
+            const nameCell = document.createElement("strong");
+            nameCell.className = "terminal-project-name";
+            nameCell.textContent = number.replace("/", "");
+            const descriptionCell = document.createElement("span");
+            descriptionCell.textContent = description;
+            const stackCell = document.createElement("span");
+            stackCell.className = "terminal-project-meta";
+            if (stack.length) {
+              stack.forEach((tag) => {
+                const badge = document.createElement("span");
+                badge.className = "terminal-tag";
+                badge.textContent = tag;
+                stackCell.append(badge);
+              });
+            } else {
+              const badge = document.createElement("span");
+              badge.className = "terminal-tag";
+              badge.textContent = "STACK UNLISTED";
+              stackCell.append(badge);
+            }
+            const linkCell = document.createElement("span");
+            if (url) {
+              const link = document.createElement("a");
+              link.className = "terminal-link";
+              link.href = url;
+              link.target = "_blank";
+              link.rel = "noopener noreferrer";
+              link.textContent = "[LIVE ↗]";
+              linkCell.append(link);
+            } else {
+              linkCell.textContent = "[LOG]";
+            }
+            row.append(nameCell, descriptionCell, stackCell, linkCell);
+            appendTerminalNode(row);
           });
         };
 
-        const appendMilestones = (year = "") => {
-          const entries = [...document.querySelectorAll(".timeline-item")];
-          const matches = year
-            ? entries.filter((entry) => entry.querySelector(".timeline-date")?.textContent.trim() === year)
-            : entries;
+        const readMilestone = (entry) => ({
+          year: entry.querySelector(".timeline-date")?.textContent.trim() || "UNDATED",
+          category: entry.querySelector(".timeline-category")?.textContent.trim() || "",
+          description: entry.querySelector("p")?.textContent.trim() || "",
+        });
+
+        const appendMilestones = (filter = "") => {
+          const entries = [...document.querySelectorAll("#timeline .timeline-item")];
+          const normalized = filter.trim().toLowerCase();
+          let matches = entries.filter((entry) => {
+            const item = readMilestone(entry);
+            return !normalized || item.year.toLowerCase() === normalized ||
+              item.category.toLowerCase().includes(normalized) ||
+              item.description.toLowerCase().includes(normalized);
+          });
+          if (!normalized) {
+            matches = matches.filter((entry) => readMilestone(entry).year !== "UNDATED").slice(0, 5);
+          }
           if (!matches.length) {
-            appendTerminalText(`No milestones found${year ? ` for ${year}` : ""}.`, "terminal-muted");
+            appendTerminalText(`No milestones found${normalized ? ` for "${filter}"` : ""}.`, "terminal-muted");
             return;
           }
           matches.forEach((entry) => {
-            const date = entry.querySelector(".timeline-date")?.textContent.trim() || "";
-            const category = entry.querySelector(".timeline-category")?.textContent.trim() || "";
-            const description = entry.querySelector("p")?.textContent.trim() || "";
-            appendTerminalText(`[${date}] ${category} — ${description}`);
+            const { year, category, description } = readMilestone(entry);
+            appendTerminalText(`[${year}] ${category} — ${description}`);
           });
+        };
+
+        const appendHelp = () => {
+          const entries = [...Object.entries(terminalBuiltIns), ...Object.keys(customCommands).map((name) => [name, terminalConfig.customCommandHelp])];
+          entries.forEach(([name, description]) => {
+            const row = document.createElement("div");
+            row.className = "terminal-index";
+            const commandName = document.createElement("strong");
+            commandName.className = "terminal-index-name";
+            commandName.textContent = name;
+            const commandDescription = document.createElement("span");
+            commandDescription.textContent = description;
+            row.append(commandName, commandDescription);
+            appendTerminalNode(row);
+          });
+          appendTerminalText("Arguments: milestones [year|tag] · dossier <topic> · theme <name> · go <section>", "terminal-muted");
+          appendTerminalText(`Themes: ${Object.keys(terminalConfig.themes || {}).join("  ")}`, "terminal-muted");
+        };
+
+        const appendStack = () => {
+          const skills = [...document.querySelectorAll("#about .skills-group")].map((group) => {
+            const title = group.querySelector("h3")?.textContent.trim() || "SKILLS";
+            const tags = [...group.querySelectorAll(".tag")].map((tag) => tag.textContent.trim());
+            return `${title}: ${tags.join(" · ")}`;
+          });
+          skills.forEach((skill) => appendTerminalText(skill));
+        };
+
+        const appendDossier = (topic) => {
+          const dossier = terminalConfig.dossiers?.[topic];
+          if (!dossier) {
+            appendTerminalText(`Unknown dossier "${topic || ""}". Available: ${Object.keys(terminalConfig.dossiers || {}).join(", ")}`, "terminal-error");
+            return;
+          }
+          appendTerminalText(`[LOG] FIELD NOTES / ${dossier.status || "NOTE"}`, "terminal-muted");
+          appendTerminalText(dossier.title || topic.toUpperCase(), "terminal-dossier-title");
+          const notes = document.createElement("ul");
+          notes.className = "terminal-dossier-notes";
+          (dossier.notes || []).forEach((note) => {
+            const item = document.createElement("li");
+            item.textContent = note;
+            notes.append(item);
+          });
+          appendTerminalNode(notes);
+        };
+
+        const appendScan = () => {
+          const projectHighlights = [...document.querySelectorAll("#projects .project")].map((project) => {
+            const title = project.querySelector(".project-number")?.textContent.trim() || "PROJECT";
+            return { label: "PROJECT", text: title };
+          });
+          const milestoneHighlights = [...document.querySelectorAll("#timeline .timeline-item")].map((entry) => {
+            const { year, category, description } = readMilestone(entry);
+            return { label: `${year} / ${category}`, text: description };
+          });
+          const candidates = [...projectHighlights, ...milestoneHighlights];
+          const picks = [];
+          while (candidates.length && picks.length < 3) {
+            picks.push(candidates.splice(Math.floor(Math.random() * candidates.length), 1)[0]);
+          }
+          const scan = document.createElement("div");
+          scan.className = "terminal-scan";
+          scan.innerHTML = '<svg viewBox="0 0 100 100" role="img" aria-label="Radar sweep"><circle cx="50" cy="50" r="44" fill="none" stroke="currentColor" stroke-opacity=".6"/><circle cx="50" cy="50" r="29" fill="none" stroke="currentColor" stroke-opacity=".35"/><circle cx="50" cy="50" r="14" fill="none" stroke="currentColor" stroke-opacity=".25"/><path d="M6 50h88M50 6v88M50 50 82 20" fill="none" stroke="currentColor"/><circle cx="50" cy="50" r="2" fill="currentColor"/></svg>';
+          const list = document.createElement("div");
+          list.className = "terminal-scan-list";
+          picks.forEach((pick, index) => {
+            const row = document.createElement("div");
+            const label = document.createElement("span");
+            label.className = "terminal-badge";
+            label.textContent = `0${index + 1} · ${pick.label}`;
+            const text = document.createElement("strong");
+            text.textContent = pick.text;
+            row.append(label, document.createElement("br"), text);
+            list.append(row);
+          });
+          scan.append(scan.firstElementChild, list);
+          appendTerminalNode(scan);
+        };
+
+        const appendCustomResponse = (name) => {
+          const response = customCommands[name];
+          const text = typeof response === "string" ? response : response.text;
+          const row = document.createElement("div");
+          if (response.url) {
+            const link = document.createElement("a");
+            link.className = "terminal-link";
+            link.href = response.url;
+            link.target = "_blank";
+            link.rel = "noopener noreferrer";
+            link.textContent = text || response.url;
+            row.append(link);
+          } else {
+            row.textContent = text || "";
+          }
+          appendTerminalNode(row);
+        };
+
+        const setTerminalTheme = (name, notify = true) => {
+          const theme = terminalConfig.themes?.[name];
+          if (!theme) {
+            if (notify) appendTerminalText(`Unknown theme "${name || ""}". Available: ${Object.keys(terminalConfig.themes || {}).join(", ")}`, "terminal-error");
+            return;
+          }
+          terminalScreen.style.setProperty("--terminal-accent", theme.accent);
+          terminalScreen.style.setProperty("--terminal-soft", theme.soft || theme.accent);
+          terminalScreen.style.setProperty("--terminal-border", theme.border || "rgba(43,151,77,.52)");
+          terminalScreen.style.setProperty("--terminal-glow", theme.glow || "rgba(0,255,65,.08)");
+          terminalScreen.style.setProperty("--terminal-background", theme.background || "#020603");
+          if (notify) appendTerminalText(`[OK] Theme set: ${theme.label || name}.`, "terminal-muted");
         };
 
         const executeTerminalCommand = (rawCommand) => {
@@ -1763,70 +1996,115 @@
           if (!commandLine) return;
           terminalHistory.push(commandLine);
           terminalHistoryIndex = terminalHistory.length;
-          appendTerminalText(`shaunak@archive:~$ ${commandLine}`, "terminal-command");
+          appendTerminalText(`${terminalConfig.identity.handle}:~$ ${commandLine}`, "terminal-command");
 
-          const [command, ...args] = commandLine.split(/\s+/);
+          const [commandToken, ...args] = commandLine.split(/\s+/);
+          const command = commandToken.toLowerCase();
 
           if (command === "clear") {
             terminalOutput.replaceChildren();
             return;
           }
           if (command === "help") {
-            appendTerminalText(
-              "Available commands:\n" +
-              "  help                 List available commands\n" +
-              "  whoami               Show identity summary\n" +
-              "  stack                List current skills\n" +
-              "  projects             List projects and live demos\n" +
-              "  milestones [--year]  Filter milestones by 2024, 2025, or 2023\n" +
-              "  open <section>       Open identity, projects, notes, milestones, photos, or contact\n" +
-              "  clear                Clear terminal output"
-            );
+            appendHelp();
             return;
           }
           if (command === "whoami") {
-            appendTerminalText("Class 12 student and independent developer.\nInterests: acting, debates, defence & geopolitics.");
+            (terminalConfig.identity.whoami || []).forEach((line) => appendTerminalText(line));
+            const focus = document.querySelector("#about .focus-line");
+            if (focus) appendTerminalText(focus.textContent.trim());
             return;
           }
           if (command === "stack") {
-            appendTerminalText("Python  |  JavaScript  |  HTML  |  CSS  |  Flask  |  Git");
+            appendStack();
             return;
           }
           if (command === "projects") {
-            appendTerminalText("PROJECT ARCHIVE");
-            appendProjectLinks();
+            appendTerminalText("[LOG] PROJECT ARCHIVE · LIVE INDEX", "terminal-muted");
+            appendProjectRows();
             return;
           }
           if (command === "milestones") {
-            const yearFlag = args.indexOf("--year");
-            if (yearFlag === -1) {
-              appendMilestones();
-              return;
-            }
-            const year = args[yearFlag + 1];
-            if (!["2024", "2025", "2023"].includes(year)) {
-              appendTerminalText("Usage: milestones [--year 2024|2025|2023]", "terminal-error");
-              return;
-            }
-            appendMilestones(year);
+            appendMilestones(args.join(" "));
             return;
           }
-          if (command === "open") {
-            const section = args[0]?.toLowerCase();
+          if (command === "dossier") {
+            appendDossier((args[0] || "").toLowerCase());
+            return;
+          }
+          if (command === "scan") {
+            appendScan();
+            return;
+          }
+          if (command === "now") {
+            const track = document.getElementById("spotify-track")?.textContent.trim() || "No track available";
+            const artist = document.getElementById("spotify-artist")?.textContent.trim() || "";
+            const state = document.getElementById("spotify-state")?.textContent.trim() || "LISTENING TO";
+            const paused = document.getElementById("spotify-visualizer")?.getAttribute("aria-pressed") === "true";
+            appendTerminalText(`[${paused ? "LOG" : "LIVE"}] ${paused ? "PAUSED" : state.toUpperCase()} · ${track}${artist ? ` — ${artist}` : ""}`);
+            return;
+          }
+          if (command === "theme") {
+            setTerminalTheme((args[0] || "").toLowerCase());
+            return;
+          }
+          if (command === "go" || command === "open") {
+            const section = (args[0] || "").toLowerCase();
             if (!terminalSections[section]) {
-              appendTerminalText("Usage: open <identity|projects|notes|milestones|photos|contact>", "terminal-error");
+              appendTerminalText(`Usage: go <${terminalSectionNames.join("|")}>`, "terminal-error");
               return;
             }
             openWindow(terminalSections[section], true, true);
-            appendTerminalText(`Opened ${section}.`);
+            appendTerminalText(`[OK] Scrolling to ${section}.`, "terminal-muted");
+            return;
+          }
+          if (Object.prototype.hasOwnProperty.call(customCommands, command)) {
+            appendCustomResponse(command);
             return;
           }
           appendTerminalText(`Command not found: ${command}. Type "help" for available commands.`, "terminal-error");
         };
 
+        terminalBanner.textContent = terminalConfig.identity.banner;
+        terminalLocation.textContent = terminalConfig.identity.location;
+        terminalPrompt.textContent = `${terminalConfig.identity.handle}:~$ `;
+        terminalConfig.quickChips.forEach((command) => {
+          const chip = document.createElement("button");
+          chip.type = "button";
+          chip.className = "terminal-chip";
+          chip.textContent = command;
+          chip.addEventListener("click", () => {
+            beginTerminalReveal();
+            executeTerminalCommand(command);
+            terminalInput.value = "";
+            terminalInput.focus();
+          });
+          terminalQuickChips.append(chip);
+        });
+        setTerminalTheme("archive", false);
+
+        const updateTerminalTelemetry = () => {
+          terminalClock.textContent = new Intl.DateTimeFormat("en-IN", {
+            timeZone: "Asia/Kolkata",
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit",
+            hour12: false,
+          }).format(new Date());
+          const track = document.getElementById("spotify-track")?.textContent.trim() || "No track available";
+          const artist = document.getElementById("spotify-artist")?.textContent.trim() || "";
+          const paused = document.getElementById("spotify-visualizer")?.getAttribute("aria-pressed") === "true";
+          terminalTrack.textContent = `${paused ? "PAUSED · " : ""}${track}${artist ? ` — ${artist}` : ""}`;
+        };
+        updateTerminalTelemetry();
+        window.setInterval(updateTerminalTelemetry, 1000);
+        document.getElementById("spotify-visualizer")?.addEventListener("click", updateTerminalTelemetry);
+
         terminalInput.addEventListener("keydown", (event) => {
+          skipTerminalReveal();
           if (event.key === "Enter") {
             event.preventDefault();
+            beginTerminalReveal();
             executeTerminalCommand(terminalInput.value);
             terminalInput.value = "";
             return;
@@ -1851,22 +2129,37 @@
             const value = terminalInput.value.trimStart();
             const firstToken = value.split(/\s+/)[0] || "";
             if (!value.includes(" ")) {
-              const matches = terminalCommands.filter((item) => item.startsWith(firstToken));
+              const matches = terminalCommands.filter((item) => item.startsWith(firstToken.toLowerCase()));
               if (matches.length === 1) terminalInput.value = matches[0] + " ";
               else if (matches.length > 1) appendTerminalText(matches.join("  "), "terminal-muted");
               return;
             }
-            if (firstToken === "open") {
-              const sectionPrefix = value.split(/\s+/)[1] || "";
-              const matches = Object.keys(terminalSections).filter((item) => item.startsWith(sectionPrefix));
-              if (matches.length === 1) terminalInput.value = `open ${matches[0]} `;
+            const argumentPrefix = value.split(/\s+/)[1] || "";
+            let candidates = [];
+            const commandName = firstToken.toLowerCase();
+            if (commandName === "go" || commandName === "open") candidates = terminalSectionNames;
+            if (commandName === "dossier") candidates = Object.keys(terminalConfig.dossiers || {});
+            if (commandName === "theme") candidates = Object.keys(terminalConfig.themes || {});
+            if (candidates.length) {
+              const matches = candidates.filter((item) => item.startsWith(argumentPrefix.toLowerCase()));
+              if (matches.length === 1) terminalInput.value = `${commandName} ${matches[0]} `;
               else if (matches.length > 1) appendTerminalText(matches.join("  "), "terminal-muted");
             }
           }
         });
 
         terminalScreen.addEventListener("click", () => terminalInput.focus());
-        appendTerminalText("ARCHIVE_SHELL ready. Type \"help\" to list commands.", "terminal-muted");
+        appendTerminalText("[OK] ARCHIVE_SHELL ready · type help to begin.", "terminal-muted");
+
+        document.addEventListener("keydown", (event) => {
+          if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "l" &&
+            !terminalWindow.hidden && commandPalette.hidden) {
+            event.preventDefault();
+            terminalOutput.replaceChildren();
+            terminalInput.value = "";
+            terminalInput.focus();
+          }
+        });
       }
 
       function showPhoto(index) {

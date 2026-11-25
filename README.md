@@ -24,3 +24,9 @@ node server.js
 On the page, click the Spotify card and complete the OAuth flow. The app stores the access token in `.spotify-tokens.json` so it can call the Spotify `currently-playing` endpoint.
 
 The page falls back gracefully when Spotify is not configured.
+
+## Terminal customization
+
+Edit [`terminal.config.js`](./terminal.config.js) to change the terminal banner, quick commands, FIELD NOTES dossiers, custom commands, project stack tags, and accent themes. Custom commands accept either a response string or an object with `text` and `url` fields. Project names, descriptions, demo links, milestones, profile skills, and the listening status are read from the page's existing archive widgets.
+
+Open TERMINAL.EXE from the taskbar or command palette. Use `help` to see commands; `↑`/`↓` recalls history, `Tab` completes commands and arguments, and `Ctrl`/`⌘` + `L` clears the output.
