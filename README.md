@@ -27,6 +27,6 @@ The page falls back gracefully when Spotify is not configured.
 
 ## Terminal customization
 
-Edit [`terminal.config.js`](./terminal.config.js) to change the terminal banner, quick commands, FIELD NOTES dossiers, custom commands, project stack tags, and accent themes. Custom commands accept either a response string or an object with `text` and `url` fields. Project names, descriptions, demo links, milestones, profile skills, and the listening status are read from the page's existing archive widgets.
+Edit [`terminal.config.js`](./terminal.config.js) to change the terminal banner, quick commands, FIELD NOTES dossiers, custom commands, project metadata, and accent themes. Custom commands accept either a response string or an object with `text` and `url` fields. Project names and demo links, milestones, profile skills, and the listening status are read from the page's existing archive widgets; tech stacks, repository links, build years, and project statuses are listed in `projectMetadata`.
 
 Open TERMINAL.EXE from the taskbar or command palette. Use `help` to see commands; `↑`/`↓` recalls history, `Tab` completes commands and arguments, and `Ctrl`/`⌘` + `L` clears the output.

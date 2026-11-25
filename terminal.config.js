@@ -24,7 +24,26 @@ window.TERMINAL_CONFIG = {
     clear: "Reset the terminal output",
   },
   customCommandHelp: "Custom response from terminal.config.js",
-  projectStacks: {},
+  projectMetadata: {
+    "pre-order": {
+      stack: ["HTML", "CSS", "Jinja2", "Flask", "Python", "MongoDB"],
+      repository: "https://github.com/wtf-shaun/preorder_appweb",
+      year: "2026",
+      status: "LIVE",
+    },
+    radar: {
+      stack: ["Canvas", "Vanilla JS", "HTML", "CSS"],
+      repository: "https://github.com/wtf-shaun/radar-screensaver",
+      year: "2026",
+      status: "LIVE",
+    },
+    airwave: {
+      stack: ["HTML", "CSS", "JavaScript", "Spotify SDK", "PeerJS"],
+      repository: "https://github.com/wtf-shaun/airwave-fm",
+      year: "2026",
+      status: "LIVE",
+    },
+  },
   dossiers: {
     acting: {
       title: "Stage & screen",

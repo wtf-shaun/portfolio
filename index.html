@@ -426,7 +426,6 @@
     .project-links { display: flex; flex-wrap: wrap; gap: 12px; }
     .text-link { color: var(--green); font-size: 10px; text-decoration: none; }
     .text-link:hover { text-decoration: underline; text-underline-offset: 3px; }
-    .project-note { margin: 13px 0 0; color: var(--secondary); font-size: 9px; }
     .field-list { display: grid; gap: 7px; }
     .field-item {
       display: flex;
@@ -460,7 +459,6 @@
     .contact-link span { overflow-wrap: anywhere; font-size: 10px; }
     .contact-link small { display: block; color: var(--secondary); font-size: 9px; }
     .contact-link:hover span { text-decoration: underline; text-underline-offset: 3px; }
-    .availability { margin: 13px 0 0; color: var(--green-2); font-size: 9px; }
     .about-copy { margin: 0; color: var(--secondary); font-size: 11px; }
     .about-copy + .about-copy { margin-top: 10px; }
     .skills-group { margin-top: 14px; }
@@ -506,6 +504,9 @@
     .photo-frame {
       display: grid;
       min-height: 0;
+      width: fit-content;
+      max-width: 100%;
+      margin: 0 auto;
       place-items: center;
       overflow: hidden;
       border: 1px solid var(--border);
@@ -513,9 +514,9 @@
     }
     .photo-frame img {
       display: block;
-      width: 100%;
-      height: auto;
-      max-height: min(65vh, 620px);
+      width: auto;
+      height: min(42vh, 440px);
+      max-width: 100%;
       object-fit: contain;
     }
     .photo-caption {
@@ -562,37 +563,7 @@
     }
     .carousel-dot[aria-current="true"] { border-color: var(--green); background: var(--green); }
     .carousel-dot:focus-visible { outline-offset: 3px; }
-    .desktop-shortcuts {
-      position: fixed;
-      z-index: 2;
-      top: 68px;
-      right: max(12px, calc((100vw - 1512px) / 2 + 16px));
-      display: grid;
-      gap: 12px;
-    }
-    .desktop-shortcut {
-      display: grid;
-      width: 74px;
-      min-height: 66px;
-      justify-items: center;
-      align-content: center;
-      gap: 4px;
-      padding: 4px;
-      border: 1px solid transparent;
-      background: transparent;
-      color: var(--green);
-      cursor: pointer;
-      font-size: 9px;
-      text-align: center;
-      transition: transform .15s ease, border-color .15s ease, background .15s ease, box-shadow .15s ease;
-    }
-    .desktop-shortcut:hover {
-      border-color: var(--border);
-      background: rgba(0,255,65,.04);
-      box-shadow: inset 0 0 0 1px rgba(0,255,65,.08);
-      transform: translateY(-1px);
-    }
-    .desktop-shortcut svg { width: 23px; height: 23px; fill: none; stroke: currentColor; stroke-width: 1.5; }
+    .window-index { color: #031006; font-size: 9px; font-weight: 700; letter-spacing: .08em; white-space: nowrap; }
     .taskbar {
       position: fixed;
       z-index: 20;
@@ -805,8 +776,12 @@
       color: var(--text);
       cursor: text;
       font: 11px/1.65 var(--mono);
-      scrollbar-color: var(--terminal-soft, var(--green-2)) #050a07;
+      scrollbar-width: thin;
+      scrollbar-color: var(--terminal-border, var(--border)) transparent;
     }
+    .terminal-screen::-webkit-scrollbar { width: 4px; height: 4px; }
+    .terminal-screen::-webkit-scrollbar-track { background: transparent; }
+    .terminal-screen::-webkit-scrollbar-thumb { border: 1px solid var(--terminal-accent, var(--green)); background: var(--terminal-border, var(--border)); }
     .terminal-boot { margin-bottom: 12px; padding-bottom: 10px; border-bottom: 1px solid var(--terminal-border, var(--border)); }
     .terminal-telemetry { display: grid; gap: 2px; color: var(--secondary); }
     .terminal-telemetry strong { color: var(--terminal-accent, var(--green)); font-weight: 600; }
@@ -835,10 +810,10 @@
     .terminal-badge { color: var(--terminal-accent, var(--green)); font-weight: 600; }
     .terminal-index, .terminal-project-row { display: grid; grid-template-columns: minmax(112px, .7fr) minmax(0, 1.8fr); gap: 8px; align-items: start; }
     .terminal-index-name, .terminal-project-name { color: var(--terminal-accent, var(--green)); }
-    .terminal-project-row { grid-template-columns: minmax(125px, .7fr) minmax(0, 2fr) minmax(84px, .55fr) auto; gap: 10px; padding: 6px 0; border-top: 1px solid var(--terminal-border, rgba(43,151,77,.24)); }
+    .terminal-project-row { grid-template-columns: minmax(125px, .8fr) minmax(0, 2.2fr) minmax(115px, .8fr) minmax(150px, 1fr); gap: 10px; padding: 6px 0; border-top: 1px solid var(--terminal-border, rgba(43,151,77,.24)); }
     .terminal-project-meta { color: var(--secondary); }
     .terminal-tag { display: inline-block; margin: 0 3px 3px 0; padding: 0 4px; border: 1px solid var(--terminal-border, var(--border)); color: var(--secondary); font-size: 9px; white-space: nowrap; }
-    .terminal-project-row > :last-child { white-space: nowrap; }
+    .terminal-project-links { display: flex; flex-wrap: wrap; gap: 8px; }
     .terminal-dossier-title { color: var(--terminal-accent, var(--green)); }
     .terminal-dossier-notes { margin: 3px 0 8px; padding-left: 18px; color: var(--secondary); }
     .terminal-dossier-notes li { padding-left: 2px; }
@@ -1035,12 +1010,6 @@
       border: 0;
     }
 
-    @media (min-width: 1500px) {
-      .desktop-shortcuts { right: max(20px, calc((100vw - 1512px) / 2 + 8px)); }
-    }
-    @media (min-width: 1200px) {
-      .desktop { padding-right: 112px; }
-    }
     @media (max-width: 1190px) {
       .desktop { padding-right: 20px; padding-left: 20px; }
       .desktop-layout { grid-template-columns: repeat(8, minmax(0, 1fr)); }
@@ -1053,7 +1022,6 @@
       .window-about { grid-column: 1 / span 4; grid-row: 4; }
       .window-milestones { grid-column: 5 / span 4; grid-row: 4; }
       .window-gallery { grid-column: 1 / span 8; grid-row: 5; }
-      .desktop-shortcuts { display: none; }
     }
     @media (max-width: 760px) {
       :root { --bar-height: 53px; }
@@ -1085,6 +1053,8 @@
       .maximized { inset: 8px 8px calc(var(--bar-height) + 8px); }
       .terminal-project-row { grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); gap: 5px 8px; }
       .terminal-project-heading { display: none; }
+      .terminal-project-links { grid-column: 2; }
+      .photo-frame img { height: min(34vh, 320px); }
       .terminal-scan { grid-template-columns: 76px 1fr; }
       .terminal-scan svg { max-width: 76px; }
     }
@@ -1162,8 +1132,6 @@
                 <li>First Prize <span>· Vision, Sanskriti School</span></li>
                 <li>Four-week internship <span>· Scholastic India</span></li>
               </ul>
-              <button class="action-link action-link-button" type="button" data-open="milestones">[ VIEW ALL ACHIEVEMENTS <span aria-hidden="true">→</span> ]</button>
-              <button class="action-link action-link-button" type="button" data-open="gallery">[ OPEN PHOTO ARCHIVE <span aria-hidden="true">→</span> ]</button>
             </div>
           </div>
         </div>
@@ -1201,11 +1169,7 @@
       <section class="window window-network" id="network" data-window aria-labelledby="network-title" hidden>
         <header class="titlebar">
           <span id="network-title">LISTENING TO</span>
-          <span class="window-controls">
-            <button class="window-control" type="button" data-window-action="minimize" aria-label="Minimize listening card">−</button>
-            <button class="window-control" type="button" data-window-action="maximize" aria-label="Maximize listening card">□</button>
-            <button class="window-control" type="button" data-window-action="close" aria-label="Close listening card">×</button>
-          </span>
+          <span class="window-index" aria-label="Card 02, live status">[02] [LIVE]</span>
         </header>
         <div class="window-content">
           <div class="spotify-card" id="spotify-card" aria-live="polite">
@@ -1282,18 +1246,13 @@
               </div>
             </article>
           </div>
-          <p class="project-note">Technology tags and source links are omitted until verified.</p>
         </div>
       </section>
 
       <section class="window window-field" id="field-notes" data-window aria-labelledby="field-title" hidden>
         <header class="titlebar">
           <span id="field-title">FIELD NOTES</span>
-          <span class="window-controls">
-            <button class="window-control" type="button" data-window-action="minimize" aria-label="Minimize field notes">−</button>
-            <button class="window-control" type="button" data-window-action="maximize" aria-label="Maximize field notes">□</button>
-            <button class="window-control" type="button" data-window-action="close" aria-label="Close field notes">×</button>
-          </span>
+          <span class="window-index" aria-label="Card 04, field notes">[04] [LOG]</span>
         </header>
         <div class="window-content">
           <p class="contact-intro">A few subjects I keep returning to.</p>
@@ -1303,18 +1262,13 @@
             <a class="field-item" href="#geopolitics"><span><strong>[ 03 ] &nbsp; DEFENCE &amp; GEOPOLITICS</strong><span>Maps, strategy, global affairs.</span></span><span class="arrow" aria-hidden="true">→</span></a>
             <a class="field-item" href="#debates"><span><strong>[ 04 ] &nbsp; DEBATES</strong><span>Ideas, perspectives, progress.</span></span><span class="arrow" aria-hidden="true">→</span></a>
           </nav>
-          <p class="project-note">An index for future writing and reflections.</p>
         </div>
       </section>
 
       <section class="window window-contact" id="contact" data-window aria-labelledby="contact-title" hidden>
         <header class="titlebar">
           <span id="contact-title">SIGNAL / CONTACT</span>
-          <span class="window-controls">
-            <button class="window-control" type="button" data-window-action="minimize" aria-label="Minimize contact window">−</button>
-            <button class="window-control" type="button" data-window-action="maximize" aria-label="Maximize contact window">□</button>
-            <button class="window-control" type="button" data-window-action="close" aria-label="Close contact window">×</button>
-          </span>
+          <span class="window-index" aria-label="Card 05, contact signal">[05] [SIGNAL]</span>
         </header>
         <div class="window-content">
           <div class="eyebrow">GET IN TOUCH</div>
@@ -1333,7 +1287,6 @@
               <span>Email<small>shaunakmohotra131214@gmail.com</small></span><span aria-hidden="true">→</span>
             </a>
           </div>
-          <p class="availability"><span aria-hidden="true">●</span> PERSONAL WORK, SHARED HERE.</p>
         </div>
       </section>
 
@@ -1427,14 +1380,6 @@
       </section>
     </div>
     </main>
-
-  <aside class="desktop-shortcuts" aria-label="Desktop shortcuts">
-    <button class="desktop-shortcut" type="button" data-open="about"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7h7l2 2h9v11H3z"/><path d="M3 7V5h7l2 2"/></svg>Portfolio</button>
-    <button class="desktop-shortcut" type="button" data-open="projects"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3h14v18H5zM8 7h8M8 11h8M8 15h5"/></svg>Projects</button>
-    <button class="desktop-shortcut" type="button" data-open="field-notes"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7h7l2 2h9v11H3z"/><path d="M3 7V5h7l2 2"/></svg>Field Notes</button>
-    <button class="desktop-shortcut" type="button" data-open="gallery"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="1"/><circle cx="8.5" cy="9" r="1.5"/><path d="m4 17 5-5 3 3 3-4 5 6"/></svg>Photo Archive</button>
-    <button class="desktop-shortcut" type="button" data-open="contact"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg>Contact</button>
-  </aside>
 
   <nav class="taskbar" aria-label="Portfolio taskbar">
     <button class="task-button start-button" id="start-button" type="button" aria-expanded="false" aria-controls="start-menu"><span aria-hidden="true">⊕</span> START</button>
@@ -1806,26 +1751,23 @@
           const projects = [...document.querySelectorAll("#projects .project")];
           const heading = document.createElement("div");
           heading.className = "terminal-project-row terminal-project-heading terminal-muted";
-          heading.innerHTML = "<span>INDEX / PROJECT</span><span>DESCRIPTION</span><span>STACK</span><span>LINK</span>";
+          heading.innerHTML = "<span>PROJECT</span><span>STACK</span><span>YEAR / STATUS</span><span>LINKS</span>";
           appendTerminalNode(heading);
           projects.forEach((project, index) => {
             const number = project.querySelector(".project-number")?.textContent.trim() || `${String(index + 1).padStart(3, "0")}`;
             const title = number.split("/").pop().trim();
-            const description = project.querySelector("p")?.textContent.trim() || "";
-            const url = project.querySelector(".project-links a")?.href;
             const stackKey = title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
-            const stack = terminalConfig.projectStacks?.[stackKey] || [];
+            const metadata = terminalConfig.projectMetadata?.[stackKey] || {};
+            const liveUrl = project.querySelector(".project-links a")?.href;
             const row = document.createElement("div");
             row.className = "terminal-project-row";
             const nameCell = document.createElement("strong");
             nameCell.className = "terminal-project-name";
             nameCell.textContent = number.replace("/", "");
-            const descriptionCell = document.createElement("span");
-            descriptionCell.textContent = description;
             const stackCell = document.createElement("span");
             stackCell.className = "terminal-project-meta";
-            if (stack.length) {
-              stack.forEach((tag) => {
+            if (metadata.stack?.length) {
+              metadata.stack.forEach((tag) => {
                 const badge = document.createElement("span");
                 badge.className = "terminal-tag";
                 badge.textContent = tag;
@@ -1837,19 +1779,35 @@
               badge.textContent = "STACK UNLISTED";
               stackCell.append(badge);
             }
+            const statusCell = document.createElement("span");
+            statusCell.className = "terminal-project-meta";
+            [metadata.year || "YEAR UNLISTED", metadata.status || "STATUS UNLISTED"].forEach((value) => {
+              const badge = document.createElement("span");
+              badge.className = "terminal-tag";
+              badge.textContent = value;
+              statusCell.append(badge);
+            });
             const linkCell = document.createElement("span");
-            if (url) {
+            linkCell.className = "terminal-project-links";
+            if (liveUrl) {
               const link = document.createElement("a");
               link.className = "terminal-link";
-              link.href = url;
+              link.href = liveUrl;
               link.target = "_blank";
               link.rel = "noopener noreferrer";
               link.textContent = "[LIVE ↗]";
               linkCell.append(link);
-            } else {
-              linkCell.textContent = "[LOG]";
             }
-            row.append(nameCell, descriptionCell, stackCell, linkCell);
+            if (metadata.repository) {
+              const source = document.createElement("a");
+              source.className = "terminal-link";
+              source.href = metadata.repository;
+              source.target = "_blank";
+              source.rel = "noopener noreferrer";
+              source.textContent = "[SOURCE ↗]";
+              linkCell.append(source);
+            }
+            row.append(nameCell, stackCell, statusCell, linkCell);
             appendTerminalNode(row);
           });
         };
@@ -2207,7 +2165,6 @@
         document.body.style.overflow = "";
         document.getElementById("desktop").inert = false;
         document.querySelector(".taskbar").inert = false;
-        document.querySelector(".desktop-shortcuts").inert = false;
         menu.inert = false;
         if (restoreFocus && returnFocusTo?.isConnected) returnFocusTo.focus();
       }
@@ -2225,7 +2182,6 @@
         document.body.style.overflow = "hidden";
         document.getElementById("desktop").inert = true;
         document.querySelector(".taskbar").inert = true;
-        document.querySelector(".desktop-shortcuts").inert = true;
         menu.inert = true;
         commandInput.value = "";
         filterCommandOptions("");
